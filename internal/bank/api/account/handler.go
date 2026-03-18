@@ -1,13 +1,5 @@
 package account
 
-// REFERENCE IMPLEMENTATION — participants read this before implementing api/transfer/handler.go.
-//
-// Source: derived from reference solution
-// Changes vs original:
-//   - logrus logger.WithContext(ctx).WithField(...).Info() → slog.InfoContext(ctx, ...)
-//   - OTel span added per handler (original had no per-handler tracing)
-//   - Direct store access → service.Service interface
-
 import (
 	"errors"
 	"log/slog"
@@ -23,7 +15,6 @@ import (
 )
 
 // Handler handles account-related HTTP requests.
-// Identical pattern to reference accountServer — just wired to service.Service.
 type Handler struct {
 	svc service.Service
 }
@@ -33,15 +24,6 @@ func New(svc service.Service) *Handler {
 }
 
 // GetAccount handles GET /v1/accounts/:id
-//
-// Pattern demonstrated (in order):
-//  1. Extract ctx from request
-//  2. Start OTel span — defer span.End()
-//  3. Read URL param
-//  4. slog.InfoContext — structured log with context (trace_id auto-injected)
-//  5. Call service method
-//  6. Map errors with errors.Is — return apierror.NewAPIError tuple to c.JSON
-//  7. On success: set span attribute + return 200
 func (h *Handler) GetAccount(c *gin.Context) {
 	ctx := c.Request.Context()
 
@@ -64,12 +46,6 @@ func (h *Handler) GetAccount(c *gin.Context) {
 }
 
 // CreateAccount handles POST /v1/accounts
-//
-// Pattern demonstrated (in addition to GetAccount):
-//  1. ShouldBindJSON — bind + validate request body
-//  2. On bind error: 400 with apierror
-//  3. Call service, map domain errors
-//  4. On success: log created entity + return 201
 func (h *Handler) CreateAccount(c *gin.Context) {
 	ctx := c.Request.Context()
 

@@ -11,19 +11,10 @@ import (
 )
 
 // claimsKey is an unexported named type used as a context key for JWT claims.
-// Using an unexported named type (whether struct or typed string) guarantees
-// package-local uniqueness: two packages with their own unexported key types
-// can never collide in context.Value lookups, regardless of underlying type.
-// Compare requestIDKey in requestid.go, which uses a typed string — both
-// approaches are safe; the choice here uses a struct to show trainees the
-// alternative pattern.
 type claimsKey struct{}
 
 // Claims extends jwt.RegisteredClaims with a Scope field.
 // JWT payload example: { "sub": "alice", "scope": "accounts:read transfers:write", "exp": ... }
-//
-// Source: derived from reference solution
-// Upgrade: JWT Bearer with scope-based authorization + sub claim for ownership checks.
 type Claims struct {
 	Scope string `json:"scope"`
 	jwt.RegisteredClaims
@@ -68,8 +59,6 @@ func JWTMiddleware(secret string) gin.HandlerFunc {
 
 // RequireScope checks that the injected Claims contain the required scope.
 // Returns 403 if scope is missing — used as per-route middleware after JWTMiddleware.
-//
-// Usage: accounts.GET("/:id", middleware.RequireScope("accounts:read"), handler.GetAccount)
 func RequireScope(scope string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		claims := ClaimsFromCtx(c.Request.Context())

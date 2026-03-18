@@ -19,13 +19,6 @@ type Config struct {
 }
 
 // NewServer builds the Gin engine with all middleware and routes pre-wired.
-//
-// Source: derived from reference solution
-// Changes vs original:
-//   - BasicAuth → JWTMiddleware + RequireScope per route
-//   - JSONLogMiddleware (logrus) → LoggingMiddleware (slog-gin)
-//   - Added TracingMiddleware (otelgin) and RequestIDMiddleware (uuid)
-//   - Added transfer group (pre-wired reference; TODO for participants in server.go)
 func NewServer(svc service.Service, logger *slog.Logger, cfg Config) *gin.Engine {
 	r := gin.New()
 
@@ -39,7 +32,7 @@ func NewServer(svc service.Service, logger *slog.Logger, cfg Config) *gin.Engine
 	authHandler := apiauth.New(cfg.JWTSecret)
 	r.POST("/v1/token", authHandler.IssueToken)
 
-	// Accounts — REFERENCE: fully wired, participants read this
+	// Accounts
 	accountHandler := account.New(svc)
 	accounts := r.Group("/v1/accounts")
 	accounts.Use(middleware.JWTMiddleware(cfg.JWTSecret))
@@ -49,7 +42,6 @@ func NewServer(svc service.Service, logger *slog.Logger, cfg Config) *gin.Engine
 	}
 
 	// Transfers — TODO for participants (Step 2 of quest)
-	// Pattern: identical to the accounts group above.
 	//
 	// transferHandler := transfer.New(svc)
 	// transfers := r.Group("/v1/transfers")
