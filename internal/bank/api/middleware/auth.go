@@ -59,8 +59,6 @@ func JWTMiddleware(secret string) gin.HandlerFunc {
 
 // RequireScope checks that the injected Claims contain the required scope.
 // Returns 403 if scope is missing — used as per-route middleware after JWTMiddleware.
-//
-// Usage: accounts.GET("/:id", middleware.RequireScope("accounts:read"), handler.GetAccount)
 func RequireScope(scope string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		claims := ClaimsFromCtx(c.Request.Context())

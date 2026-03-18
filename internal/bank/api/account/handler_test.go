@@ -23,7 +23,6 @@ import (
 const testSecret = "test-secret"
 
 // testToken issues a signed JWT for use in test Authorization headers.
-// Replaces the `const auth = "Basic Z29pczp0aGViZXN0"` from the reference test.
 func testToken(t *testing.T, sub, scope string) string {
 	t.Helper()
 	claims := middleware.Claims{
