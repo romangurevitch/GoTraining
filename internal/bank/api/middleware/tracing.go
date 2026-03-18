@@ -9,6 +9,7 @@ import (
 // Span name: "{method} {path}" — e.g. "POST /v1/transfers"
 // Uses otelgin which handles W3C trace context propagation automatically.
 func TracingMiddleware(serviceName string) gin.HandlerFunc {
+	// Fallback keeps spans identifiable in Jaeger if the caller omits a service name.
 	if serviceName == "" {
 		serviceName = "bank-api"
 	}

@@ -13,8 +13,11 @@ const requestIDKey contextKey = "request_id"
 
 const headerRequestID = "X-Request-Id"
 
-// RequestIDMiddleware generates a UUID per request, injects it into context
-// and the response header. slog-gin reads it automatically when WithRequestID: true.
+// RequestIDMiddleware accepts the X-Request-Id header if it contains a valid UUID.
+// If the header is absent or contains an invalid UUID, a fresh UUID is generated.
+// The request ID is injected into both the Gin context and c.Request.Context()
+// so it is accessible via RequestIDFromCtx(ctx) in downstream handlers.
+// The value is also echoed in the response header and read by slog-gin when WithRequestID: true.
 func RequestIDMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		requestID := c.GetHeader(headerRequestID)
