@@ -1,6 +1,8 @@
 package hello
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestGenerate(t *testing.T) {
 	// Define the table of test cases using an anonymous struct slice
