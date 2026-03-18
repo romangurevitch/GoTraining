@@ -20,9 +20,9 @@ type Config struct {
 
 // NewServer builds the Gin engine with all middleware and routes pre-wired.
 //
-// Source: go-training-cba-solution/internal/server/rest/account/server.go
-// Changes vs reference:
-//   - gin.BasicAuth → JWTMiddleware + RequireScope per route
+// Source: derived from reference solution
+// Changes vs original:
+//   - BasicAuth → JWTMiddleware + RequireScope per route
 //   - JSONLogMiddleware (logrus) → LoggingMiddleware (slog-gin)
 //   - Added TracingMiddleware (otelgin) and RequestIDMiddleware (uuid)
 //   - Added transfer group (pre-wired reference; TODO for participants in server.go)

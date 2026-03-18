@@ -2,10 +2,10 @@ package account
 
 // REFERENCE IMPLEMENTATION — participants read this before implementing api/transfer/handler.go.
 //
-// Source: go-training-cba-solution/internal/server/rest/account/handler.go
-// Changes vs reference:
+// Source: derived from reference solution
+// Changes vs original:
 //   - logrus logger.WithContext(ctx).WithField(...).Info() → slog.InfoContext(ctx, ...)
-//   - OTel span added per handler (reference had no per-handler tracing)
+//   - OTel span added per handler (original had no per-handler tracing)
 //   - Direct store access → service.Service interface
 
 import (
@@ -23,7 +23,7 @@ import (
 )
 
 // Handler handles account-related HTTP requests.
-// Identical pattern to go-training-cba-solution accountServer — just wired to service.Service.
+// Identical pattern to reference accountServer — just wired to service.Service.
 type Handler struct {
 	svc service.Service
 }

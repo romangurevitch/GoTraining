@@ -15,8 +15,8 @@ import (
 // DoRequest executes the request with the given context, checks the response status,
 // and returns the body bytes. Returns *apierror.APIError on non-expected status codes.
 //
-// Source: go-training-cba-solution/pkg/http/http.go
-// Fix: context is now passed to r.WithContext(ctx) (was ignored in reference)
+// Source: derived from reference solution
+// Fix: context is now passed to r.WithContext(ctx) (was ignored in original)
 func DoRequest(ctx context.Context, client *http.Client, r *http.Request, expectedResponses ...int) ([]byte, error) {
 	resp, err := client.Do(r.WithContext(ctx))
 	if err != nil {
