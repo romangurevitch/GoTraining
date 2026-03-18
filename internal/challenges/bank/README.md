@@ -81,7 +81,7 @@ The handler skeleton contains 5 guided `TODO`s. Each `TODO` points directly to t
 **File:** [internal/bank/api/transfer/handler_test.go](../../bank/api/transfer/handler_test.go)
 
 **Context:**
-We use table-driven tests and `httptest` to unit test the handler isolated from the network. We mock the `Service` layer using `gomock` (via `mockery`). 
+We use table-driven tests and `httptest` to unit test the handler isolated from the network. We mock the `Service` layer using `testify` (via `mockery`). 
 
 **Task:**
 - Open `internal/bank/api/transfer/handler_test.go`.
