@@ -49,12 +49,12 @@ func Test_base_playground_describe(t *testing.T) {
 	t.Logf("co.num: %v, co.str: %v}\n", co.num, co.str)
 	t.Logf("also co.embeddedStruct1.num: %d", co.embeddedStruct1.num) // Now members of children members need to be accessed by name
 	t.Logf("also co.embeddedStruct2.num: %d", co.embeddedStruct2.num)
-	t.Logf("also co.embeddedStruct1.embeddedStruct2.num: %d", co.embeddedStruct1.embeddedStruct2.num)
+	t.Logf("also co.embeddedStruct1.embeddedStruct2.num: %d", co.embeddedStruct1.embeddedStruct2.num) //nolint:staticcheck // explicit selector demo
 
 	t.Logf("overshadowMethod: %s", co.overshadowMethod())
-	t.Logf("also co.embeddedStruct1.overshadowMethod: %s", co.embeddedStruct1.overshadowMethod()) // Now members of children need to be accessed by name
+	t.Logf("also co.embeddedStruct1.overshadowMethod: %s", co.embeddedStruct1.overshadowMethod()) //nolint:staticcheck // explicit selector demo
 	t.Logf("also co.embeddedStruct2.overshadowMethod: %s", co.embeddedStruct2.overshadowMethod())
-	t.Logf("also co.embeddedStruct1.embeddedStruct2.overshadowMethod: %s", co.embeddedStruct1.embeddedStruct2.overshadowMethod())
+	t.Logf("also co.embeddedStruct1.embeddedStruct2.overshadowMethod: %s", co.embeddedStruct1.embeddedStruct2.overshadowMethod()) //nolint:staticcheck // explicit selector demo
 
 	type overshadowMethod interface {
 		overshadowMethod() string
@@ -66,7 +66,7 @@ func Test_base_playground_describe(t *testing.T) {
 	t.Logf("interface co.embeddedStruct1: %s", d.overshadowMethod())
 	d = co.embeddedStruct2
 	t.Logf("interface co.embeddedStruct2: %s", d.overshadowMethod())
-	d = co.embeddedStruct1.embeddedStruct2
+	d = co.embeddedStruct1.embeddedStruct2 //nolint:staticcheck // explicit selector demo
 	t.Logf("interface co.embeddedStruct1.embeddedStruct2: %s", d.overshadowMethod())
 
 }
