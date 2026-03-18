@@ -1,6 +1,6 @@
-.PHONY: all build test test-basics test-bank test-challenges lint fmt bench tidy db-up db-down migrate
+include tools.mk
 
-GOBIN ?= $(shell go env GOPATH)/bin
+.PHONY: all build test test-basics test-bank test-challenges lint fmt bench tidy db-up db-down migrate
 
 all: tidy lint build test
 
@@ -21,8 +21,8 @@ test-bank:
 test-challenges:
 	go test ./internal/challenges/...
 
-lint:
-	$(GOBIN)/golangci-lint run ./...
+lint: $(GOLANGCI_LINT)
+	$(GOLANGCI_LINT) run ./...
 
 fmt:
 	gofmt -w .
