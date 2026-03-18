@@ -8,6 +8,9 @@ include db.mk
 
 all: tools generate clean tidy lint build test
 
+generate: $(MOCKERY) ## Generate mocks
+	$(MOCKERY)
+
 clean: ## Remove build artifacts and test cache
 	rm -rf bin/
 	go clean -testcache
