@@ -112,21 +112,33 @@ func (c *client) CreateAccount(ctx context.Context, owner string) (*api.AccountR
 	return &res, json.Unmarshal(body, &res)
 }
 
-// Transfer — participant task
 func (c *client) Transfer(ctx context.Context, req *api.CreateTransferRequest) (*api.TransferResponse, error) {
-	// TODO 1: Validate req — use validator.New().Struct(req) like CreateAccount in reference
+	if err := validator.New().Struct(req); err != nil {
+		return nil, err
+	}
 
-	// TODO 2: Marshal req to JSON — json.Marshal(req)
+	jsonPayload, err := json.Marshal(req)
+	if err != nil {
+		return nil, err
+	}
 
-	// TODO 3: Build URL — httppkg.GetURL(c.basePath, "v1/transfers", "")
+	urlPath, err := httppkg.GetURL(c.basePath, "v1/transfers", "")
+	if err != nil {
+		return nil, err
+	}
 
-	// TODO 4: http.NewRequestWithContext(ctx, http.MethodPost, urlPath, bytes.NewBuffer(jsonPayload))
-	//   r.Header.Add(httppkg.HeaderApplicationJSON())
-	//   r.Header.Set("Authorization", "Bearer "+c.token)
+	r, err := http.NewRequestWithContext(ctx, http.MethodPost, urlPath, bytes.NewBuffer(jsonPayload))
+	if err != nil {
+		return nil, err
+	}
+	r.Header.Add(httppkg.HeaderApplicationJSON())
+	r.Header.Set("Authorization", "Bearer "+c.token)
 
-	// TODO 5: httppkg.DoRequest(ctx, c.HTTPClient, r, http.StatusOK)
-	//   Returns *APIError on non-200 — typed, not string
+	body, err := httppkg.DoRequest(ctx, c.HTTPClient, r, http.StatusOK)
+	if err != nil {
+		return nil, err
+	}
 
-	// TODO 6: json.Unmarshal(body, &res) and return
-	return nil, nil // Return empty for skeleton
+	var res api.TransferResponse
+	return &res, json.Unmarshal(body, &res)
 }

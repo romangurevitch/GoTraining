@@ -50,14 +50,12 @@ func NewServer(svc service.Service, logger *slog.Logger, cfg Config) *gin.Engine
 
 	// Transfers — TODO for participants (Step 2 of quest)
 	// Pattern: identical to the accounts group above.
-	//
-	// transferHandler := transfer.New(svc)
-	// transfers := r.Group("/v1/transfers")
-	// transfers.Use(middleware.JWTMiddleware(cfg.JWTSecret))
-	// {
-	//     transfers.POST("", middleware.RequireScope("transfers:write"), transferHandler.CreateTransfer)
-	// }
-	var _ = transfer.New(nil) // prevent unused import error while TODO is commented out
+	transferHandler := transfer.New(svc)
+	transfers := r.Group("/v1/transfers")
+	transfers.Use(middleware.JWTMiddleware(cfg.JWTSecret))
+	{
+	    transfers.POST("", middleware.RequireScope("transfers:write"), transferHandler.CreateTransfer)
+	}
 
 	return r
 }

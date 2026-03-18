@@ -25,7 +25,7 @@ build-hello: ## Build hello world binaries
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-w -s" -o ./bin/hello ./cmd/hello/main.go
 
 test: generate ## Run all tests
-	go test `go list ./... | grep -v 'api/transfer'`
+	go test ./...
 
 test-hello:  ## Run all hello world tests
 	go test ./cmd/hello/...
@@ -35,7 +35,7 @@ test-basics: ## Run module 2 (Go basics) tests
 	go test ./internal/basics/...
 
 test-bank: generate ## Run module 3 (Go Bank) tests
-	go test `go list ./internal/bank/... | grep -v 'api/transfer'`
+	go test ./internal/bank/...
 
 test-challenges: ## Run all challenge tests
 	go test ./internal/challenges/...

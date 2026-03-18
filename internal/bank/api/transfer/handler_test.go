@@ -1,12 +1,5 @@
 package transfer_test
 
-// PARTICIPANT QUEST — complete the test cases marked TODO.
-//
-// Before starting: read api/account/handler_test.go in full.
-// The setup helpers (testToken, setupRouter) follow the identical pattern.
-//
-// Time estimate: 20-30 minutes for Step 4 of the quest.
-
 import (
 	"bytes"
 	"encoding/json"
@@ -29,8 +22,6 @@ import (
 
 const testSecret = "test-secret"
 
-// testToken issues a signed JWT for test Authorization headers.
-// Pattern: identical to api/account/handler_test.go — copy it here.
 func testToken(t *testing.T, sub, scope string) string {
 	t.Helper()
 	claims := middleware.Claims{
@@ -46,8 +37,6 @@ func testToken(t *testing.T, sub, scope string) string {
 	return signed
 }
 
-// setupRouter builds a minimal Gin engine with the transfer route.
-// Pattern: identical to api/account/handler_test.go — copy and adapt for transfers.
 func setupRouter(svc *mocks.Service) *gin.Engine {
 	gin.SetMode(gin.TestMode)
 	r := gin.New()
@@ -62,8 +51,7 @@ func setupRouter(svc *mocks.Service) *gin.Engine {
 }
 
 var aliceAccount = &domain.Account{ID: "ACC-001", Owner: "alice", Balance: 50000, Status: domain.StatusOpen}
-
-// var bobAccount = &domain.Account{ID: "ACC-002", Owner: "bob", Balance: 0, Status: domain.StatusOpen}
+var bobAccount = &domain.Account{ID: "ACC-002", Owner: "bob", Balance: 0, Status: domain.StatusOpen}
 
 func TestCreateTransfer(t *testing.T) {
 	type fields struct {
@@ -76,7 +64,6 @@ func TestCreateTransfer(t *testing.T) {
 		tokenSub string
 		wantCode int
 	}{
-		// PRE-WRITTEN: Happy path — transfer succeeds
 		{
 			name: "success — 200",
 			fields: fields{
@@ -91,45 +78,57 @@ func TestCreateTransfer(t *testing.T) {
 			tokenSub: "alice",
 			wantCode: http.StatusOK,
 		},
-		// PRE-WRITTEN: Invalid body — 400
 		{
 			name: "missing amount — 400",
 			fields: fields{
 				svc: func(t *testing.T) *mocks.Service {
-					return mocks.NewService(t) // no calls expected
+					return mocks.NewService(t)
 				},
 			},
-			body:     map[string]string{"from_account_id": "ACC-001", "to_account_id": "ACC-002"}, // amount missing
+			body:     map[string]string{"from_account_id": "ACC-001", "to_account_id": "ACC-002"},
 			tokenSub: "alice",
 			wantCode: http.StatusBadRequest,
 		},
-
-		// TODO: Wrong owner — sub is "alice" but from_account is owned by "bob"
-		// Expected: 403
-		// Mock setup: GetAccount("ACC-002") returns bobAccount (owner: "bob")
-		// Token sub: "alice"
-		// {
-		//     name: "wrong owner — 403",
-		//     ...
-		// },
-
-		// TODO: Insufficient funds — transfer amount exceeds from_account balance
-		// Expected: 422
-		// Mock setup: GetAccount("ACC-001") returns aliceAccount; Transfer returns domain.ErrInsufficientFunds
-		// Token sub: "alice"
-		// {
-		//     name: "insufficient funds — 422",
-		//     ...
-		// },
-
-		// TODO: Source account not found
-		// Expected: 404
-		// Mock setup: GetAccount("MISSING") returns nil, domain.ErrAccountNotFound
-		// Token sub: "alice"
-		// {
-		//     name: "source account not found — 404",
-		//     ...
-		// },
+		{
+			name: "wrong owner — 403",
+			fields: fields{
+				svc: func(t *testing.T) *mocks.Service {
+					m := mocks.NewService(t)
+					m.EXPECT().GetAccount(mock.Anything, "ACC-002").Return(bobAccount, nil).Once()
+					return m
+				},
+			},
+			body:     map[string]any{"from_account_id": "ACC-002", "to_account_id": "ACC-001", "amount": 5000},
+			tokenSub: "alice",
+			wantCode: http.StatusForbidden,
+		},
+		{
+			name: "insufficient funds — 422",
+			fields: fields{
+				svc: func(t *testing.T) *mocks.Service {
+					m := mocks.NewService(t)
+					m.EXPECT().GetAccount(mock.Anything, "ACC-001").Return(aliceAccount, nil).Once()
+					m.EXPECT().Transfer(mock.Anything, "ACC-001", "ACC-002", int64(100000)).Return(domain.ErrInsufficientFunds).Once()
+					return m
+				},
+			},
+			body:     map[string]any{"from_account_id": "ACC-001", "to_account_id": "ACC-002", "amount": 100000},
+			tokenSub: "alice",
+			wantCode: http.StatusUnprocessableEntity,
+		},
+		{
+			name: "source account not found — 404",
+			fields: fields{
+				svc: func(t *testing.T) *mocks.Service {
+					m := mocks.NewService(t)
+					m.EXPECT().GetAccount(mock.Anything, "MISSING").Return(nil, domain.ErrAccountNotFound).Once()
+					return m
+				},
+			},
+			body:     map[string]any{"from_account_id": "MISSING", "to_account_id": "ACC-002", "amount": 5000},
+			tokenSub: "alice",
+			wantCode: http.StatusNotFound,
+		},
 	}
 
 	for _, tt := range tests {
