@@ -10,12 +10,12 @@ clean:
 	rm -rf bin/
 	go clean -testcache
 
-build: clean
+build:
 	go build -o ./bin/hello ./cmd/hello/...
 	go build -o ./bin/bank-api ./cmd/bank-api/...
 	go build -o ./bin/bank-cli ./cmd/bank-cli/...
 
-build-hello: clean
+build-hello:
    # Building production ready executable
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-w -s" -o ./bin/hello ./cmd/hello/main.go
 
