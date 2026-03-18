@@ -4,7 +4,6 @@
 
 - [Go 1.26.1+](https://go.dev/dl/)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (for database infrastructure)
-- [golangci-lint](https://golangci-lint.run/usage/install/) — `go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest`
 
 ## Clone and Install
 
