@@ -9,7 +9,7 @@ import (
 
 func main() {
 	// Extracting a command-line argument if provided by the user
-	// os.Args is the program name; os.Args is the first argument
+// os.Args[0] is the program name; os.Args[1] is the first argument.
 	targetName := ""
 
 	if len(os.Args) > 1 {
