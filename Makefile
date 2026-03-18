@@ -1,21 +1,33 @@
 include tools.mk
 
-.PHONY: all build test test-basics test-bank test-challenges lint fmt bench tidy db-up db-down migrate help generate
+.PHONY: all build build-hello clean test test-hello test-basics test-bank test-challenges lint fmt bench tidy db-up db-down migrate docker-build-hello docker-run-hello help generate
 
-all: tools generate tidy lint build test
+HELLO_IMAGE ?= hello:latest
+
+all: tools generate clean tidy lint build test
 
 generate: $(MOCKERY) ## Generate mocks
 	$(MOCKERY)
 
+clean:
+	rm -rf bin/
+	go clean -testcache
+
 build: generate ## Build all binaries (hello, bank-api, bank-cli)
-	@mkdir -p bin
-	go build -o bin/hello ./cmd/hello/main.go
-	go build -o bin/bank-api ./cmd/bank-api/main.go
-	go build -o bin/bank-cli ./cmd/bank-cli/main.go
-	@chmod +x bin/*
+	go build -o ./bin/hello ./cmd/hello/...
+	go build -o ./bin/bank-api ./cmd/bank-api/...
+	go build -o ./bin/bank-cli ./cmd/bank-cli/...
+
+build-hello: ## Build hello world binaries
+	# Building production ready executable
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-w -s" -o ./bin/hello ./cmd/hello/main.go
 
 test: generate ## Run all tests
 	go test ./...
+
+test-hello:  ## Run all hello world tests
+	go test ./cmd/hello/...
+	go test ./internal/hello/...
 
 test-basics: ## Run module 2 (Go basics) tests
 	go test ./internal/basics/...
@@ -35,11 +47,14 @@ fmt: ## Format Go code
 bench: ## Run all benchmarks
 	go test -bench=. -benchmem ./...
 
-clean: ## Remove built binaries
-	rm -rf bin/
-
 tidy: ## Tidy go.mod dependencies
 	go mod tidy
+
+docker-build-hello: ## Build docker image for hello world
+	docker build -f ./cmd/hello/Dockerfile -t $(HELLO_IMAGE) .
+
+docker-run-hello: ## Run hello world through docker
+	docker run --rm $(HELLO_IMAGE) $(NAME)
 
 db-up: ## Start PostgreSQL database
 	docker compose up -d postgres
