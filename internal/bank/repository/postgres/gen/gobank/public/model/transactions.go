@@ -14,7 +14,7 @@ import (
 type Transactions struct {
 	ID        string `sql:"primary_key"`
 	AccountID string
-	Amount    float64
+	Amount    int64
 	Type      string
 	CreatedAt time.Time
 }

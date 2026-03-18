@@ -19,7 +19,7 @@ type transactionsTable struct {
 	// Columns
 	ID        postgres.ColumnString
 	AccountID postgres.ColumnString
-	Amount    postgres.ColumnFloat
+	Amount    postgres.ColumnInteger
 	Type      postgres.ColumnString
 	CreatedAt postgres.ColumnTimestampz
 
@@ -65,7 +65,7 @@ func newTransactionsTableImpl(schemaName, tableName, alias string) transactionsT
 	var (
 		IDColumn        = postgres.StringColumn("id")
 		AccountIDColumn = postgres.StringColumn("account_id")
-		AmountColumn    = postgres.FloatColumn("amount")
+		AmountColumn    = postgres.IntegerColumn("amount")
 		TypeColumn      = postgres.StringColumn("type")
 		CreatedAtColumn = postgres.TimestampzColumn("created_at")
 		allColumns      = postgres.ColumnList{IDColumn, AccountIDColumn, AmountColumn, TypeColumn, CreatedAtColumn}

@@ -11,12 +11,15 @@ import (
 )
 
 // Service is the business logic interface. Enables mock injection in handler tests.
+// Replaces direct BankService usage — mirrors the reference solution's service abstraction.
+//
+//go:generate go run go.uber.org/mock/mockgen -source=service.go -destination=mocks/mock_service.go -package=mocks
 type Service interface {
 	CreateAccount(ctx context.Context, owner string) (*domain.Account, error)
 	GetAccount(ctx context.Context, id string) (*domain.Account, error)
-	Deposit(ctx context.Context, accountID string, amount float64) error
-	Withdraw(ctx context.Context, accountID string, amount float64) error
-	Transfer(ctx context.Context, fromID, toID string, amount float64) error
+	Deposit(ctx context.Context, accountID string, amount int64) error
+	Withdraw(ctx context.Context, accountID string, amount int64) error
+	Transfer(ctx context.Context, fromID, toID string, amount int64) error
 }
 
 // BankService implements Service backed by a Repository.
@@ -53,7 +56,7 @@ func (s *BankService) GetAccount(ctx context.Context, id string) (*domain.Accoun
 	return s.repo.GetAccount(ctx, id)
 }
 
-func (s *BankService) Deposit(ctx context.Context, accountID string, amount float64) error {
+func (s *BankService) Deposit(ctx context.Context, accountID string, amount int64) error {
 	if amount <= 0 {
 		return domain.ErrInvalidAmount
 	}
@@ -85,7 +88,7 @@ func (s *BankService) Deposit(ctx context.Context, accountID string, amount floa
 	return s.repo.SaveTransaction(ctx, t)
 }
 
-func (s *BankService) Withdraw(ctx context.Context, accountID string, amount float64) error {
+func (s *BankService) Withdraw(ctx context.Context, accountID string, amount int64) error {
 	if amount <= 0 {
 		return domain.ErrInvalidAmount
 	}
@@ -123,7 +126,7 @@ func (s *BankService) Withdraw(ctx context.Context, accountID string, amount flo
 
 // Transfer moves funds from one account to another.
 // Pre-built for participants — they call this from the transfer handler.
-func (s *BankService) Transfer(ctx context.Context, fromID, toID string, amount float64) error {
+func (s *BankService) Transfer(ctx context.Context, fromID, toID string, amount int64) error {
 	if amount <= 0 {
 		return domain.ErrInvalidAmount
 	}
@@ -186,7 +189,7 @@ func (s *BankService) Transfer(ctx context.Context, fromID, toID string, amount 
 	slog.InfoContext(ctx, "transfer completed",
 		slog.String("from_account_id", fromID),
 		slog.String("to_account_id", toID),
-		slog.Float64("amount", amount),
+		slog.Int64("amount", amount),
 	)
 
 	return s.repo.SaveTransaction(ctx, credit)

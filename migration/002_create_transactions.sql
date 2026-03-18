@@ -4,7 +4,7 @@
 CREATE TABLE IF NOT EXISTS transactions (
     id          VARCHAR(64)   NOT NULL PRIMARY KEY,
     account_id  VARCHAR(64)   NOT NULL REFERENCES accounts(id),
-    amount      NUMERIC(15,4) NOT NULL,
+    amount      BIGINT NOT NULL,
     type        VARCHAR(16)   NOT NULL,
     created_at  TIMESTAMPTZ   NOT NULL DEFAULT NOW()
 );

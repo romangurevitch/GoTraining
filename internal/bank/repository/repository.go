@@ -7,7 +7,6 @@ import (
 )
 
 // Repository defines the data access contract for the bank.
-// Replaces store.Store — clearer intent, Postgres-only.
 type Repository interface {
 	GetAccount(ctx context.Context, id string) (*domain.Account, error)
 	SaveAccount(ctx context.Context, account *domain.Account) error

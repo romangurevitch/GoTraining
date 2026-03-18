@@ -50,7 +50,7 @@ func (r *PostgresRepository) SaveAccount(ctx context.Context, account *domain.Ac
 		m.ID, m.Owner, m.Balance, m.Status, m.CreatedAt, m.UpdatedAt,
 	).ON_CONFLICT(gentable.Accounts.ID).DO_UPDATE(
 		postgres.SET(
-			gentable.Accounts.Balance.SET(postgres.Float(m.Balance)),
+			gentable.Accounts.Balance.SET(postgres.Int(m.Balance)),
 			gentable.Accounts.Status.SET(postgres.String(m.Status)),
 			gentable.Accounts.UpdatedAt.SET(postgres.TimestampzT(m.UpdatedAt)),
 		),

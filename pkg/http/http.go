@@ -22,7 +22,9 @@ func DoRequest(ctx context.Context, client *http.Client, r *http.Request, expect
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		_ = resp.Body.Close()
+	}()
 
 	if err = checkResponse(resp, expectedResponses...); err != nil {
 		return nil, err

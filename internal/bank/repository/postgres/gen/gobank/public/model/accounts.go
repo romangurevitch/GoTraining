@@ -14,7 +14,7 @@ import (
 type Accounts struct {
 	ID        string `sql:"primary_key"`
 	Owner     string
-	Balance   float64
+	Balance   int64
 	Status    string
 	CreatedAt time.Time
 	UpdatedAt time.Time

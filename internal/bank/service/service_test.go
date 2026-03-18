@@ -4,9 +4,11 @@ import (
 	"context"
 	"testing"
 
+	"github.com/romangurevitch/go-training/internal/bank/domain"
+	"github.com/romangurevitch/go-training/internal/bank/repository/mocks"
 	"github.com/romangurevitch/go-training/internal/bank/service"
-	"github.com/romangurevitch/go-training/internal/bank/store"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestBankService_Deposit(t *testing.T) {
@@ -14,45 +16,52 @@ func TestBankService_Deposit(t *testing.T) {
 
 	type args struct {
 		accountOwner  string
-		depositAmount float64
+		depositAmount int64
 	}
 
 	tests := []struct {
 		name            string
 		args            args
 		wantErr         bool
-		expectedBalance float64
+		expectedBalance int64
 	}{
 		{
 			name: "Successful deposit",
 			args: args{
 				accountOwner:  "John Doe",
-				depositAmount: 100.0,
+				depositAmount: 10000, // 100.00
 			},
 			wantErr:         false,
-			expectedBalance: 100.0,
+			expectedBalance: 10000,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := store.NewMemoryStore()
-			bs := service.NewBankService(s)
+			repo := mocks.NewRepository(t)
+			bs := service.NewBankService(repo)
 			ctx := context.Background()
 
-			// Create account
-			acc, err := bs.CreateAccount(ctx, tt.args.accountOwner)
-			assert.NoError(t, err)
+			acc := &domain.Account{
+				ID:      "ACC-1",
+				Owner:   tt.args.accountOwner,
+				Balance: 0,
+				Status:  domain.StatusOpen,
+			}
+
+			// Expect GetAccount for verification after deposit
+			repo.EXPECT().GetAccount(ctx, "ACC-1").Return(acc, nil)
+			repo.EXPECT().SaveAccount(ctx, mock.Anything).Return(nil)
+			repo.EXPECT().SaveTransaction(ctx, mock.Anything).Return(nil)
 
 			// Perform deposit
-			err = bs.Deposit(ctx, acc.ID, tt.args.depositAmount)
+			err := bs.Deposit(ctx, acc.ID, tt.args.depositAmount)
 
 			if tt.wantErr {
 				assert.Error(t, err)
 			} else {
 				assert.NoError(t, err)
-				updatedAcc, _ := bs.GetAccount(ctx, acc.ID)
-				assert.Equal(t, tt.expectedBalance, updatedAcc.Balance)
+				assert.Equal(t, tt.expectedBalance, acc.Balance)
 			}
 		})
 	}

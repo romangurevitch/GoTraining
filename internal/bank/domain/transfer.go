@@ -6,5 +6,5 @@ package domain
 type Transfer struct {
 	FromAccountID string
 	ToAccountID   string
-	Amount        float64
+	Amount        int64 // in cents
 }

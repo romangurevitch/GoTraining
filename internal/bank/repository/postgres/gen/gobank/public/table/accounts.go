@@ -19,7 +19,7 @@ type accountsTable struct {
 	// Columns
 	ID        postgres.ColumnString
 	Owner     postgres.ColumnString
-	Balance   postgres.ColumnFloat
+	Balance   postgres.ColumnInteger
 	Status    postgres.ColumnString
 	CreatedAt postgres.ColumnTimestampz
 	UpdatedAt postgres.ColumnTimestampz
@@ -66,7 +66,7 @@ func newAccountsTableImpl(schemaName, tableName, alias string) accountsTable {
 	var (
 		IDColumn        = postgres.StringColumn("id")
 		OwnerColumn     = postgres.StringColumn("owner")
-		BalanceColumn   = postgres.FloatColumn("balance")
+		BalanceColumn   = postgres.IntegerColumn("balance")
 		StatusColumn    = postgres.StringColumn("status")
 		CreatedAtColumn = postgres.TimestampzColumn("created_at")
 		UpdatedAtColumn = postgres.TimestampzColumn("updated_at")
