@@ -49,16 +49,16 @@ func (e *entity) DoSomethingElse(s string) error {
 	return nil
 }
 
-//nolint
+// nolint
 type entity2 struct {
 }
 
-//nolint
+// nolint
 func (e *entity2) Do(s string) error {
 	panic("implement me")
 }
 
-//nolint
+// nolint
 func (e *entity2) DoAThirdThing(s string) error {
 	fmt.Printf("Run `DoAThirdThing` with, %v\n", s)
 	return nil
