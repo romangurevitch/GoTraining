@@ -9,5 +9,8 @@ import (
 // Span name: "{method} {path}" — e.g. "POST /v1/transfers"
 // Uses otelgin which handles W3C trace context propagation automatically.
 func TracingMiddleware(serviceName string) gin.HandlerFunc {
+	if serviceName == "" {
+		serviceName = "bank-api"
+	}
 	return otelgin.Middleware(serviceName)
 }

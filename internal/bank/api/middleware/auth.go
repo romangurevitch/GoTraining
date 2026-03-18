@@ -10,6 +10,11 @@ import (
 	apierror "github.com/romangurevitch/go-training/pkg/api/error"
 )
 
+// claimsKey uses an empty struct type (rather than a typed string) so two packages
+// that both define a "claims" key can never collide — struct types are distinct even
+// across package boundaries. Compare requestIDKey in requestid.go which uses a
+// typed string: either approach is safe, but the struct pattern is preferred when
+// the key may be used by external callers importing this package.
 type claimsKey struct{}
 
 // Claims extends jwt.RegisteredClaims with a Scope field.
@@ -23,7 +28,8 @@ type Claims struct {
 }
 
 // JWTMiddleware validates the Bearer token from Authorization header.
-// On success: injects *Claims into Gin context under claimsKey{}.
+// On success: injects *Claims into the request context (c.Request.Context()) under claimsKey{};
+// retrieve with ClaimsFromCtx(ctx).
 // On failure: returns 401 and aborts — downstream handlers do not run.
 func JWTMiddleware(secret string) gin.HandlerFunc {
 	return func(c *gin.Context) {

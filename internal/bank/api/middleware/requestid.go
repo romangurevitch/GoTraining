@@ -20,6 +20,8 @@ func RequestIDMiddleware() gin.HandlerFunc {
 		requestID := c.GetHeader(headerRequestID)
 		if requestID == "" {
 			requestID = uuid.New().String()
+		} else if _, err := uuid.Parse(requestID); err != nil {
+			requestID = uuid.New().String()
 		}
 		c.Writer.Header().Set(headerRequestID, requestID)
 		c.Set(string(requestIDKey), requestID)
