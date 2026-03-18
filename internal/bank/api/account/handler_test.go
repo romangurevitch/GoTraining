@@ -1,15 +1,5 @@
 package account_test
 
-// REFERENCE TEST — participants replicate this pattern for api/transfer/handler_test.go.
-//
-// Source: derived from reference solution
-// Patterns demonstrated:
-//   - Table-driven tests with t.Run
-//   - type fields struct { svc func(t *testing.T) service.Service }
-//   - mockery-generated MockService: m.EXPECT().GetAccount(...).Return(...).Times(1)
-//   - gin.SetMode(gin.TestMode) + httptest.NewRecorder()
-//   - JWT token in Authorization header (replaces Basic Auth from reference)
-
 import (
 	"bytes"
 	"encoding/json"
@@ -50,7 +40,6 @@ func testToken(t *testing.T, sub, scope string) string {
 }
 
 // setupRouter builds a minimal Gin engine with the account routes wired up.
-// Mirrors NewServer() but scoped to account routes only — keeps tests isolated.
 func setupRouter(svc *mocks.Service) *gin.Engine {
 	gin.SetMode(gin.TestMode)
 	r := gin.New()

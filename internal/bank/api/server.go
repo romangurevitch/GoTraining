@@ -19,13 +19,6 @@ type Config struct {
 }
 
 // NewServer builds the Gin engine with all middleware and routes pre-wired.
-//
-// Source: derived from reference solution
-// Changes vs original:
-//   - BasicAuth → JWTMiddleware + RequireScope per route
-//   - JSONLogMiddleware (logrus) → LoggingMiddleware (slog-gin)
-//   - Added TracingMiddleware (otelgin) and RequestIDMiddleware (uuid)
-//   - Added transfer group
 func NewServer(svc service.Service, logger *slog.Logger, cfg Config) *gin.Engine {
 	r := gin.New()
 

@@ -10,9 +10,6 @@ import (
 // LoggingMiddleware returns a Gin middleware that logs one structured line per request.
 // Fields logged: time, method, path, status, latency, trace_id, span_id, request_id.
 // trace_id/span_id are extracted from the active OTel span in the request context.
-//
-// Source: derived from reference solution
-// Upgrade: uses slog-gin instead of logrus — zero-boilerplate OTel trace correlation.
 func LoggingMiddleware(logger *slog.Logger) gin.HandlerFunc {
 	return sloggin.NewWithConfig(logger, sloggin.Config{
 		DefaultLevel:     slog.LevelInfo,
