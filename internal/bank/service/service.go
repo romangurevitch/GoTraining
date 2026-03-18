@@ -11,9 +11,6 @@ import (
 )
 
 // Service is the business logic interface. Enables mock injection in handler tests.
-// Replaces direct BankService usage — mirrors the reference solution's service abstraction.
-//
-//go:generate go run go.uber.org/mock/mockgen -source=service.go -destination=mocks/mock_service.go -package=mocks
 type Service interface {
 	CreateAccount(ctx context.Context, owner string) (*domain.Account, error)
 	GetAccount(ctx context.Context, id string) (*domain.Account, error)
