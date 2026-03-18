@@ -1,0 +1,10 @@
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] POST   /v1/token                 --> github.com/romangurevitch/go-training/internal/bank/api/auth.(*Handler).IssueToken-fm (5 handlers)
+[GIN-debug] GET    /v1/accounts/:id          --> github.com/romangurevitch/go-training/internal/bank/api/account.(*Handler).GetAccount-fm (7 handlers)
+[GIN-debug] POST   /v1/accounts              --> github.com/romangurevitch/go-training/internal/bank/api/account.(*Handler).CreateAccount-fm (7 handlers)
+[GIN-debug] POST   /v1/transfers             --> github.com/romangurevitch/go-training/internal/bank/api/transfer.(*Handler).CreateTransfer-fm (7 handlers)
+{"time":"2026-03-18T20:37:41.021846+11:00","level":"INFO","msg":"server starting","addr":":8080"}
+{"time":"2026-03-18T20:37:41.023637+11:00","level":"INFO","msg":"application failed: http server error: listen tcp :8080: bind: address already in use"}
