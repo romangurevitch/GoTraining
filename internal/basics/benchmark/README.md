@@ -107,8 +107,8 @@ func BenchmarkAdd(b *testing.B) {
 
 ### 3. Iterative vs. Recursive
 In the `benchmark.go` file in this directory, we compare two ways of calculating factorials:
-- `mysteriousFunction` (Iterative)
-- `mysteriousFunctionRec` (Recursive)
+- `IterativeFactorial` (Iterative)
+- `RecursiveFactorial` (Recursive)
 
 **Run it yourself to see which one scales better!**
 ```bash
