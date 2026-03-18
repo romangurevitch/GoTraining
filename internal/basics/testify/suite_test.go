@@ -53,14 +53,14 @@ func TestExampleTestSuite(t *testing.T) {
 }
 
 // One of the test function in the suite
-func (s ExampleTestSuite) TestExample() {
+func (s *ExampleTestSuite) TestExample() {
 	s.T().Log("Test 1 running")
 	assert.Equal(s.T(), 100, s.SharedValue)
 	assert.Equal(s.T(), 150, s.SharedValueDefaultAcrossTests)
 }
 
 // Another One of the test function in the suite
-func (s ExampleTestSuite) TestExample1() {
+func (s *ExampleTestSuite) TestExample1() {
 	s.T().Log("Test 2 running")
 	assert.Equal(s.T(), 100, s.SharedValue)
 	assert.Equal(s.T(), 150, s.SharedValueDefaultAcrossTests)

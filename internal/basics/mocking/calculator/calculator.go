@@ -11,6 +11,10 @@ type Adder interface {
 
 type calculator struct{}
 
+func New() Adder {
+	return &calculator{}
+}
+
 func (c *calculator) SingleDigitAdd(x int, y int) (int, error) {
 	if x >= 10 || y >= 10 {
 		return 0, errors.New("too high")

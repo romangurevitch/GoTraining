@@ -30,8 +30,8 @@ func Test_base_describe(t *testing.T) {
 		str: "some name",
 	}
 
-	t.Logf("co={num: %v, str: %v}\n", co.embeddedStruct.num, co.str) // We can access the base's fields directly on co, e.g. co.num
-	t.Logf("also num: %d", co.embeddedStruct.embeddedStruct1.num)    // Alternatively, we can spell out the full path using the embedded type name.
+	t.Logf("co={num: %v, str: %v}\n", co.embeddedStruct.num, co.str) //nolint:staticcheck // explicit selector demo
+	t.Logf("also num: %d", co.embeddedStruct.embeddedStruct1.num)    //nolint:staticcheck // explicit selector demo
 	t.Logf("describe: %s", co.describe())
 
 	// What happens with the describe method if we embed a struct within a struct
