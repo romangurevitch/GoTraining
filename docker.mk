@@ -4,7 +4,7 @@ HELLO_IMAGE ?= hello:latest
 
 .PHONY: docker-build-hello docker-run-hello
 
-docker-build-hello: ## Build docker image for hello world
+docker-run-hello: ## Run hello world through docker. Usage: make docker-run-hello NAME=<name>
 	docker build -f ./cmd/hello/Dockerfile -t $(HELLO_IMAGE) .
 
 docker-run-hello: ## Run hello world through docker
