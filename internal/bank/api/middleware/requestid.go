@@ -23,6 +23,8 @@ func RequestIDMiddleware() gin.HandlerFunc {
 		}
 		c.Writer.Header().Set(headerRequestID, requestID)
 		c.Set(string(requestIDKey), requestID)
+		ctx := context.WithValue(c.Request.Context(), requestIDKey, requestID)
+		c.Request = c.Request.WithContext(ctx)
 		c.Next()
 	}
 }

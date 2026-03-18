@@ -65,13 +65,23 @@ func JWTMiddleware(secret string) gin.HandlerFunc {
 func RequireScope(scope string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		claims := ClaimsFromCtx(c.Request.Context())
-		if claims == nil || !strings.Contains(claims.Scope, scope) {
+		if claims == nil || !hasScope(claims.Scope, scope) {
 			c.JSON(http.StatusForbidden, &apierror.APIError{Message: "insufficient scope"})
 			c.Abort()
 			return
 		}
 		c.Next()
 	}
+}
+
+// hasScope checks whether the space-separated tokenScopes string contains the required scope token.
+func hasScope(tokenScopes, required string) bool {
+	for _, s := range strings.Fields(tokenScopes) {
+		if s == required {
+			return true
+		}
+	}
+	return false
 }
 
 // ClaimsFromCtx extracts the JWT claims injected by JWTMiddleware from the request context.
