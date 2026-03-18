@@ -1,6 +1,6 @@
 include tools.mk
 
-.PHONY: all build build-hello clean test test-hello test-basics test-bank test-challenges lint fmt bench tidy db-up db-down migrate docker-build-hello docker-run-hello help
+.PHONY: all build build-hello clean test test-hello test-basics test-bank test-challenges test-temporal lint fmt bench tidy db-up db-down migrate docker-build-hello docker-run-hello temporal-up temporal-down worker-start generate.mocks help
 
 HELLO_IMAGE ?= hello:latest
 
@@ -10,10 +10,11 @@ clean:
 	rm -rf bin/
 	go clean -testcache
 
-build: ## Build all binaries (hello, bank-api, bank-cli)
+build: ## Build all binaries (hello, bank-api, bank-cli, worker)
 	go build -o ./bin/hello ./cmd/hello/...
 	go build -o ./bin/bank-api ./cmd/bank-api/...
 	go build -o ./bin/bank-cli ./cmd/bank-cli/...
+	go build -o ./bin/worker ./cmd/worker/...
 
 build-hello: ## Build hello world binaries
    # Building production ready executable
@@ -58,6 +59,23 @@ db-up: ## Start PostgreSQL database
 
 db-down: ## Stop PostgreSQL database
 	docker compose down
+
+temporal-up: ## Start Temporal dev server and WireMock
+	docker compose up -d temporal wiremock
+
+temporal-down: ## Stop Temporal and WireMock
+	docker compose down temporal wiremock
+
+worker-start: ## Start the Temporal order processing worker
+	go run ./cmd/worker/... -config="./config/worker/local/config.yaml"
+
+test-temporal: ## Run module 4 (Temporal) tests
+	go test ./internal/temporal/...
+
+generate.mocks: $(MOCKGEN) ## Generate mocks
+	$(MOCKGEN) -destination=internal/temporal/activities/mocks/mock_inventory_checker.go \
+	           -package=mocks \
+	           github.com/romangurevitch/go-training/internal/temporal/activities InventoryChecker
 
 migrate: ## Run SQL migrations (instructions only)
 	@echo "Migration tool not yet configured. See migration/ directory for SQL files."
