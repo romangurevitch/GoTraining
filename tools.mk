@@ -2,7 +2,7 @@
 # This file manages all external tools with specific versions for reproducible builds
 
 # Tool versions
-GOLANGCI_LINT_VERSION := v1.64.5
+GOLANGCI_LINT_VERSION := v2.11.3
 MOCKGEN_VERSION := v0.6.0
 
 # Versioned tool paths
