@@ -2,7 +2,7 @@ package account_test
 
 // REFERENCE TEST — participants replicate this pattern for api/transfer/handler_test.go.
 //
-// Source: go-training-cba-solution/internal/server/rest/account/handler_test.go
+// Source: derived from reference solution
 // Patterns demonstrated:
 //   - Table-driven tests with t.Run
 //   - type fields struct { svc func(t *testing.T) service.Service }

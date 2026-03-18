@@ -22,7 +22,7 @@ type claimsKey struct{}
 // Claims extends jwt.RegisteredClaims with a Scope field.
 // JWT payload example: { "sub": "alice", "scope": "accounts:read transfers:write", "exp": ... }
 //
-// Source: replaces gin.BasicAuth from go-training-cba-solution/internal/server/rest/middleware/auth.go
+// Source: derived from reference solution
 // Upgrade: JWT Bearer with scope-based authorization + sub claim for ownership checks.
 type Claims struct {
 	Scope string `json:"scope"`

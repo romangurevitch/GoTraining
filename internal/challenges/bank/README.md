@@ -121,9 +121,13 @@ APIs are useless without clients. Building a strongly-typed Go client makes inte
   ```
 - Run the API server locally (in a separate terminal):
   ```bash
-  ./bin/bank-api
+  make run-bank-api
   ```
 - Issue a test JWT using `POST /v1/token`.
+- Export the token so the CLI can use it:
+  ```bash
+  export BANK_TOKEN="<your-token-here>"
+  ```
 - Check out the CLI's built-in documentation:
   ```bash
   ./bin/bank-cli help

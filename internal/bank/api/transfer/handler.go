@@ -15,6 +15,7 @@ import (
 	apierror "github.com/romangurevitch/go-training/pkg/api/error"
 )
 
+// Handler handles transfer-related HTTP requests.
 type Handler struct {
 	svc service.Service
 }
@@ -23,6 +24,7 @@ func New(svc service.Service) *Handler {
 	return &Handler{svc: svc}
 }
 
+// CreateTransfer handles POST /v1/transfers.
 func (h *Handler) CreateTransfer(c *gin.Context) {
 	ctx := c.Request.Context()
 
