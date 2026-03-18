@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
@@ -39,14 +38,15 @@ func Run() error {
 
 	tp, err := InitTracer(ctx, cfg)
 	if err != nil {
-		return fmt.Errorf("failed to init tracer: %w", err)
+		slog.ErrorContext(ctx, "failed to init tracer", slog.Any("error", err))
+		return err
 	}
 	defer ShutdownTracer(tp)
 
 	// 2. Data Access
 	db, err := InitDB(ctx, cfg.DatabaseURL)
 	if err != nil {
-		return fmt.Errorf("failed to init db: %w", err)
+		return err // InitDB already logged it
 	}
 	defer func() {
 		_ = db.Close()
@@ -55,7 +55,8 @@ func Run() error {
 	// 3. Application Logic & API Wiring
 	srv, err := WireServer(db, logger, cfg)
 	if err != nil {
-		return fmt.Errorf("failed to wire server: %w", err)
+		slog.ErrorContext(ctx, "failed to wire server", slog.Any("error", err))
+		return err
 	}
 
 	// 4. Lifecycle Management
@@ -110,12 +111,14 @@ func ShutdownTracer(tp *sdktrace.TracerProvider) {
 func InitDB(ctx context.Context, url string) (*sql.DB, error) {
 	db, err := sql.Open("postgres", url)
 	if err != nil {
-		return nil, fmt.Errorf("could not open db: %w", err)
+		slog.ErrorContext(ctx, "could not open db", slog.Any("error", err))
+		return nil, err
 	}
 
 	if err := db.PingContext(ctx); err != nil {
 		_ = db.Close()
-		return nil, fmt.Errorf("could not ping db: %w", err)
+		slog.ErrorContext(ctx, "could not ping db", slog.Any("error", err))
+		return nil, err
 	}
 	return db, nil
 }
@@ -150,7 +153,8 @@ func Serve(ctx context.Context, srv *http.Server) error {
 
 	select {
 	case err := <-errChan:
-		return fmt.Errorf("http server error: %w", err)
+		slog.ErrorContext(ctx, "http server error", slog.Any("error", err))
+		return err
 	case <-ctx.Done():
 		slog.Info("shutting down server")
 	}
@@ -158,7 +162,8 @@ func Serve(ctx context.Context, srv *http.Server) error {
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err := srv.Shutdown(shutdownCtx); err != nil {
-		return fmt.Errorf("server forced to shutdown: %w", err)
+		slog.ErrorContext(ctx, "server forced to shutdown", slog.Any("error", err))
+		return err
 	}
 
 	slog.Info("server exited")

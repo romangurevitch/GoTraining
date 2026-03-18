@@ -1,7 +1,8 @@
 package main
 
 import (
-	"log"
+	"log/slog"
+	"os"
 
 	"github.com/romangurevitch/go-training/internal/bank/app"
 	"github.com/romangurevitch/go-training/internal/bank/config"
@@ -13,6 +14,7 @@ func init() {
 
 func main() {
 	if err := app.Run(); err != nil {
-		log.Fatalf("application failed: %v", err)
+		slog.Error("application failed", slog.Any("error", err))
+		os.Exit(1)
 	}
 }
