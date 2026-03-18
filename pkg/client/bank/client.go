@@ -16,6 +16,7 @@ import (
 // Client defines the interface for interacting with the Bank API.
 type Client interface {
 	GetToken(ctx context.Context, sub, scope string) (string, error)
+	SetToken(token string)
 	GetAccount(ctx context.Context, id string) (*api.AccountResponse, error)
 	CreateAccount(ctx context.Context, owner string) (*api.AccountResponse, error)
 	Transfer(ctx context.Context, req *api.CreateTransferRequest) (*api.TransferResponse, error)
@@ -28,7 +29,11 @@ func New(basePath string, httpClient *http.Client) Client {
 type client struct {
 	basePath   string
 	HTTPClient *http.Client
-	token      string // set by GetToken, sent as Bearer on subsequent calls
+	token      string // set by GetToken or SetToken, sent as Bearer on subsequent calls
+}
+
+func (c *client) SetToken(token string) {
+	c.token = token
 }
 
 // GetToken issues a signed JWT for testing purposes.

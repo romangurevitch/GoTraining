@@ -19,6 +19,11 @@ func main() {
 	// Initialize the Bank REST client.
 	bankClient := bank.New(apiURL, &http.Client{})
 
+	// Load token from environment if present.
+	if token := os.Getenv("BANK_TOKEN"); token != "" {
+		bankClient.SetToken(token)
+	}
+
 	// Execute the CLI.
 	cobra.CheckErr(cli.New(bankClient).Execute())
 }

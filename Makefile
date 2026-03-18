@@ -59,10 +59,10 @@ docker-run-hello: ## Run hello world through docker
 	docker run --rm $(HELLO_IMAGE) $(NAME)
 
 db-up: ## Start PostgreSQL database
-	docker compose up -d postgres
+	docker-compose up -d postgres
 
 db-down: ## Stop PostgreSQL database
-	docker compose down
+	docker-compose down
 
 migrate: ## Run SQL migrations (instructions only)
 	@echo "Migration tool not yet configured. See migration/ directory for SQL files."
