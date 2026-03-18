@@ -1,10 +1,5 @@
 package transfer_test
 
-// PARTICIPANT QUEST — complete the test cases marked TODO.
-//
-// Before starting: read api/account/handler_test.go in full.
-// The setup helpers (testToken, setupRouter) follow the identical pattern.
-
 import (
 	"bytes"
 	"encoding/json"
@@ -70,7 +65,6 @@ func TestCreateTransfer(t *testing.T) {
 		tokenSub string
 		wantCode int
 	}{
-		// PRE-WRITTEN: Happy path — transfer succeeds
 		{
 			name: "success — 200",
 			fields: fields{
@@ -85,27 +79,23 @@ func TestCreateTransfer(t *testing.T) {
 			tokenSub: "alice",
 			wantCode: http.StatusOK,
 		},
-		// PRE-WRITTEN: Invalid body — 400
 		{
 			name: "missing amount — 400",
 			fields: fields{
 				svc: func(t *testing.T) *mocks.Service {
-					return mocks.NewService(t) // no calls expected
+					return mocks.NewService(t)
 				},
 			},
-			body:     map[string]string{"from_account_id": "ACC-001", "to_account_id": "ACC-002"}, // amount missing
+			body:     map[string]string{"from_account_id": "ACC-001", "to_account_id": "ACC-002"},
 			tokenSub: "alice",
 			wantCode: http.StatusBadRequest,
 		},
 
-		// TODO: Wrong owner — sub is "alice" but from_account is owned by "bob"
-		// Expected: 403
+		// TODO: Wrong owner (403)
 
-		// TODO: Insufficient funds — transfer amount exceeds from_account balance
-		// Expected: 422
+		// TODO: Insufficient funds (422)
 
-		// TODO: Source account not found
-		// Expected: 404
+		// TODO: Source account not found (404)
 	}
 
 	for _, tt := range tests {

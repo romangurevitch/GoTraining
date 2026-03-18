@@ -1,8 +1,6 @@
 package transfer
 
 import (
-	"fmt"
-
 	"github.com/romangurevitch/go-training/pkg/client/bank"
 	"github.com/spf13/cobra"
 )
@@ -25,11 +23,10 @@ func getCreateTransferCmd(bankClient bank.Client) *cobra.Command {
 		Short: "Create a new transfer",
 		Args:  cobra.ExactArgs(3),
 		Run: func(cmd *cobra.Command, args []string) {
-			// TODO: Implement transfer creation
+			// TODO: Implement the CLI logic to execute a transfer.
 			// 1. Parse arguments (fromID, toID, amount)
 			// 2. Call bankClient.Transfer
-			// 3. Print success message
-			fmt.Println("Transfer creation not implemented yet!")
+			// 3. Print the success response as JSON
 		},
 	}
 }

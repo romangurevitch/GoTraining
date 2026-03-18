@@ -63,7 +63,7 @@ func (c *client) GetToken(ctx context.Context, sub, scope string) (string, error
 	return res.Token, nil
 }
 
-// GetAccount — pre-built reference (identical pattern to reference solution)
+// GetAccount fetches an account by ID.
 func (c *client) GetAccount(ctx context.Context, id string) (*api.AccountResponse, error) {
 	start := time.Now()
 	defer func() {
@@ -94,6 +94,7 @@ func (c *client) GetAccount(ctx context.Context, id string) (*api.AccountRespons
 	return &res, json.Unmarshal(body, &res)
 }
 
+// CreateAccount creates a new account.
 func (c *client) CreateAccount(ctx context.Context, owner string) (*api.AccountResponse, error) {
 	urlPath, err := httppkg.GetURL(c.basePath, "v1/accounts", "")
 	if err != nil {
@@ -117,21 +118,9 @@ func (c *client) CreateAccount(ctx context.Context, owner string) (*api.AccountR
 	return &res, json.Unmarshal(body, &res)
 }
 
-// Transfer — participant task
+// Transfer initiates a fund transfer between accounts.
 func (c *client) Transfer(ctx context.Context, req *api.CreateTransferRequest) (*api.TransferResponse, error) {
-	// TODO 1: Validate req — use validator.New().Struct(req) like CreateAccount in reference
-
-	// TODO 2: Marshal req to JSON — json.Marshal(req)
-
-	// TODO 3: Build URL — httppkg.GetURL(c.basePath, "v1/transfers", "")
-
-	// TODO 4: http.NewRequestWithContext(ctx, http.MethodPost, urlPath, bytes.NewBuffer(jsonPayload))
-	//   r.Header.Add(httppkg.HeaderApplicationJSON())
-	//   r.Header.Set("Authorization", "Bearer "+c.token)
-
-	// TODO 5: httppkg.DoRequest(ctx, c.HTTPClient, r, http.StatusOK)
-	//   Returns *APIError on non-200 — typed, not string
-
-	// TODO 6: json.Unmarshal(body, &res) and return
-	return nil, nil // Return empty for skeleton
+	// TODO: Implement the transfer request logic.
+	// Use GetAccount and CreateAccount above as a reference.
+	return nil, nil
 }

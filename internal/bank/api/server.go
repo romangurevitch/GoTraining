@@ -41,15 +41,9 @@ func NewServer(svc service.Service, logger *slog.Logger, cfg Config) *gin.Engine
 		accounts.POST("", middleware.RequireScope("accounts:write"), accountHandler.CreateAccount)
 	}
 
-	// Transfers — TODO for participants (Step 2 of quest)
-	//
-	// transferHandler := transfer.New(svc)
-	// transfers := r.Group("/v1/transfers")
-	// transfers.Use(middleware.JWTMiddleware(cfg.JWTSecret))
-	// {
-	//     transfers.POST("", middleware.RequireScope("transfers:write"), transferHandler.CreateTransfer)
-	// }
-	var _ = transfer.New(nil) // prevent unused import error while TODO is commented out
+	// TODO: Register the transfer route group and the POST /v1/transfers endpoint here.
+	// Use the accounts group above as a reference.
+	var _ = transfer.New(nil) // prevent unused import error while TODO is incomplete
 
 	return r
 }
