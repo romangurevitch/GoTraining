@@ -28,6 +28,8 @@ Complete the partially filled `transfers.yaml` spec.
 **Definition of Done:**
 - Your `transfers.yaml` clearly maps out the endpoint, required properties, and all possible HTTP error codes.
 - You can compare it side-by-side with `accounts.yaml` and see they share the same consistent structure.
+- Using a swagger viewer extension or going to [Swagger Editor](https://editor.swagger.io/), you can validate that your OpenAPI spec is well-formed and renders correctly.
+- Solution can be found in [docs/openapi/solution/transfers.yaml](../../../docs/openapi/solution/transfers.yaml).
 
 ### Quest 2: Wire the Routes
 
