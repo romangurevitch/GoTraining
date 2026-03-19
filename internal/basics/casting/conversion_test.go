@@ -10,7 +10,7 @@ func TestNumericConversion(t *testing.T) {
 	// Go is strict: NO implicit conversion.
 	var i int = 42
 	var f float64 = float64(i) // Must convert manually
-	var u uint = uint(f)      // Must convert manually
+	var u uint = uint(f)       // Must convert manually
 
 	assert.Equal(t, 42, i)
 	assert.Equal(t, 42.0, f)
