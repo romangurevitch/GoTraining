@@ -5,7 +5,7 @@
 ## ECS Needs Explicit Signals to Manage Traffic
 
 ```mermaid
-graph TB
+graph TD
     subgraph Signals["🚦 Health Signals"]
         direction TB
         LIV["/healthz — LIVENESS<br/>Is the process alive?<br/>ECS restarts container on failure"]
@@ -19,6 +19,8 @@ graph TB
         TASK["📦 ECS Task<br/>Running Go container"]
         ALB --> TASK
     end
+
+    Signals ~~~ ECS
 
     RDY ~~~ ALB
     ALB -->|"GET /readyz → 200 OK"| TASK
@@ -71,7 +73,7 @@ sequenceDiagram
 ## Graceful Shutdown: SIGTERM to Exit 0
 
 ```mermaid
-graph TB
+graph TD
     SIGTERM["📡 SIGTERM received<br/>ECS stops task during deployment<br/>or scale-in event"]
 
     RDY["🔴 /readyz → 503<br/>ALB stops routing new requests<br/>immediately"]
@@ -90,20 +92,27 @@ graph TB
 ## Liveness vs Readiness: What Each Check Does
 
 ```mermaid
-graph TB
+graph TD
 
     subgraph NeverDo["❌ Never Do This"]
+        direction TB
         N1["Do NOT return 200 on /readyz during shutdown<br/>ALB will route to a dying container"]
         N2["Do NOT exit immediately on SIGTERM<br/>In-flight requests will be dropped mid-response"]
     end
+
+    NeverDo ~~~ Liveness
     
     subgraph Liveness["/healthz — Liveness"]
+        direction TB
         L1["✅ Return 200 if the process is running"]
         L2["❌ Return 500 if the app is deadlocked<br/>or in an unrecoverable state"]
         L3["ECS action: restart the container"]
     end
 
+    Liveness ~~~ Readiness
+
     subgraph Readiness["/readyz — Readiness"]
+        direction TB
         R1["✅ Return 200 when app is initialised<br/>and ready for traffic"]
         R2["❌ Return 503 during startup<br/>or graceful shutdown"]
         R3["ALB action: remove from target group"]
@@ -117,21 +126,25 @@ graph TB
 ## Blue/Green vs Rolling: Choosing a Strategy
 
 ```mermaid
-graph TB
-    subgraph Rolling["🔄 Rolling Deployment"]
-        RO1["Replace tasks one by one<br/>Old and new run simultaneously"]
-        RO2["✅ No extra infrastructure cost"]
-        RO3["✅ Built into ECS natively"]
-        RO4["⚠️ Mixed versions in flight during rollout"]
-        RO1 --> RO2 --> RO3 --> RO4
-    end
-
+graph TD
     subgraph BlueGreen["🟦🟩 Blue/Green Deployment"]
+        direction LR
         BG1["Spin up full new environment (green)<br/>Switch ALB target group when ready"]
         BG2["✅ Instant rollback — flip back to blue"]
         BG3["✅ Zero mixed-version traffic"]
         BG4["⚠️ Double the infrastructure during cutover"]
         BG1 --> BG2 --> BG3 --> BG4
+    end
+
+    BlueGreen ~~~ Rolling
+
+    subgraph Rolling["🔄 Rolling Deployment"]
+        direction LR
+        RO1["Replace tasks one by one<br/>Old and new run simultaneously"]
+        RO2["✅ No extra infrastructure cost"]
+        RO3["✅ Built into ECS natively"]
+        RO4["⚠️ Mixed versions in flight during rollout"]
+        RO1 --> RO2 --> RO3 --> RO4
     end
 ```
 
@@ -142,8 +155,9 @@ graph TB
 ## ECS Task Definition: Key Fields
 
 ```mermaid
-graph TB
+graph TD
     subgraph TaskDef["📋 ECS Task Definition"]
+        direction TB
         T1["image: account.dkr.ecr.region.amazonaws.com/myapp:1.4.2<br/>← immutable semver tag"]
         T2["cpu: 256 / memory: 512<br/>← right-size for your workload"]
         T3["healthCheck: GET /healthz<br/>interval: 10s, threshold: 3"]
@@ -151,13 +165,14 @@ graph TB
         T5["logConfiguration: awslogs<br/>group: /ecs/myapp, region: ap-southeast-2"]
     end
 
+    TaskDef --> Ops
+
     subgraph Ops["✅ Operational Outcomes"]
+        direction TB
         O1["ECS replaces unhealthy tasks automatically"]
         O2["Secrets injected at runtime — not baked into image"]
         O3["Logs stream to CloudWatch for every task"]
     end
-
-    TaskDef --> Ops
 ```
 
 > Never bake secrets into the image. Inject them at runtime via AWS Secrets Manager. The image is immutable and shareable — secrets are not.

@@ -5,20 +5,17 @@
 ## The Three Pillars of Observability
 
 ```mermaid
-graph TB
+graph TD
     OBS["🔭 OBSERVABILITY<br/>Can you understand what your system is doing?"]
 
-    LOGS["📋 LOGS<br/>Discrete events<br/>'Payment failed for acc_001'<br/>→ What happened"]
-    METRICS["📊 METRICS<br/>Aggregated numbers over time<br/>error_rate=0.02 · p99_latency=340ms<br/>→ How much / how fast"]
-    TRACES["🔗 TRACES<br/>The lifecycle of one request<br/>across multiple services<br/>→ Where time is spent"]
+    subgraph Pillars["Observability Pillars"]
+        direction TB
+        LOGS["📋 LOGS<br/>Discrete events<br/>'Payment failed for acc_001'<br/>→ What happened"]
+        METRICS["📊 METRICS<br/>Aggregated numbers over time<br/>error_rate=0.02 · p99_latency=340ms<br/>→ How much / how fast"]
+        TRACES["🔗 TRACES<br/>The lifecycle of one request<br/>across multiple services<br/>→ Where time is spent"]
+    end
 
-    OBS --> LOGS
-    OBS --> METRICS
-    OBS --> TRACES
-
-    LOGS --- Q1["Query: find all errors in last 5m"]
-    METRICS --- Q2["Alert: error rate > 1%"]
-    TRACES --- Q3["Debug: why is checkout slow?"]
+    OBS --> Pillars
 ```
 
 > Logs tell you **what**. Metrics tell you **how much**. Traces tell you **where**.
@@ -32,8 +29,6 @@ graph LR
     subgraph Request["Single User Request: POST /payments — trace_id: 4bf92f..."]
         direction TB
         ROOT["🔷 Root Span<br/>POST /payments<br/>Total: 210ms"]
-        SPACE1[" "]
-        SPACE2[" "]
 
         ROOT --> AUTH["🔷 Span: validate JWT<br/>3ms"]
         ROOT --> POLICY["🔷 Span: OPA policy check<br/>5ms"]
@@ -42,9 +37,6 @@ graph LR
         SVC --> DB["🔷 Span: INSERT payments<br/>db: postgres<br/>180ms ← bottleneck!"]
         SVC --> NOTIFY["🔷 Span: NotificationService<br/>12ms"]
     end
-
-    style SPACE1 fill:none,stroke:none
-    style SPACE2 fill:none,stroke:none
 ```
 
 > Without tracing, you see a 210ms P99. With tracing, you see the DB insert is 180ms. **Now you know what to fix.**
@@ -54,8 +46,9 @@ graph LR
 ## OpenTelemetry: The Standard
 
 ```mermaid
-graph TB
+graph TD
     subgraph OTel["OpenTelemetry SDK"]
+        direction TB
         INSTR["📦 Instrumentation<br/>Wrap HTTP handlers<br/>Wrap DB calls · Wrap outbound HTTP"]
         PROP["🔗 Context Propagation<br/>traceparent header injected<br/>into every outbound call"]
         EXP["📤 Exporter<br/>OTLP → Jaeger / Tempo / Datadog / X-Ray"]
@@ -63,6 +56,7 @@ graph TB
     end
 
     subgraph Services["Your Services"]
+        direction TB
         S1["⚙️ API Gateway"]
         S2["⚙️ Payment Service"]
         S3["⚙️ Notification Service"]
@@ -109,17 +103,14 @@ sequenceDiagram
 ## Prometheus: The Four Golden Signals
 
 ```mermaid
-graph TB
+graph TD
     subgraph Golden["The Four Golden Signals"]
+        direction TB
         LATENCY["⏱️ LATENCY<br/>How long requests take<br/>Histogram: http_request_duration_seconds"]
         TRAFFIC["📈 TRAFFIC<br/>How much demand<br/>Counter: http_requests_total"]
         ERRORS["❌ ERRORS<br/>Rate of failed requests<br/>Counter: http_errors_total"]
         SATURATION["💾 SATURATION<br/>How full resources are<br/>Gauge: go_goroutines"]
     end
-
-    LATENCY ~~~ TRAFFIC
-    TRAFFIC ~~~ ERRORS
-    ERRORS ~~~ SATURATION
 ```
 
 ---
@@ -127,13 +118,13 @@ graph TB
 ## Prometheus Metric Types
 
 ```mermaid
-graph TB
-    COUNTER["**Counter**<br/>Only goes up · Resets on restart<br/>Use: requests · errors · payments processed<br/>http_requests_total{method='GET',status='200'}"]
-    GAUGE["**Gauge**<br/>Goes up and down<br/>Use: active connections · queue depth · memory<br/>active_connections 42"]
-    HISTOGRAM["**Histogram**<br/>Samples observations into buckets<br/>Use: request duration · payload size<br/>http_duration_seconds_bucket{le='0.1'} 4523"]
-
-    COUNTER ~~~ GAUGE
-    GAUGE ~~~ HISTOGRAM
+graph TD
+    subgraph Types["Metric Types"]
+        direction TB
+        COUNTER["**Counter**<br/>Only goes up · Resets on restart<br/>Use: requests · errors · payments processed<br/>http_requests_total{method='GET',status='200'}"]
+        GAUGE["**Gauge**<br/>Goes up and down<br/>Use: active connections · queue depth · memory<br/>active_connections 42"]
+        HISTOGRAM["**Histogram**<br/>Samples observations into buckets<br/>Use: request duration · payload size<br/>http_duration_seconds_bucket{le='0.1'} 4523"]
+    end
 ```
 
 ---
@@ -178,16 +169,21 @@ sequenceDiagram
 ## The Full Observability Stack
 
 ```mermaid
-graph TB
+graph TD
     APP["⚙️ Go API"]
 
     APP -->|"stdout JSON lines"| LOGS["📋 Log Aggregator<br/>Datadog / CloudWatch"]
     APP -->|"GET /metrics"| PROM["📊 Prometheus<br/>Scrapes every 15s"]
     APP -->|"OTLP gRPC"| JAEGER["🔗 Jaeger / Grafana Tempo<br/>Distributed Traces"]
 
-    PROM --> GRAF["📈 Grafana<br/>Dashboards + Alerts"]
-    LOGS --> GRAF
-    JAEGER --> GRAF
+    subgraph Dashboard["Unified Visualization"]
+        direction TB
+        GRAF["📈 Grafana<br/>Dashboards + Alerts"]
+    end
+
+    PROM --> Dashboard
+    LOGS --> Dashboard
+    JAEGER --> Dashboard
 ```
 
 > One Grafana dashboard — logs, metrics, and traces linked by `trace_id`. Full system visibility.

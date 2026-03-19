@@ -5,9 +5,9 @@
 ## The Problem: Hardcoded Rules Everywhere
 
 ```mermaid
-graph TB
-    subgraph Nightmare["❌ HARDCODED POLICY: No"]
-        direction LR
+graph TD
+    subgraph Nightmare["❌ HARDCODED POLICY"]
+        direction TB
         S1["⚙️ Accounts Service<br/>if role == 'admin' { allow }"]
         S2["⚙️ Payments Service<br/>if role == 'admin' { allow }"]
         S3["⚙️ Transfers Service<br/>if role == 'admin' { allow }"]
@@ -16,10 +16,7 @@ graph TB
 
     PROBLEM["⚠️ Add a new role? Change a rule?<br/>Deploy ALL services.<br/>Rules drift. Audits fail."]
 
-    S1 --> PROBLEM
-    S2 --> PROBLEM
-    S3 --> PROBLEM
-    S4 --> PROBLEM
+    Nightmare --> PROBLEM
 ```
 
 ---
@@ -27,7 +24,7 @@ graph TB
 ## Decouple Decision from Enforcement
 
 ```mermaid
-graph TB
+graph TD
     subgraph Services["Your Microservices — Policy Enforcement Points"]
         direction LR
         A["⚙️ Accounts"]
@@ -36,6 +33,7 @@ graph TB
     end
 
     subgraph PaC["Policy as Code — Policy Decision Point"]
+        direction TB
         POLICY["📋 policy.rego<br/>Versioned in Git<br/>Reviewed · Tested · Audited"]
         OPA["🔍 Open Policy Agent (OPA)"]
         POLICY --> OPA
@@ -85,8 +83,9 @@ sequenceDiagram
 ## OPA Rego Policy
 
 ```mermaid
-graph TB
+graph TD
     subgraph Rego["policy.rego — Evaluated by OPA"]
+        direction TB
         R1["package bankx.authz"]
         R2["default allow := false"]
         R3["allow if {<br/>  input.roles[_] == 'admin'<br/>}"]
@@ -96,6 +95,7 @@ graph TB
     end
 
     subgraph Benefits["Why Policy as Code?"]
+        direction TB
         B1["✅ Version controlled in Git"]
         B2["✅ Unit-testable with opa test"]
         B3["✅ Single source of truth across services"]
@@ -109,8 +109,9 @@ graph TB
 ## Enforcement: Inside vs Outside the Application
 
 ```mermaid
-graph TB
+graph TD
     subgraph Outside["🏗️ OUTSIDE — Infrastructure / Gateway"]
+        direction TB
         GW["API Gateway / Service Mesh<br/>(Kong · Envoy · Istio)"]
         GW_OPA["OPA sidecar or plugin"]
         COARSE["Coarse-grained:<br/>Can service A call service B's endpoint?"]
@@ -118,6 +119,7 @@ graph TB
     end
 
     subgraph Inside["⚙️ INSIDE — Application Middleware"]
+        direction TB
         APP["Go Middleware"]
         APP_OPA["OPA HTTP call or embedded wasm"]
         FINE["Fine-grained:<br/>Can alice read account acc_001?"]
@@ -189,8 +191,9 @@ sequenceDiagram
 ## What Goes in a Policy Request
 
 ```mermaid
-graph TB
+graph TD
     subgraph Input["PolicyRequest — Sent to OPA"]
+        direction TB
         I1["user: 'alice'"]
         I2["roles: ['viewer', 'payments-reader']"]
         I3["action: 'delete'"]
@@ -200,13 +203,14 @@ graph TB
         I7["time: '2024-01-15T09:30:00Z'"]
     end
 
+    Input -->|"POST /v1/data/bankx/authz"| Output
+
     subgraph Output["PolicyResponse — Returned by OPA"]
+        direction TB
         O1["allow: false"]
         O2["reason: 'viewer role cannot delete'"]
         O3["required_role: 'admin'"]
     end
-
-    Input -->|"POST /v1/data/bankx/authz"| Output
 ```
 
 > Include enough context for the policy to make a meaningful decision. Sparse inputs produce blunt policies.
