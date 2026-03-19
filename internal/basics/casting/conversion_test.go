@@ -8,9 +8,9 @@ import (
 
 func TestNumericConversion(t *testing.T) {
 	// Go is strict: NO implicit conversion.
-	var i int = 42
-	var f float64 = float64(i) // Must convert manually
-	var u uint = uint(f)       // Must convert manually
+	var i = 42
+	var f = float64(i) // Must convert manually
+	var u = uint(f)    // Must convert manually
 
 	assert.Equal(t, 42, i)
 	assert.Equal(t, 42.0, f)
@@ -19,8 +19,8 @@ func TestNumericConversion(t *testing.T) {
 
 func TestLossyConversion(t *testing.T) {
 	// Be careful with precision loss!
-	var f float64 = 42.99
-	var i int = int(f) // Truncates towards zero
+	var f = 42.99
+	var i = int(f) // Truncates towards zero
 
 	assert.Equal(t, 42, i) // .99 is lost
 }
@@ -28,7 +28,7 @@ func TestLossyConversion(t *testing.T) {
 func TestOverflowConversion(t *testing.T) {
 	// Be careful with overflow!
 	var bigInt int64 = 257
-	var smallInt int8 = int8(bigInt)
+	var smallInt = int8(bigInt)
 
 	// 257 in binary is 1 0000 0001
 	// int8 only takes the last 8 bits: 0000 0001 = 1
