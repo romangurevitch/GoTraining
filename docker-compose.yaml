@@ -30,3 +30,11 @@ services:
       - "8080:8080"
     volumes:
       - ./wiremock:/home/wiremock
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.60
+    ports:
+      - "16686:16686" # UI
+      - "4318:4318"   # OTLP HTTP
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
