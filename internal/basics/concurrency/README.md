@@ -11,13 +11,8 @@ A goroutine is a function that is capable of running concurrently with other fun
 ### 🖼️ Conceptual View
 ```mermaid
 flowchart LR
-    subgraph Main["Main Goroutine"]
-        S2[Step 2] --> S4[Step 4]
-    end
-    subgraph New["New Goroutine"]
-        PT[Parallel Task]
-    end
-    S2 --"go func()"--> PT
+    S2["Main: Step 2"] --> S4["Main: Step 4"]
+    S2 --"go func()"--> PT["New: Parallel Task"]
     PT --"sync"--> S4
 ```
 
@@ -43,6 +38,7 @@ flowchart LR
     subgraph Buffered["Buffered Channel — blocks only when full"]
         G3[Goroutine 1] --"ch ← val"--> BUF["[ ### Buffer ### ]"] --> G4[Goroutine 2]
     end
+    G2 ~~~ G3
 ```
 
 ### 📝 Example
