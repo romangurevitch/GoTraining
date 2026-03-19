@@ -17,14 +17,12 @@ Go's built-in `testing` package provides a robust framework for unit tests, benc
 
 ## 2. 🗺️ Visual Representation
 
-```text
-  +-----------------------+                     +-----------------------+
-  |      Test Cases       |      Iterate        |      t.Run()          |
-  |  (Input, Expected)    |  -------------->    |  (Isolated Execution) |
-  +-----------------------+                     +-----------------------+
-              |                                             |
-              v                                             v
-       (Subtest Failure)         ------>             (Overall Pass/Fail)
+```mermaid
+flowchart LR
+    TC["Test Cases\n(Input, Expected)"] --"Iterate"--> TR["t.Run()\n(Isolated Execution)"]
+    TR --> SF["Subtest Failure"]
+    TR --> SP["Subtest Pass"]
+    SF & SP --> R["Overall Pass/Fail"]
 ```
 
 ---

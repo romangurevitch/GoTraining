@@ -17,14 +17,11 @@ Idiomatic Go projects follow a consistent layout that separates concerns. Proper
 
 ## 2. 🗺️ Visual Representation
 
-```text
-  +-----------------------+                     +-----------------------+
-  |      cmd/myapp/       |      Calls          |      internal/        |
-  |  (Main Entry Point)   |  -------------->    |   (Private Logic)     |
-  +-----------------------+                     +-----------------------+
-              |                                             |
-              v                                             v
-       (Executable Binary)       ------>             (Library Logic)
+```mermaid
+flowchart LR
+    C["cmd/myapp/\n(Main Entry Point)"] --"Calls"--> I["internal/\n(Private Logic)"]
+    C --> E["Executable Binary"]
+    I --> L["Library Logic"]
 ```
 
 ---

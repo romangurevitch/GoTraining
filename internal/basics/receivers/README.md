@@ -17,14 +17,13 @@ Methods in Go are functions with a receiver argument. Choosing between value and
 
 ## 2. 🗺️ Visual Representation
 
-```text
-  +-----------------------+                     +-----------------------+
-  |    Value Receiver     |      Copy           |   Pointer Receiver    |
-  |  (Read-Only Ops)      |  <--------------    |  (Mutation Ops)       |
-  +-----------------------+                     +-----------------------+
-              |                                             |
-              v                                             v
-       (Safe, Encapsulated)      ------>             (Efficient Mutation)
+```mermaid
+flowchart LR
+    S["Struct Value"]
+    S --"copy"--> V["Value Receiver\n(Read-Only Ops)"]
+    S --"& address"--> P["Pointer Receiver\n(Mutation Ops)"]
+    V --> SE["Safe, Encapsulated"]
+    P --> EM["Efficient Mutation"]
 ```
 
 ---

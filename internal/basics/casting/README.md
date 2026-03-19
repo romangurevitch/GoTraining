@@ -18,32 +18,17 @@ In Go, types are strict. There are two primary ways to interpret or change types
 ## 2. 🖼️ Visual Representation
 
 ### Type Conversion (Concrete to Concrete)
-```text
-  +-------------+                     +-------------+
-  |   Source    |     T(value)        |    Target   |
-  |    Type     |  -------------->    |     Type    |
-  | (e.g. int)  |                     | (e.g. float)|
-  +-------------+                     +-------------+
-         |                                   |
-         v                                   v
-       [ 42 ]           ------>           [ 42.0 ]
+```mermaid
+flowchart LR
+    A["Source Type (e.g. int)\nValue: 42"] --"T(value)"--> B["Target Type (e.g. float)\nValue: 42.0"]
 ```
 
 ### Type Assertion (Interface to Concrete)
-```text
-  +-----------------------+
-  |      Interface        |     v, ok := i.(T)
-  +-----------------------+
-              |
-     /-----------------\
-    |   Is it Type T?   |
-     \-----------------/
-      /               \
-    [Yes]            [No]
-      |                |
-      v                v
- v = Value        v = Zero Value
- ok = true        ok = false
+```mermaid
+flowchart TD
+    A["Interface Value i"] --"v, ok := i.(T)"--> B{Is it Type T?}
+    B -- Yes --> C["v = Value\nok = true"]
+    B -- No --> D["v = Zero Value\nok = false"]
 ```
 
 ---

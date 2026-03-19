@@ -14,19 +14,13 @@ In Go, an **Entity** is a `struct` that groups related data with **methods** tha
 
 Go combines data and logic without the complexity of classes.
 
-```text
-  +-------------------------------------------------------+
-  |                   Entity Structure                    |
-  +-------------------------------------------------------+
-  |  1. Data (Struct): Fields like ID, Name, Email        |
-  |  2. Factory (New): Function to safely create object   |
-  |  3. Behaviour (Methods): Logic that operates on data  |
-  +-------------------------------------------------------+
-            |
-            v
-  +-------------------------------------------------------+
-  | Result: A self-contained, testable domain object      |
-  +-------------------------------------------------------+
+```mermaid
+flowchart TD
+    D["1. Data (Struct)\nFields: ID, Name, Email"]
+    F["2. Factory (New)\nSafely create object"]
+    B["3. Behaviour (Methods)\nLogic that operates on data"]
+    R["Result: A self-contained, testable domain object"]
+    D & F & B --> R
 ```
 
 ---

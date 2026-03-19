@@ -18,14 +18,12 @@ Go's `net/http` package includes production-ready client and server implementati
 
 ## 2. 🗺️ Visual Representation
 
-```text
-  +-----------------------+                     +-----------------------+
-  |      HTTP Client      |      Request        |      HTTP Server      |
-  | (Timeout, Transport)  |  -------------->    | (Mux, Middleware)     |
-  +-----------------------+                     +-----------------------+
-              ^                                             |
-              |              Response                       |
-              +---------------------------------------------+
+```mermaid
+flowchart LR
+    C["HTTP Client\n(Timeout, Transport)"]
+    S["HTTP Server\n(Mux, Middleware)"]
+    C --"Request"--> S
+    S --"Response"--> C
 ```
 
 ---

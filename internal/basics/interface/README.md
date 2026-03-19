@@ -17,14 +17,11 @@ Interfaces in Go define behavior. They are satisfied implicitly, enabling powerf
 
 ## 2. 🗺️ Visual Representation
 
-```text
-  +-----------------------+                     +-----------------------+
-  |      Interface        |      Satisfies      |      Implementation   |
-  |  (Methods Required)   |  <--------------    |  (Methods Defined)    |
-  +-----------------------+                     +-----------------------+
-              |                                             |
-              v                                             v
-       (Decoupled Logic)         ------>             (Concrete Types)
+```mermaid
+flowchart LR
+    Impl["Implementation\n(Methods Defined)"] --"Satisfies (implicitly)"--> I["Interface\n(Methods Required)"]
+    I --> D["Decoupled Logic"]
+    Impl --> C["Concrete Types"]
 ```
 
 ---

@@ -20,12 +20,14 @@ Go is famous for its first-class support for concurrency. Unlike many other lang
 ### Communicating by Sharing Memory vs. Sharing Memory by Communicating
 Go's philosophy: "Don't communicate by sharing memory; share memory by communicating."
 
-```text
-  Unbuffered Channel (Handshake)           Buffered Channel (Queue)
-  +-------+       +-------+               +-------+       +-------+
-  |  G1   | --|-->|  G2   |               |  G1   | --[###]-->|  G2   |
-  +-------+       +-------+               +-------+       +-------+
-    Blocks until both are ready             Blocks only when full
+```mermaid
+flowchart LR
+    subgraph Unbuffered["Unbuffered Channel — blocks until both ready"]
+        G1[Goroutine 1] --"ch ← val"--> G2[Goroutine 2]
+    end
+    subgraph Buffered["Buffered Channel — blocks only when full"]
+        G3[Goroutine 1] --"ch ← val"--> BUF["[ ### Buffer ### ]"] --> G4[Goroutine 2]
+    end
 ```
 
 ---

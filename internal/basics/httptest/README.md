@@ -17,14 +17,12 @@
 
 ## 2. 🗺️ Visual Representation
 
-```text
-  +-----------------------+                     +-----------------------+
-  |      Mock Request     |      Process        |     Response Recorder |
-  | (httptest.NewRequest) |  -------------->    | (httptest.NewRecorder)|
-  +-----------------------+                     +-----------------------+
-              |                                             |
-              v                                             v
-       Invoke MyHandler(w, req)           ------>      Assert w.Result()
+```mermaid
+flowchart LR
+    R["Mock Request\nhttptest.NewRequest()"]
+    W["Response Recorder\nhttptest.NewRecorder()"]
+    R --"MyHandler(w, req)"--> W
+    W --> A["Assert w.Result()"]
 ```
 
 ---

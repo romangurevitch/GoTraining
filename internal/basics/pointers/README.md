@@ -17,15 +17,12 @@ A pointer holds the memory address of a value. Go uses pointers to share and mut
 
 ## 2. 🗺️ Visual Representation
 
-```text
-  +-----------------------+                     +-----------------------+
-  |      Variable         |      Address Of     |      Pointer          |
-  |  Value: 42            |  ---------------->  |  Value: 0x123456      |
-  +-----------------------+      (& operator)   +-----------------------+
-              ^                                             |
-              |              Dereference                    |
-              +---------------------------------------------+
-                             (* operator)
+```mermaid
+flowchart LR
+    V["Variable\nValue: 42"]
+    P["Pointer\nValue: 0x123456"]
+    V --"& (address of)"--> P
+    P --"* (dereference)"--> V
 ```
 
 ---

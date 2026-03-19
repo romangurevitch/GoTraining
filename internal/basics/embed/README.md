@@ -20,26 +20,32 @@ Go uses the term "embedding" for two distinct features: **Struct Embedding** (co
 ### Struct Embedding (Composition)
 Unlike inheritance, embedding is about "has-a" relationships that look like "is-a".
 
-```text
-  Traditional Inheritance        Go Struct Embedding
-  +-----------+                  +-----------+
-  |   Base    |                  |   Outer   |
-  +-----------+                  | +-------+ |
-        ^                        | | Inner | |
-        | (Is-a)                 | +-------+ | (Has-a, looks like Is-a)
-  +-----------+                  +-----------+
-  |   Child   |
-  +-----------+
+```mermaid
+classDiagram
+    class Base
+    class Child
+    Base <|-- Child : Is-a (Inheritance)
+
+    class Outer {
+        Inner inner
+    }
+    class Inner
+    Outer *-- Inner : Has-a (Embedding)
 ```
 
 ### File Embedding
-```text
-  Source Code + Assets              Single Binary
-  +-------------+                   +-------------+
-  | main.go     |                   |  [Binary]   |
-  | config.json |  --- go build --> |  [Data]     |
-  | logo.png    |                   |  [Logic]    |
-  +-------------+                   +-------------+
+```mermaid
+flowchart LR
+    subgraph src["Source Code + Assets"]
+        m[main.go]
+        c[config.json]
+        l[logo.png]
+    end
+    subgraph bin["Single Binary"]
+        b1[Binary Logic]
+        b2[Embedded Data]
+    end
+    src --"go build"--> bin
 ```
 
 ---

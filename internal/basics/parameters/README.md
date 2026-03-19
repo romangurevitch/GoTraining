@@ -17,14 +17,13 @@ Go is a pass-by-value language. Choosing between value and pointer parameters af
 
 ## 2. 🗺️ Visual Representation
 
-```text
-  +-----------------------+                     +-----------------------+
-  |      [Value Copy]     |      Original       |      [Pointer Reference]|
-  |  (Memory duplicated)  |  <--------------    |  (Memory shared)      |
-  +-----------------------+                     +-----------------------+
-              |                                             |
-              v                                             v
-       (Safe, No mutation)       ------>             (Mutate in-place)
+```mermaid
+flowchart LR
+    O["Original Value"]
+    O --"copy"--> V["Value Copy\n(Memory duplicated)"]
+    O --"& address"--> P["Pointer Reference\n(Memory shared)"]
+    V --> S["Safe, No mutation"]
+    P --> M["Mutate in-place"]
 ```
 
 ---
