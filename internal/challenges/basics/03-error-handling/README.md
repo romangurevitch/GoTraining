@@ -10,5 +10,5 @@ Implement a function that returns an error and handle it in your test. This chal
 
 ## Run Tests
 ```bash
-go test ./internal/challenges/basics/basic/03-error-handling/...
+go test ./internal/challenges/basics/03-error-handling/...
 ```

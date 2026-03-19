@@ -10,5 +10,5 @@ Implement a basic `Person` struct and a function that updates the person's age. 
 
 ## Run Tests
 ```bash
-go test ./internal/challenges/basics/basic/01-structs-and-pointers/...
+go test ./internal/challenges/basics/01-structs-and-pointers/...
 ```

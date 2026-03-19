@@ -11,5 +11,5 @@ Implement an interface and two different structs that satisfy it. This challenge
 
 ## Run Tests
 ```bash
-go test ./internal/challenges/basics/basic/02-interfaces-and-receivers/...
+go test ./internal/challenges/basics/02-interfaces-and-receivers/...
 ```
