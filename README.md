@@ -150,7 +150,7 @@ Deepen your Go expertise with these advanced topics and ecosystem libraries:
 - [Viper](https://github.com/spf13/viper) — Complete configuration solution including environment variables and config files.
 
 ### Concurrency & Performance
-- [Go Concurrency Patterns](https://blog.golang.org/concurrency-timeouts) — Techniques for timeouts and robust concurrent code.
-- [Benchmark Testing in Go](https://go.dev/doc/tutorial/add-a-test) — Measuring and optimising your application's performance.
+- [Go Concurrency Patterns](https://go.dev/blog/concurrency-timeouts) — Techniques for timeouts and robust concurrent code.
+- [Benchmark Testing in Go](https://pkg.go.dev/testing#hdr-Benchmarks) — Measuring and optimising your application's performance.
 - [Locks in Go](https://go.dev/tour/concurrency/9) — Understanding `sync.Mutex` and shared memory.
 - [Temporal Documentation](https://docs.temporal.io/) — Durable execution for critical business workflows.
