@@ -5,22 +5,25 @@
 ## What Is Idempotency?
 
 ```mermaid
-graph TB
+graph TD
     DEF["**Idempotent operation:**<br/>Calling it once produces the same result<br/>as calling it N times"]
 
+    DEF ~~~ Idempotent
+
     subgraph Idempotent["✅ Idempotent"]
+        direction TB
         I1["GET  /accounts/acc_123<br/>→ same account every time"]
         I2["PUT  /accounts/acc_123 body={name: 'Savings'}<br/>→ same final state"]
         I3["DELETE /accounts/acc_123<br/>→ deleted whether called once or twice"]
     end
 
+    Idempotent ~~~ NotIdempotent
+
     subgraph NotIdempotent["❌ NOT Idempotent by default"]
+        direction TB
         N1["POST /payments body={amount: 250.00}<br/>→ creates a NEW payment each call"]
         N2["POST /notifications/send<br/>→ sends a NEW email each call"]
     end
-
-    DEF --> Idempotent
-    DEF --> NotIdempotent
 ```
 
 > If a retry is safe and produces no extra side effects, the operation is idempotent.
@@ -30,16 +33,23 @@ graph TB
 ## HTTP Methods and Idempotency
 
 ```mermaid
-graph LR
-    GET["**GET**<br/>📖 Read-only<br/>✅ Idempotent<br/>✅ Cacheable"]
-    HEAD["**HEAD**<br/>📋 Metadata only<br/>✅ Idempotent"]
-    PUT["**PUT**<br/>🔄 Full replace<br/>✅ Idempotent"]
-    DELETE["**DELETE**<br/>🗑️ Remove<br/>✅ Idempotent"]
-    PATCH["**PATCH**<br/>✏️ Partial update<br/>⚠️ Depends on implementation"]
-    POST["**POST**<br/>➕ Create / action<br/>❌ NOT idempotent<br/>Use Idempotency-Key header"]
-    OPTIONS["**OPTIONS**<br/>🔍 Preflight / CORS<br/>✅ Idempotent"]
+graph TD
+    subgraph IdempotentMethods["✅ Idempotent Methods"]
+        direction TB
+        GET["**GET**<br/>📖 Read-only<br/>✅ Idempotent<br/>✅ Cacheable"]
+        HEAD["**HEAD**<br/>📋 Metadata only<br/>✅ Idempotent"]
+        PUT["**PUT**<br/>🔄 Full replace<br/>✅ Idempotent"]
+        DELETE["**DELETE**<br/>🗑️ Remove<br/>✅ Idempotent"]
+        OPTIONS["**OPTIONS**<br/>🔍 Preflight / CORS<br/>✅ Idempotent"]
+    end
 
-    GET ~~~ HEAD ~~~ PUT ~~~ DELETE ~~~ PATCH ~~~ POST ~~~ OPTIONS
+    IdempotentMethods ~~~ NonIdempotentMethods
+
+    subgraph NonIdempotentMethods["❌ Non-Idempotent Methods"]
+        direction TB
+        PATCH["**PATCH**<br/>✏️ Partial update<br/>⚠️ Depends on implementation"]
+        POST["**POST**<br/>➕ Create / action<br/>❌ NOT idempotent<br/>Use Idempotency-Key header"]
+    end
 ```
 
 ---
@@ -105,7 +115,8 @@ sequenceDiagram
 ## Idempotency Key Lifecycle
 
 ```mermaid
-graph TB
+graph TD
+    direction TB
     GEN["📱 Client generates key<br/>UUID or similar<br/>e.g. key_abc123"]
 
     FIRST["1️⃣ First request<br/>Key not in store → process normally<br/>Store key + response"]
@@ -153,23 +164,25 @@ sequenceDiagram
 ## PATCH: Conditional Idempotency
 
 ```mermaid
-graph TB
+graph TD
 
     subgraph Idem["✅ PATCH — Idempotent"]
+        direction TB
         Q1["PATCH /accounts/acc_123<br/>body: {'name': 'New Savings Account'}"]
         Q2["Call 1: name updated"]
         Q3["Call 2: same name, same result"]
         Q1 --> Q2 --> Q3
     end
 
+    Idem ~~~ NonIdem
+
     subgraph NonIdem["❌ PATCH — NOT Idempotent"]
+        direction TB
         P1["PATCH /accounts/acc_123<br/>body: {'balance': {'increment': 100}}"]
         P2["Call 1: balance = 500 → 600"]
         P3["Call 2: balance = 600 → 700"]
         P1 --> P2 --> P3
     end
-
-    Q3 ~~~ P1
 ```
 
 > A PATCH that **sets an absolute value** is idempotent. A PATCH that **increments** is not — use an Idempotency-Key.
@@ -179,22 +192,31 @@ graph TB
 ## Idempotency at Financial Institutions: What Gets a Key
 
 ```mermaid
-graph LR
-    MUST["🔴 **MUST use Idempotency-Key**"]
-    SHOULD["🟡 **SHOULD use Idempotency-Key**"]
-    NOTNEED["🟢 **Does NOT need Idempotency-Key**"]
+graph TD
+    subgraph MUST_sub["🔴 MUST use Idempotency-Key"]
+        direction TB
+        M1["POST /payments"]
+        M2["POST /transfers"]
+        M3["POST /direct-debits"]
+        M4["POST /notifications/send"]
+    end
 
-    MUST --> M1["POST /payments"]
-    MUST --> M2["POST /transfers"]
-    MUST --> M3["POST /direct-debits"]
-    MUST --> M4["POST /notifications/send"]
+    MUST_sub ~~~ SHOULD_sub
 
-    SHOULD --> S1["POST /accounts (onboarding)"]
-    SHOULD --> S2["POST /loans/apply"]
+    subgraph SHOULD_sub["🟡 SHOULD use Idempotency-Key"]
+        direction TB
+        S1["POST /accounts (onboarding)"]
+        S2["POST /loans/apply"]
+    end
 
-    NOTNEED --> N1["GET (all read operations)"]
-    NOTNEED --> N2["PUT /accounts/{id}"]
-    NOTNEED --> N3["DELETE /accounts/{id}"]
+    SHOULD_sub ~~~ NOTNEED_sub
+
+    subgraph NOTNEED_sub["🟢 Does NOT need Idempotency-Key"]
+        direction TB
+        N1["GET (all read operations)"]
+        N2["PUT /accounts/{id}"]
+        N3["DELETE /accounts/{id}"]
+    end
 ```
 
 > Every operation with a **financial side effect** must be idempotent. Retries happen. Networks fail. Design for it.

@@ -1,44 +1,84 @@
-# Mocking in Go
+# 🎭 Mocking in Go
 
-## Description
+Mocking allows isolating units under test by providing controlled implementations of interface dependencies, essential for robust unit testing.
 
-Interfaces in Go are used to decouple packages. When unit testing code that depends on interfaces, mocking allows us to isolate the unit under test by providing controlled implementations of those dependencies.
+---
 
-In this project, we use two of the most popular mocking tools in the Go ecosystem.
+## 1. Core Concepts
 
-## Mockery
+| Concept | Description / Purpose |
+| :--- | :--- |
+| **Mockery** | Tool that generates mocks for Go interfaces using the `testify` framework. |
+| **Go Mock (uber/mock)** | Official reflection-based mocking framework, part of the `uber-go` suite. |
+| **Type-Safe Expectations** | Catching signature changes at compile-time with `EXPECT()`. |
+| **Argument Matching** | Specifying rules for function arguments (e.g., `mock.Anything`). |
 
-[Mockery](https://github.com/vektra/mockery) is a tool that generates mocks for Golang interfaces using the [testify](https://github.com/stretchr/testify) framework.
+---
 
-### Pros
+## 2. 🗺️ Visual Representation
 
-- Integrates seamlessly with `testify/mock`, the most popular assertion library in Go.
-- Provides a powerful CLI for bulk mock generation.
-- **Type-Safe Expectations:** Modern Mockery (v2+) supports a type-safe `EXPECT()` API similar to `gomock`, catching signature changes at compile time.
-- Flexible argument matching (e.g., `mock.Anything`, `mock.MatchedBy`).
+```text
+  +-----------------------+                     +-----------------------+
+  |      Interface        |      Calls          |      Mock Implementation|
+  |  (Dependency)         |  -------------->    |  (Programmed Response)|
+  +-----------------------+                     +-----------------------+
+              |                                             |
+              v                                             v
+       (Isolated Logic)          ------>             (Verified Calls)
+```
 
-### Cons
+---
 
-- Requires `testify` as a dependency.
+## 3. 💻 Implementation Examples
 
-## Go Mock (uber/mock)
+```go
+func ExampleFunction(adder calculator.Adder, x int, y int) (int, error) {
+    // 1. Initialisation (Using dependency injection)
+    result, err := adder.SingleDigitAdd(x, y)
+    
+    // 2. Execution
+    return result, err
+}
 
-[GoMock](https://github.com/uber-go/mock) is the official fork of the now-archived `github.com/golang/mock`. It is a reflection-based mocking framework.
+// 3. Test setup (with Mockery)
+mockAdder := new(mocks.Adder)
+mockAdder.On("SingleDigitAdd", 1, 2).Return(3, nil)
+```
 
-### Pros
+---
 
-- **Strict Type-Safety:** Mocks are generated as Go code that strictly follows the interface, ensuring compile-time correctness.
-- **Call Ordering:** Excellent support for verifying the exact order of method calls.
-- Part of the `uber-go` suite, known for high-quality engineering standards.
+## 4. 📋 Common Patterns & Use Cases
 
-### Cons
+- **Decoupling Packages**: Providing mocked versions of databases, external APIs, or complex business logic.
+- **Error Simulation**: Forcing a dependency to return an error to test your application's error handling.
+- **Verification of Calls**: Ensuring that a specific function was called with the correct parameters.
 
-- Slightly more verbose setup compared to Mockery/Testify.
-- Less expressive assertions compared to Testify's `assert` and `require`.
+---
 
-## Which one should I use?
+## 5. ⚠️ Critical Pitfalls & Best Practices
 
-- Use **Mockery** if you are already using `testify` for assertions and want a consistent, expressive mocking experience.
-- Use **GoMock** if you require strict call ordering or prefer the Uber-style engineering patterns.
+> [!WARNING]
+> Only mock interfaces you OWN. Mocking third-party libraries leads to fragile tests that break when external code changes. Use `httptest` or real instances for external libraries instead.
 
-In this workshop, we primarily use **Mockery** for the Go Bank service to keep our tests concise and readable.
+1. **Keep Mocks Simple**: Don't build complex logic into your mocks. They should only return predefined values or simple errors.
+2. **Prefer Mockery with Testify**: For consistency with the rest of the project, we use Mockery to keep our tests concise and readable.
+3. **Use Mockery v2+**: Always prefer the type-safe `EXPECT()` API to catch signature changes at compile time.
+
+---
+
+## 🏃 Running the Examples
+
+Explore the unit tests for runnable patterns:
+- `example_test.go`: Shows how to use generated mocks in a real test.
+
+```bash
+# Run tests with verbose output
+go test -v ./internal/basics/mocking/...
+```
+
+---
+
+## 📚 Further Reading
+
+- [Mockery: Documentation](https://github.com/vektra/mockery)
+- [Uber Mock: Documentation](https://github.com/uber-go/mock)

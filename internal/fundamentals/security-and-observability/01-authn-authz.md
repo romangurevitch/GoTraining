@@ -100,13 +100,17 @@ sequenceDiagram
 ## Stateless: Why JWT Scales
 
 ```mermaid
-graph TB
+graph TD
     subgraph Stateful["❌ SESSION-BASED — Does NOT Scale"]
+        direction TB
         SC["📱 Client"] -->|"session_id=abc"| SA["⚙️ Server A<br/>stores session in memory"]
         SC2["📱 Client"] -->|"session_id=abc"| SB["⚙️ Server B<br/>❓ unknown session → FAIL"]
     end
 
-    subgraph Stateless["✅ JWT-BASED — Scales Freely"]
+    Stateful ~~~ Stateless_sub
+
+    subgraph Stateless_sub["✅ JWT-BASED — Scales Freely"]
+        direction TB
         JC["📱 Client<br/>carries JWT"] -->|"Bearer eyJ..."| JA["⚙️ Server A<br/>validates signature ✅"]
         JC -->|"Bearer eyJ..."| JB["⚙️ Server B<br/>validates signature ✅"]
         JC -->|"Bearer eyJ..."| JN["⚙️ Server N<br/>validates signature ✅"]
@@ -200,21 +204,21 @@ sequenceDiagram
 ## RBAC vs ABAC
 
 ```mermaid
-graph TB
+graph TD
     subgraph RBAC["Role-Based Access Control"]
-        direction LR
+        direction TB
         RB1["User has roles: [admin, viewer]"]
         RB2["Role has permissions: admin → can_delete"]
         RB3["Simple · Fast · Easy to audit"]
-        RB1 --> RB2 --> RB3
     end
 
+    RBAC ~~~ ABAC
+
     subgraph ABAC["Attribute-Based Access Control"]
-        direction LR
+        direction TB
         AB1["Policy uses ANY attribute:<br/>user.department · resource.owner<br/>time.hour · request.ip"]
         AB2["allow if user.dept == resource.dept<br/>AND time.now < 18:00<br/>AND resource.classification != 'secret'"]
         AB3["Fine-grained · Powerful · Complex"]
-        AB1 --> AB2 --> AB3
     end
 
     CHOOSE{"Which to use?"}
@@ -259,8 +263,9 @@ sequenceDiagram
 ## HTTP Status Codes for Auth Failures
 
 ```mermaid
-graph TB
+graph TD
     subgraph Codes["Auth Error Responses"]
+        direction TB
         C401["**401 Unauthorized**<br/>No valid credentials provided<br/>or token expired / invalid<br/>→ Client must re-authenticate"]
         C403["**403 Forbidden**<br/>Valid identity, insufficient permissions<br/>→ Access denied, don't retry same request"]
         C404["**404 Not Found**<br/>Use instead of 403 when existence<br/>must not be revealed to caller"]

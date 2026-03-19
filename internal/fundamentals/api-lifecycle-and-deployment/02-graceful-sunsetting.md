@@ -5,7 +5,8 @@
 ## Deprecation Is a Process, Not an Event
 
 ```mermaid
-graph TB
+graph TD
+    direction TB
     NOW["📅 TODAY<br/>Announce deprecation<br/>Inject Deprecation + Sunset headers"]
     GRACE["⏳ GRACE PERIOD (e.g. 6 months)<br/>Both old and new endpoints live<br/>Clients migrate at their own pace"]
     SUNSET["🌅 SUNSET DATE<br/>Old endpoint returns 410 Gone<br/>Link header points to replacement"]
@@ -21,23 +22,23 @@ graph TB
 ## Standard Deprecation Headers
 
 ```mermaid
-graph TB
+graph TD
     subgraph Response["HTTP Response — deprecated endpoint"]
-        SPACE1["  "]
+        direction TB
         H1["Deprecation: true<br/>Machine-readable flag for clients and SDK tooling"]
         H2["Sunset: Tue, 01 Jul 2025 00:00:00 GMT<br/>Exact date the endpoint stops responding"]
         H3["Link: &lt;https://docs.example.com/migration&gt;; rel=sunset<br/>Points to migration guide — automated tools follow this"]
     end
 
+    Response ~~~ Tooling
+
     subgraph Tooling["What Automated Tooling Does With These Headers"]
-        SPACE2["  "]
+        direction TB
         T1["🤖 SDK generators read Deprecation: true<br/>Emit compile-time warnings"]
         T2["📊 API gateways track sunset dates<br/>Alert ops teams before removal"]
         T3["🔗 Link rel=sunset enables<br/>one-click migration guide discovery"]
     end
 
-    style SPACE1 fill:none,stroke:none
-    style SPACE2 fill:none,stroke:none
     Response --> Tooling
 ```
 
@@ -73,14 +74,16 @@ sequenceDiagram
 ## Middleware as a Reusable Decorator
 
 ```mermaid
-graph TB
+graph TD
     subgraph Deprecated["🪦 Deprecated Endpoints"]
+        direction LR
         OLD1["GET /api/v1/accounts/{id}"]
         OLD2["POST /api/v1/accounts"]
         OLD3["GET /api/v1/payments"]
     end
 
     subgraph Active["✅ Active Endpoints"]
+        direction LR
         NEW1["GET /api/v2/accounts/{id}"]
         NEW2["POST /api/v2/accounts"]
         NEW3["GET /api/v2/payments"]
@@ -88,9 +91,8 @@ graph TB
 
     MW["🔧 deprecationMiddleware(sunsetDate, docURL)<br/>Wraps any handler — zero coupling to business logic"]
 
-    OLD1 --> MW
-    OLD2 --> MW
-    OLD3 --> MW
+    Deprecated --> MW
+    Active --- MW
 
     MW -->|"adds headers then delegates"| HANDLER["⚙️ Original Handler<br/>Unchanged — still serves responses"]
 ```
@@ -122,14 +124,18 @@ sequenceDiagram
 ## Tracking Who Is Still on v1
 
 ```mermaid
-graph TB
+graph TD
     subgraph Signals["📊 Migration Progress Signals"]
+        direction TB
         S1["📈 v1 request volume trending to zero?<br/>Sunset is safe to proceed"]
         S2["📊 v1 request volume still high?<br/>Extend the grace period — clients are blocked"]
         S3["🔍 Which clients are still calling v1?<br/>User-Agent + API key logs reveal who to contact"]
     end
 
+    Signals ~~~ Actions
+
     subgraph Actions["⚙️ Actions Before Removal"]
+        direction TB
         A1["Email API key owners still hitting v1"]
         A2["Post deprecation notices in developer portal"]
         A3["Set hard cutoff — communicate clearly"]

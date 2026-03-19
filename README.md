@@ -67,8 +67,7 @@ To get the most out of this workshop, we recommend familiarising yourself with t
 
 Explore the foundational concepts for building production-ready APIs and platform tools:
 
-- [API Fundamentals](docs/module1-fundamentals.md) — REST vs. RPC, Idempotency, and Contract-First design.
-- [Fundamentals Overview](internal/fundamentals/README.md) — Security, Identity (AuthN/AuthZ), and Structured Logging (`slog`).
+- [Fundamentals of API Development](internal/fundamentals/README.md) — REST vs. RPC, Security, Identity (AuthN/AuthZ), and Structured Logging (`slog`).
 
 ## Module 2: Go Language Fundamentals
 
@@ -114,7 +113,6 @@ Build a persistent storage layer and HTTP service for the "Go Bank" domain. This
 Discover reliable, durable execution patterns for long-running workflows:
 
 - [Temporal Overview](internal/temporal/README.md) — Workflow vs. Activity and the Replay model.
-- [Concepts Guide](docs/module4-temporal.md) — Why Temporal beats raw goroutines for distributed systems.
 - [Worker Entrypoint](cmd/worker/main.go) — Temporal worker implementation stub.
 
 ## Challenges

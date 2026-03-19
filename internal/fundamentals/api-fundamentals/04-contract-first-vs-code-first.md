@@ -44,7 +44,7 @@ graph TB
     end
 
     subgraph Step4["4. PARALLEL WORK"]
-        direction LR
+        direction TB
         FE["🖥️ Frontend<br/>Build UI against mock"]
         BE["⚙️ Backend<br/>Implement handlers"]
         QA["🧪 QA<br/>Write tests from spec"]
@@ -189,9 +189,9 @@ graph TD
 ## Trade-offs at a Glance
 
 ```mermaid
-graph TB
-
+graph TD
     subgraph COF2["💻 CODE-FIRST"]
+        direction TB
         COF_A["✅ Spec can never drift from code"]
         COF_B["✅ No YAML — just Go structs"]
         COF_C["✅ Fast to iterate"]
@@ -199,7 +199,10 @@ graph TB
         COF_E["⚠️ Harder to align multi-team upfront"]
     end
 
+    COF2 ~~~ CF2
+
     subgraph CF2["📝 CONTRACT-FIRST"]
+        direction TB
         CF_A["✅ Teams work in parallel from day 1"]
         CF_B["✅ Compiler enforces spec conformance"]
         CF_C["✅ Spec is the single source of truth"]
