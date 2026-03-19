@@ -63,6 +63,7 @@ type User struct {
 }
 
 type authKey int
+
 const userKey authKey = 0
 
 func TestContextForAuth(t *testing.T) {
@@ -82,6 +83,7 @@ func TestContextForAuth(t *testing.T) {
 
 // 5. Use Case: Tracing
 type traceKey string
+
 const traceIDKey traceKey = "trace-id"
 
 func TestContextForTracing(t *testing.T) {
