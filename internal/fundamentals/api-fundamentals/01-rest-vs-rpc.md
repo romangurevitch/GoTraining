@@ -5,25 +5,24 @@
 ## Two Philosophies of API Design
 
 ```mermaid
-graph TB
+graph TD
     subgraph RPC["RPC — Remote Procedure Call"]
-        SPACE1["  "]
+        direction LR
         P1["⚙️ **Actions are central**<br/>Call a function remotely"]
         P2["📡 **Transport-agnostic**<br/>HTTP, TCP, gRPC"]
         P3["📋 **Strong typing**<br/>Protobuf, Thrift, JSON-RPC"]
         P1 --> P2 --> P3
     end
 
-    subgraph REST["REST — Representational State Transfer"]
-        SPACE2["  "]
+    RPC ~~~ REST_sub
+
+    subgraph REST_sub["REST — Representational State Transfer"]
+        direction LR
         R1["📦 **Resources are central**<br/>Nouns, not verbs"]
         R2["🔀 **HTTP verbs carry intent**<br/>GET, POST, PUT, DELETE"]
         R3["🔗 **Uniform interface**<br/>Standard URL patterns"]
         R1 --> R2 --> R3
     end
-
-    style SPACE1 fill:none,stroke:none
-    style SPACE2 fill:none,stroke:none
 ```
 
 > REST models the **world as resources**. RPC models it as **function calls**.
@@ -33,24 +32,25 @@ graph TB
 ## REST: Resource-Oriented Design
 
 ```mermaid
-graph TB
+graph TD
     subgraph Bad["❌ RPC-style in REST URLs"]
+        direction LR
         B1["POST /createPayment"]
         B2["GET  /getPaymentById?id=123"]
         B3["POST /cancelPayment/123"]
         B4["POST /processRefund"]
     end
 
+    Bad ~~~ Good
+
     subgraph Good["✅ REST — Nouns + HTTP Verbs"]
-        SPACE1["  "]
+        direction LR
         G1["GET    /payments          → list payments"]
         G2["POST   /payments          → create payment"]
         G3["GET    /payments/{id}     → get one"]
         G4["PUT    /payments/{id}     → update"]
         G5["DELETE /payments/{id}     → cancel"]
     end
-
-    style SPACE1 fill:none,stroke:none
 ```
 
 > The URL identifies the resource. The HTTP method identifies the operation.
@@ -60,8 +60,9 @@ graph TB
 ## RPC: Action-Oriented Design
 
 ```mermaid
-graph TB
+graph TD
     subgraph GRPC["gRPC — Google's RPC Framework"]
+        direction LR
         PROTO["📋 payments.proto<br/>Define service + messages"]
         GEN["⚙️ protoc code generation"]
         CLIENT["📱 Generated client stub"]
@@ -70,7 +71,10 @@ graph TB
         GEN --> SERVER
     end
 
+    GRPC ~~~ Methods
+
     subgraph Methods["Service Methods"]
+        direction LR
         M1["CreatePayment(CreatePaymentRequest)"]
         M2["GetPayment(GetPaymentRequest)"]
         M3["CancelPayment(CancelPaymentRequest)"]
@@ -112,9 +116,9 @@ sequenceDiagram
 ## Streaming: Where RPC Wins
 
 ```mermaid
-graph TB
+graph TD
     subgraph GRPC_STREAM["gRPC — Server-Side Streaming"]
-        SPACE1["  "]
+        direction LR
         GC["📱 Client"]
         GC -->|"StreamTransactions(accountId)"| GS["⚡ Open stream"]
         GS -->|"event 1 →"| GC
@@ -122,14 +126,15 @@ graph TB
         GS -->|"event N →"| GC
     end
 
+    GRPC_STREAM ~~~ REST_STREAM
+
     subgraph REST_STREAM["REST — Polling"]
+        direction LR
         RC["📱 Client"]
         RC -->|"GET /transactions?after=t1"| RS1["📦 Batch 1"]
         RC -->|"GET /transactions?after=t2"| RS2["📦 Batch 2"]
         RC -->|"GET /transactions?after=t3"| RS3["📦 Batch 3"]
     end
-
-    style SPACE1 fill:none,stroke:none
 ```
 
 > gRPC streaming keeps a single connection open. No polling, no overhead. Ideal for real-time feeds.
@@ -167,8 +172,9 @@ graph TD
 ## Side-by-Side Summary
 
 ```mermaid
-graph TB
+graph TD
     subgraph G["⚡ gRPC / RPC"]
+        direction TB
         GA["Methods + messages"]
         GB["Protobuf over HTTP/2"]
         GC2["Binary — not human-readable"]
@@ -178,7 +184,10 @@ graph TB
         GG["🚀 High performance"]
     end
 
-    subgraph R["🌐 REST"]
+    G ~~~ R_sub
+
+    subgraph R_sub["🌐 REST"]
+        direction TB
         RA["Nouns + HTTP verbs"]
         RB["JSON over HTTP/1.1"]
         RC2["Human-readable"]

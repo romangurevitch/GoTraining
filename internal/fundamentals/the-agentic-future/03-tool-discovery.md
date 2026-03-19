@@ -5,25 +5,22 @@
 ## What Is Tool Discovery?
 
 ```mermaid
-graph TB
+graph TD
     subgraph Without["❌ Without Discovery — Hardcoded Knowledge"]
+        direction TB
         W1["Agent knows tools at build time"]
         W2["New tools require redeployment"]
         W3["No runtime capability negotiation"]
-        W1 --> W2 --> W3
     end
 
+    Without ~~~ With
+
     subgraph With["✅ With Discovery — Dynamic Capability Negotiation"]
-        SPACE1[" "]
+        direction TB
         D1["Agent fetches manifest at runtime"]
         D2["New tools appear without agent changes"]
         D3["Agent adapts to available capabilities"]
-        D1 --> D2 --> D3
     end
-
-    style SPACE1 fill:none,stroke:none
-
-    Without -->|"move to"| With
 ```
 
 > Tool discovery lets agents **ask** what a server can do, rather than having that knowledge baked in at build time. Servers evolve; agents adapt automatically.
@@ -33,10 +30,11 @@ graph TB
 ## The Manifest: A Server's Capability Advertisement
 
 ```mermaid
-graph TB
+graph TD
     MANIFEST["📋 **GET /mcp/manifest**<br/>The capability advertisement"]
 
     subgraph Contents["Manifest Contents"]
+        direction TB
         M1["server_info<br/>name, version, description"]
         M2["resources[]<br/>URI templates + intent + risk_profile"]
         M3["tools[]<br/>name, description, inputSchema, risk_profile, constraints"]
@@ -54,8 +52,9 @@ graph TB
 ## Tool Schema: The Contract an Agent Reads
 
 ```mermaid
-graph TB
+graph TD
     subgraph Schema["🔧 Tool Definition"]
+        direction TB
         S1["name: transfer-funds"]
         S2["description: Move money between two accounts"]
         S3["inputSchema:<br/>  from_account: string (required)<br/>  to_account: string (required)<br/>  amount: number, min: 0.01<br/>  idempotency_key: string (required)"]
@@ -124,13 +123,17 @@ graph TD
 ## Versioned Manifests: Tools Evolve Safely
 
 ```mermaid
-graph TB
+graph TD
     subgraph V1["v1 Manifest"]
+        direction TB
         V1T1["tool: get-account"]
         V1T2["tool: transfer-funds"]
     end
 
+    V1 ~~~ V2
+
     subgraph V2["v2 Manifest"]
+        direction TB
         V2T1["tool: get-account"]
         V2T2["tool: transfer-funds"]
         V2T3["tool: schedule-payment  ← NEW"]
@@ -148,8 +151,9 @@ graph TB
 ## Discovery Failure Modes
 
 ```mermaid
-graph TB
+graph TD
     subgraph Failures["Common Tool Discovery Failures"]
+        direction TB
         F1["❌ Missing inputSchema<br/>Agent cannot validate arguments<br/>→ always provide full JSON Schema"]
         F2["❌ No risk_profile<br/>Agent assumes safe — may call destructive tools freely<br/>→ always declare risk level"]
         F3["❌ Ambiguous description<br/>Agent picks the wrong tool<br/>→ use precise, action-oriented names and descriptions"]
