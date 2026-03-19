@@ -23,7 +23,7 @@ func main() {
 
 	configPath := flag.String("config", "", "path to config file")
 	orderPayload := flag.String("order", "", "json order payload")
-	workflowName := flag.String("workflow", "ProccessOrder", "workflow to run: ProccessOrder or AutoProcessOrder")
+	workflowName := flag.String("workflow", "ProcessOrder", "workflow to run: ProcessOrder or AutoProcessOrder")
 	flag.Parse()
 
 	if *configPath == "" {
@@ -75,7 +75,7 @@ func main() {
 	case "AutoProcessOrder":
 		wf = workflows.AutoProcessOrder
 	default:
-		wf = workflows.ProccessOrder
+		wf = workflows.ProcessOrder
 	}
 
 	slog.Info("Starting workflow", "workflow", *workflowName, "workflow_id", workflowID)

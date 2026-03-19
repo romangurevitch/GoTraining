@@ -59,13 +59,13 @@ go run cmd/client/main.go \
   }'
 ```
 
-#### ProccessOrder (Signal-driven)
+#### ProcessOrder (Signal-driven)
 
 Pauses at each stage and waits for an external signal before continuing:
 
 ```bash
 go run cmd/client/main.go \
-  -workflow=ProccessOrder \
+  -workflow=ProcessOrder \
   -order='{
     "id": "00000000-0000-0000-0000-000000000001",
     "line_items": [

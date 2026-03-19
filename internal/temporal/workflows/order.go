@@ -13,7 +13,7 @@ type Params struct {
 	Order order.Order
 }
 
-func ProccessOrder(ctx workflow.Context, in Params) (order.OrderStatus, error) {
+func ProcessOrder(ctx workflow.Context, in Params) (order.OrderStatus, error) {
 	logger := workflow.GetLogger(ctx)
 
 	var orderStatus order.OrderStatus
@@ -65,14 +65,16 @@ func ProccessOrder(ctx workflow.Context, in Params) (order.OrderStatus, error) {
 		return uuid.New()
 	}).Get(&payID); err != nil {
 		orderStatus = order.UnableToComplete
-		return orderStatus, nil
+		return orderStatus, err
 	}
 
-	future := workflow.ExecuteChildWorkflow(ctx, ProcessPayment, PaymentDetails{
+	if err = workflow.ExecuteChildWorkflow(ctx, ProcessPayment, PaymentDetails{
 		PayID:  payID,
 		Amount: 100.0, // TODO: calculate amount.
-	})
-	err = future.Get(ctx, nil)
+	}).Get(ctx, nil); err != nil {
+		orderStatus = order.UnableToComplete
+		return orderStatus, err
+	}
 
 	// Wait for order to be shipped.
 	workflow.GetSignalChannel(ctx, shipOrderSignal).Receive(ctx, nil)
@@ -85,7 +87,7 @@ func ProccessOrder(ctx workflow.Context, in Params) (order.OrderStatus, error) {
 	return orderStatus, nil
 }
 
-// AutoProcessOrder is a simplified version of ProccessOrder that drives the
+// AutoProcessOrder is a simplified version of ProcessOrder that drives the
 // order through each lifecycle stage automatically via activities, removing
 // the need for external signals.
 //

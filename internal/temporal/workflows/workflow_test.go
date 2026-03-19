@@ -57,7 +57,7 @@ func (s *WorkflowTestSuite) TestWorkflow_Success() {
 
 	// Execute workflow.
 
-	s.env.ExecuteWorkflow(workflows.ProccessOrder, workflows.Params{Order: order.Order{}})
+	s.env.ExecuteWorkflow(workflows.ProcessOrder, workflows.Params{Order: order.Order{}})
 
 	// Assert execution and order status.
 
@@ -114,7 +114,7 @@ func (s *WorkflowTestSuite) TestWorkflow_Cancelled() {
 
 	// Execute workflow.
 
-	s.env.ExecuteWorkflow(workflows.ProccessOrder, workflows.Params{Order: order.Order{}})
+	s.env.ExecuteWorkflow(workflows.ProcessOrder, workflows.Params{Order: order.Order{}})
 
 	// Assert execution and order status.
 

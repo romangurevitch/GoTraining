@@ -62,7 +62,7 @@ func main() {
 	acts := activities.NewOrderActivities(inventory.NewClient(cfg.InventoryAPI.BaseURL))
 
 	// Register Workflow and Activities
-	w.RegisterWorkflow(workflows.ProccessOrder)
+	w.RegisterWorkflow(workflows.ProcessOrder)
 	w.RegisterWorkflow(workflows.ProcessPayment)
 	w.RegisterWorkflow(workflows.AutoProcessOrder)
 	w.RegisterActivity(acts)

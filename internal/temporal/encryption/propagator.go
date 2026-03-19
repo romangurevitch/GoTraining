@@ -61,7 +61,7 @@ func (s *propagator) Extract(ctx context.Context, reader workflow.HeaderReader) 
 	if value, ok := reader.Get(propagationKey); ok {
 		var cryptContext CryptContext
 		if err := converter.GetDefaultDataConverter().FromPayload(value, &cryptContext); err != nil {
-			return ctx, nil
+			return ctx, err
 		}
 		ctx = context.WithValue(ctx, PropagateKey, cryptContext)
 	}
@@ -74,7 +74,7 @@ func (s *propagator) ExtractToWorkflow(ctx workflow.Context, reader workflow.Hea
 	if value, ok := reader.Get(propagationKey); ok {
 		var cryptContext CryptContext
 		if err := converter.GetDefaultDataConverter().FromPayload(value, &cryptContext); err != nil {
-			return ctx, nil
+			return ctx, err
 		}
 		ctx = workflow.WithValue(ctx, PropagateKey, cryptContext)
 	}

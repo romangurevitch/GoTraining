@@ -73,8 +73,10 @@ func (dc *DataConverter) WithContext(ctx context.Context) converter.DataConverte
 }
 
 func (e *Codec) getKey(_ string) (key []byte) {
-	// Key must be fetched from secure storage in production (such as a KMS).
-	// For testing here we just hard code a key.
+	// WARNING: hardcoded key — for demonstration only.
+	// In production, fetch the key from a secure secret management system
+	// (e.g. AWS KMS, HashiCorp Vault) keyed by the keyID parameter.
+	// Never commit real encryption keys to source control.
 	return []byte("test-key-test-key-test-key-test!")
 }
 
