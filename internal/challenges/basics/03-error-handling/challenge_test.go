@@ -2,6 +2,7 @@ package challenge
 
 import (
 	"errors"
+	"math"
 	"testing"
 )
 
@@ -13,6 +14,7 @@ func TestDivide(t *testing.T) {
 		err      error
 	}{
 		{name: "success", a: 10, b: 2, expected: 5, err: nil},
+		{name: "fractional result", a: 1, b: 3, expected: 1.0 / 3.0, err: nil},
 		{name: "division by zero", a: 10, b: 0, expected: 0, err: ErrDivByZero},
 	}
 
@@ -33,7 +35,7 @@ func TestDivide(t *testing.T) {
 				t.Fatalf("unexpected error: %v", err)
 			}
 
-			if got != tt.expected {
+			if math.Abs(got-tt.expected) > 1e-9 {
 				t.Errorf("expected result %v, got %v", tt.expected, got)
 			}
 		})
