@@ -98,6 +98,7 @@ func TestSelect(t *testing.T) {
 		ch2 <- "two"
 	}()
 
+	timeout := time.After(1 * time.Second)
 	results := []string{}
 	for i := 0; i < 2; i++ {
 		select {
@@ -105,7 +106,7 @@ func TestSelect(t *testing.T) {
 			results = append(results, res)
 		case res := <-ch2:
 			results = append(results, res)
-		case <-time.After(1 * time.Second):
+		case <-timeout:
 			t.Fatal("timeout")
 		}
 	}
@@ -120,9 +121,12 @@ func TestWorkerPool(t *testing.T) {
 	jobs := make(chan int, 100)
 	results := make(chan int, 100)
 
+	var wg sync.WaitGroup
 	// Start 3 workers
 	for w := 1; w <= 3; w++ {
+		wg.Add(1)
 		go func(id int, jobs <-chan int, results chan<- int) {
+			defer wg.Done()
 			for j := range jobs {
 				// Simulate work
 				results <- j * 2
@@ -136,10 +140,13 @@ func TestWorkerPool(t *testing.T) {
 	}
 	close(jobs) // Closing 'jobs' tells workers to stop when done
 
+	// Wait for all workers to finish, then close results
+	wg.Wait()
+	close(results)
+
 	// Collect results
 	count := 0
-	for i := 1; i <= 5; i++ {
-		res := <-results
+	for res := range results {
 		assert.True(t, res%2 == 0)
 		count++
 	}
@@ -150,10 +157,10 @@ func TestWorkerPool(t *testing.T) {
 // Ensures a function is only executed once, regardless of how many goroutines call it.
 func TestSyncOnce(t *testing.T) {
 	var once sync.Once
-	counter := 0
+	var counter atomic.Int32
 
 	increment := func() {
-		counter++
+		counter.Add(1)
 	}
 
 	var wg sync.WaitGroup
@@ -166,7 +173,7 @@ func TestSyncOnce(t *testing.T) {
 	}
 
 	wg.Wait()
-	assert.Equal(t, 1, counter)
+	assert.Equal(t, int32(1), counter.Load())
 }
 
 // 7. Context Cancellation
@@ -194,9 +201,8 @@ func TestContextCancellation(t *testing.T) {
 
 	cancel() // Signal the goroutine to stop
 
-	// Verify it stopped (can't easily verify "stopped" but we can verify ctx is done)
-	_, ok := <-ctx.Done()
-	assert.False(t, ok)
+	// Verify the context was cancelled
+	assert.Equal(t, context.Canceled, ctx.Err())
 }
 
 // 8. Closing Channels

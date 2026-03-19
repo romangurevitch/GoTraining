@@ -12,6 +12,7 @@ import (
 // Demonstrate how to manually trigger cancellation.
 func TestContextWithCancel(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
 	go func() {
 		time.Sleep(10 * time.Millisecond)
@@ -103,7 +104,8 @@ func TestContextWithValue(t *testing.T) {
 // A common way to structure functions that respect context.
 func doWork(ctx context.Context) (int, error) {
 	// Simulate some async work
-	resCh := make(chan int)
+	// Buffered so the goroutine can complete its send even if the caller has returned due to ctx cancellation
+	resCh := make(chan int, 1)
 	go func() {
 		time.Sleep(50 * time.Millisecond)
 		resCh <- 42
