@@ -5,9 +5,10 @@
 ## Two Strategies for Managing Breaking Changes
 
 ```mermaid
-graph TB
+graph TD
 
     subgraph Strategy2["Option 2: Extend & Contract"]
+        direction LR
         EXT["📈 EXTEND<br/>Add new optional fields<br/>alongside old ones"]
         WAIT["⏳ WAIT<br/>Let clients migrate<br/>to the new fields"]
         CONTRACT["📉 CONTRACT<br/>Remove old fields<br/>once unused"]
@@ -15,6 +16,7 @@ graph TB
     end
 
     subgraph Strategy1["Option 1: Explicit Versioning"]
+        direction LR
         V1["📌 /api/v1/accounts<br/>Old contract — still running"]
         V2["📌 /api/v2/accounts<br/>New contract — new features"]
         DEP["🪦 Deprecate v1<br/>Once all clients have migrated"]
@@ -31,33 +33,30 @@ graph TB
 ## URL Versioning: Where the Version Lives
 
 ```mermaid
-graph TB
-    subgraph URLPath["✅ URL Path Versioning (most common)"]
-        SPACE1["  "]
+graph TD
+    subgraph URLPath["✅ URL Path Versioning"]
+        direction TB
         U1["GET /api/v1/accounts/{id}"]
         U2["GET /api/v2/accounts/{id}"]
         U3["Visible in logs, browser, curl<br/>Easy to route at gateway level"]
-        U1 ~~~ U2 ~~~ U3
     end
 
+    URLPath ~~~ Header
+
     subgraph Header["⚠️ Header Versioning"]
-        SPACE2["  "]
+        direction TB
         H1["GET /api/accounts/{id}"]
         H2["API-Version: 2"]
         H3["Cleaner URLs<br/>Harder to test, cache, and discover"]
-        H1 ~~~ H2 ~~~ H3
     end
+
+    Header ~~~ Query
 
     subgraph Query["⚠️ Query Param Versioning"]
-        SPACE3["  "]
+        direction TB
         Q1["GET /api/accounts/{id}?version=2"]
         Q2["Simple to implement<br/>Pollutes every URL, easy to forget"]
-        Q1 ~~~ Q2
     end
-
-    style SPACE1 fill:none,stroke:none
-    style SPACE2 fill:none,stroke:none
-    style SPACE3 fill:none,stroke:none
 ```
 
 > URL path versioning is the most explicit and widely adopted. Clients know exactly which contract they are using.
@@ -67,9 +66,9 @@ graph TB
 ## What Constitutes a Breaking Change?
 
 ```mermaid
-graph TB
+graph TD
     subgraph Breaking["🔴 Breaking — REQUIRES new version"]
-        SPACE1["  "]
+        direction TB
         B1["Remove a field from a response"]
         B2["Rename a field"]
         B3["Change a field type (string → int)"]
@@ -78,17 +77,16 @@ graph TB
         B6["Change error response shape"]
     end
 
+    Breaking ~~~ NonBreaking
+
     subgraph NonBreaking["🟢 Non-Breaking — safe to ship"]
-        SPACE2["  "]
+        direction TB
         N1["Add a new optional request field"]
         N2["Add a new response field"]
         N3["Add a new endpoint"]
         N4["Add a new optional query parameter"]
         N5["Add a new enum value (with caution)"]
     end
-
-    style SPACE1 fill:none,stroke:none
-    style SPACE2 fill:none,stroke:none
 ```
 
 > When in doubt: if a client compiled against the old spec will break on the new response — it is a breaking change.
@@ -125,22 +123,31 @@ sequenceDiagram
 ## Adapter Pattern: Many Wire Shapes, One Domain
 
 ```mermaid
-graph TB
-    V1REQ["📦 V1Request<br/>name, balance"]
-    V2REQ["📦 V2Request<br/>name, balance, currency?, nickname?"]
-    EXTREQ["📦 PartnerRequest<br/>account_name, opening_balance"]
+graph TD
+    subgraph Requests["Inbound Wire Formats"]
+        direction TB
+        V1REQ["📦 V1Request"]
+        V2REQ["📦 V2Request"]
+        EXTREQ["📦 PartnerRequest"]
+    end
 
-    ADAPT1["🔄 adaptV1()"]
-    ADAPT2["🔄 adaptV2()"]
-    ADAPT3["🔄 adaptExternal()"]
+    subgraph Adapters["Domain Adapters"]
+        direction TB
+        ADAPT1["🔄 adaptV1()"]
+        ADAPT2["🔄 adaptV2()"]
+        ADAPT3["🔄 adaptExternal()"]
+    end
 
-    DOMAIN["⚙️ Domain<br/>ID, Name, Balance, Currency, Nickname"]
-    BIZ["💼 Business Logic<br/>Validation, persistence, events"]
+    Requests --> Adapters
 
-    V1REQ --> ADAPT1 --> DOMAIN
-    V2REQ --> ADAPT2 --> DOMAIN
-    EXTREQ --> ADAPT3 --> DOMAIN
-    DOMAIN --> BIZ
+    subgraph DomainLayer["Core Domain"]
+        direction TB
+        DOMAIN["⚙️ Domain Engine"]
+        BIZ["💼 Business Logic"]
+        DOMAIN --> BIZ
+    end
+
+    Adapters --> DomainLayer
 ```
 
 > Every API shape is an adapter. The domain model stays clean. Business logic never knows about wire formats.
