@@ -32,7 +32,7 @@ paths:
               example:
                 message: 'invalid request body'
         "401":
-          description: Unauthorised
+          description: Unauthorized
           content:
             application/json:
               schema:

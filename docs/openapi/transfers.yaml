@@ -31,7 +31,7 @@ paths:
         "403":
           # TODO: Two distinct 403 cases — what are they? Add them as examples
           #   Hint 1: missing or wrong scope on the JWT token (middleware rejects)
-          #   Hint 2: authenticated user is not the owner of fromaccount_id (handler rejects)
+          #   Hint 2: authenticated user is not the owner of from_account_id (handler rejects)
           description: Forbidden
         "404":
           # TODO: Account not found
