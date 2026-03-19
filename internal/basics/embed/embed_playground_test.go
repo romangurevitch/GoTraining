@@ -1,72 +1,73 @@
 package embed
 
 import (
-	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-type embeddedStruct1 struct {
-	embeddedStruct2
-	num int
+// Shadowing occurs when both outer and inner structs have the same field or method.
+type Base struct {
+	ID   int
+	Name string
 }
 
-type embeddedStruct2 struct {
-	num int
+func (b Base) SaySomething() string {
+	return "Base says something"
 }
 
-// Note function receiver is on the embedded struct
-func (b embeddedStruct2) overshadowMethod() string {
-	return fmt.Sprintf("base with num=%v", b.num)
+type Child struct {
+	Base     // Embedded
+	ID   int // Shadowing ID
 }
 
-func (b embeddedStruct1) overshadowMethod() string {
-	return fmt.Sprintf("base with num=%v", b.num)
+// Shadowing SaySomething
+func (c Child) SaySomething() string {
+	return "Child says something"
 }
 
-func (b containerStruct) overshadowMethod() string {
-	return fmt.Sprintf("base with str=%v", b.str)
-}
-
-type baseStruct struct {
-	embeddedStruct1
-	str string
-	num int
-}
-
-func Test_base_playground_describe(t *testing.T) {
-	co := baseStruct{
-		num: 0,
-		embeddedStruct1: embeddedStruct1{
-			num: 1,
-			embeddedStruct2: embeddedStruct2{
-				num: 2,
-			},
-		},
-
-		str: "some name",
+func TestShadowing(t *testing.T) {
+	c := Child{
+		Base: Base{ID: 1, Name: "Parent"},
+		ID:   2,
 	}
 
-	t.Logf("co.num: %v, co.str: %v}\n", co.num, co.str)
-	t.Logf("also co.embeddedStruct1.num: %d", co.embeddedStruct1.num) // Now members of children members need to be accessed by name
-	t.Logf("also co.embeddedStruct2.num: %d", co.embeddedStruct2.num)
-	t.Logf("also co.embeddedStruct1.embeddedStruct2.num: %d", co.embeddedStruct1.embeddedStruct2.num) //nolint:staticcheck // explicit selector demo
+	// 1. The outer field "wins" (Shadowing)
+	assert.Equal(t, 2, c.ID)
 
-	t.Logf("overshadowMethod: %s", co.overshadowMethod())
-	t.Logf("also co.embeddedStruct1.overshadowMethod: %s", co.embeddedStruct1.overshadowMethod()) //nolint:staticcheck // explicit selector demo
-	t.Logf("also co.embeddedStruct2.overshadowMethod: %s", co.embeddedStruct2.overshadowMethod())
-	t.Logf("also co.embeddedStruct1.embeddedStruct2.overshadowMethod: %s", co.embeddedStruct1.embeddedStruct2.overshadowMethod()) //nolint:staticcheck // explicit selector demo
+	// 2. But we can still access the "shadowed" field via the inner name
+	assert.Equal(t, 1, c.Base.ID)
 
-	type overshadowMethod interface {
-		overshadowMethod() string
+	// 3. Name is NOT shadowed, so it's promoted normally
+	assert.Equal(t, "Parent", c.Name)
+
+	// 4. The outer method "wins"
+	assert.Equal(t, "Child says something", c.SaySomething())
+
+	// 5. But we can still call the original method
+	assert.Equal(t, "Base says something", c.Base.SaySomething())
+}
+
+// Multiple Embedding Pitfall: Ambiguity
+type Left struct {
+	SameName string
+}
+type Right struct {
+	SameName string
+}
+type Ambiguous struct {
+	Left
+	Right
+}
+
+func TestAmbiguity(t *testing.T) {
+	a := Ambiguous{
+		Left:  Left{SameName: "Left"},
+		Right: Right{SameName: "Right"},
 	}
 
-	var d overshadowMethod = co
-	t.Logf("interface co: %s", d.overshadowMethod())
-	d = co.embeddedStruct1
-	t.Logf("interface co.embeddedStruct1: %s", d.overshadowMethod())
-	d = co.embeddedStruct2
-	t.Logf("interface co.embeddedStruct2: %s", d.overshadowMethod())
-	d = co.embeddedStruct1.embeddedStruct2 //nolint:staticcheck // explicit selector demo
-	t.Logf("interface co.embeddedStruct1.embeddedStruct2: %s", d.overshadowMethod())
-
+	// a.SameName would be a COMPILE ERROR: "ambiguous selector a.SameName"
+	// We MUST be explicit:
+	assert.Equal(t, "Left", a.Left.SameName)
+	assert.Equal(t, "Right", a.Right.SameName)
 }
