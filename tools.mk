@@ -15,9 +15,7 @@ endif
 
 ifeq ($(ARCH),x86_64)
 	PROTOC_ARCH := x86_64
-else ifeq ($(ARCH),arm64)
-	PROTOC_ARCH := aarch_64
-else ifeq ($(ARCH),aarch64)
+else ifneq ($(filter arm64 aarch64,$(ARCH)),)
 	PROTOC_ARCH := aarch_64
 else
 	PROTOC_ARCH := $(ARCH)

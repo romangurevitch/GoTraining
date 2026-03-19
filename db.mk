@@ -15,4 +15,4 @@ migrate: ## Run SQL migrations
 		sleep 1; \
 	done
 	@echo "Running migrations..."
-	@$(DOCKER_COMPOSE) exec -T postgres sh -c 'for f in /migration/*.sql; do echo "Applying $$f..."; psql -h localhost -U gotrainer -d gobank -f "$$f"; done'
+	@$(DOCKER_COMPOSE) exec -T postgres sh -c 'set -e; for f in /migration/*.sql; do echo "Applying $$f..."; psql -v ON_ERROR_STOP=1 -h localhost -U gotrainer -d gobank -f "$$f"; done'
