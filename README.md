@@ -67,7 +67,7 @@ To get the most out of this workshop, we recommend familiarising yourself with t
 
 Explore the foundational concepts for building production-ready APIs and platform tools:
 
-- [Fundamentals Overview](internal/fundamentals/README.md) — REST vs. RPC, Security, Identity (AuthN/AuthZ), and Structured Logging (`slog`).
+- [Fundamentals of API Development](internal/fundamentals/README.md) — REST vs. RPC, Security, Identity (AuthN/AuthZ), and Structured Logging (`slog`).
 
 ## Module 2: Go Language Fundamentals
 
