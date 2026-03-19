@@ -25,7 +25,7 @@ Throughout this hands-on workshop, delve into the nuances of building robust app
 ### Recommended Pre-Workshop Reading
 To get the most out of this workshop, we recommend familiarising yourself with these foundational resources:
 - [A Tour of Go (Basics 1)](https://go.dev/tour/basics/1) — Start here to get a feel for Go syntax and primitives.
-- [Go Project Layout Standards](https://github.com/golang-standards/project-layout) — Essential for understanding workspace organisation.
+- [Go Project Layout Standards](https://github.com/golang-standards/project-layout) — A popular convention for understanding workspace organisation.
 - [Using Go Modules](https://go.dev/blog/using-go-modules) — Core dependency management in Go.
 - [Go by Example](https://gobyexample.com/) — A hands-on introduction to Go using annotated example programs.
 - [Effective Go](https://go.dev/doc/effective_go) — Tips for writing clear, idiomatic, and "Gopher-friendly" code.
