@@ -2,7 +2,43 @@ package parameters
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
+
+func TestValueParameter(t *testing.T) {
+	c := Currency{Code: "USD", Money: 1.0, Fx: 100}
+	result := valueParameter(c, 3)
+	require.Len(t, result, 3)
+	for _, got := range result {
+		assert.Equal(t, c, got)
+	}
+}
+
+func TestValueParameter_Empty(t *testing.T) {
+	c := Currency{Code: "EUR"}
+	result := valueParameter(c, 0)
+	assert.Empty(t, result)
+}
+
+func TestPointerParameter(t *testing.T) {
+	c := Currency{Code: "GBP", Money: 2.5, Fx: 200}
+	result := pointerParameter(c, 4)
+	require.Len(t, result, 4)
+	for _, ptr := range result {
+		require.NotNil(t, ptr)
+		// All entries point to the same original copy (captured once by value)
+		assert.Equal(t, c.Code, ptr.Code)
+	}
+}
+
+func TestPointerParameter_Empty(t *testing.T) {
+	c := Currency{Code: "JPY"}
+	result := pointerParameter(c, 0)
+	assert.Empty(t, result)
+}
+
 
 func BenchmarkPointerParameter_1(b *testing.B) { benchPointer(b, 1) }
 func BenchmarkValueParameter_1(b *testing.B)   { benchValue(b, 1) }
@@ -14,7 +50,7 @@ func BenchmarkPointerParameter_10000(b *testing.B) { benchPointer(b, 10000) }
 func BenchmarkValueParameter_10000(b *testing.B)   { benchValue(b, 10000) }
 
 func BenchmarkPointerParameter_1000000(b *testing.B) { benchPointer(b, 1000000) }
-func BenchmarkValueParameter_1000000(b *testing.B)   { benchValue(b, 10000000) }
+func BenchmarkValueParameter_1000000(b *testing.B)   { benchValue(b, 1000000) } // was 10000000 (bug: 10x off)
 
 func BenchmarkPointerParameter_100000000(b *testing.B) { benchPointer(b, 100000000) }
 func BenchmarkValueParameter_100000000(b *testing.B)   { benchValue(b, 100000000) }
