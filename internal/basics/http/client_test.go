@@ -30,7 +30,7 @@ func TestHowToCreateAnHTTPClient_MakesRequest(t *testing.T) {
 	client := HowToCreateAnHTTPClient()
 	resp, err := client.Get(ts.URL)
 	require.NoError(t, err)
-	defer resp.Body.Close()
+	defer func() { require.NoError(t, resp.Body.Close()) }()
 
 	body, err := io.ReadAll(resp.Body)
 	require.NoError(t, err)
@@ -51,7 +51,7 @@ func TestHTTPClient_NonSuccessIsNotAnError(t *testing.T) {
 	client := HowToCreateAnHTTPClient()
 	resp, err := client.Get(ts.URL)
 	require.NoError(t, err, "a 404 is NOT a Go error — you must check StatusCode")
-	defer resp.Body.Close()
+	defer func() { require.NoError(t, resp.Body.Close()) }()
 
 	assert.Equal(t, http.StatusNotFound, resp.StatusCode)
 }

@@ -92,7 +92,7 @@ func TestPostWithJSONBody(t *testing.T) {
 	body, _ := json.Marshal(payload{Message: "hello"})
 	resp, err := http.Post(ts.URL, "application/json", strings.NewReader(string(body)))
 	require.NoError(t, err)
-	defer resp.Body.Close()
+	defer func() { require.NoError(t, resp.Body.Close()) }()
 
 	assert.Equal(t, http.StatusCreated, resp.StatusCode)
 
@@ -114,7 +114,7 @@ func TestNonSuccessStatusCode(t *testing.T) {
 
 			resp, err := http.Get(ts.URL)
 			require.NoError(t, err, "non-2xx is NOT a Go error")
-			defer resp.Body.Close()
+			defer func() { require.NoError(t, resp.Body.Close()) }()
 
 			assert.Equal(t, code, resp.StatusCode)
 		})
@@ -137,6 +137,6 @@ func TestRequestHeadersArePassedThrough(t *testing.T) {
 
 	resp, err := http.DefaultClient.Do(req)
 	require.NoError(t, err)
-	defer resp.Body.Close()
+	defer func() { require.NoError(t, resp.Body.Close()) }()
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 }

@@ -43,6 +43,8 @@ func (c *Client) Get(url string) ([]byte, error) {
 }
 
 // nonSuccessError returns a descriptive error for non-2xx responses.
+//
+//nolint:unused // challenge skeleton: students call this from Get once implemented
 func nonSuccessError(statusCode int) error {
 	return fmt.Errorf("unexpected status %d: %s", statusCode, http.StatusText(statusCode))
 }

@@ -29,8 +29,8 @@ func (s *ResourceTestSuite) SetupSuite() {
 func (s *ResourceTestSuite) TearDownSuite() {
 	if s.tmpFile != nil {
 		name := s.tmpFile.Name()
-		s.tmpFile.Close()
-		os.Remove(name)
+		s.tmpFile.Close() //nolint:errcheck // best-effort teardown; nothing to do if close fails
+		os.Remove(name)   //nolint:errcheck // best-effort teardown; temp file may already be gone
 	}
 }
 

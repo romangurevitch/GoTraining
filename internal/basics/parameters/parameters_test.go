@@ -39,7 +39,6 @@ func TestPointerParameter_Empty(t *testing.T) {
 	assert.Empty(t, result)
 }
 
-
 func BenchmarkPointerParameter_1(b *testing.B) { benchPointer(b, 1) }
 func BenchmarkValueParameter_1(b *testing.B)   { benchValue(b, 1) }
 

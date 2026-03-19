@@ -20,7 +20,7 @@ func captureOutput(f func()) string {
 
 	f()
 
-	w.Close()
+	w.Close() //nolint:errcheck // closing write-end of an in-process pipe never fails meaningfully
 	os.Stdout = old
 
 	var buf bytes.Buffer

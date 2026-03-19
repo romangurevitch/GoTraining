@@ -29,7 +29,7 @@ func NewServer(addr string) *http.Server {
 
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		fmt.Fprintln(w, "ok")
+		fmt.Fprintln(w, "ok") //nolint:errcheck // write error after WriteHeader cannot be acted upon
 	})
 
 	mux.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +38,7 @@ func NewServer(addr string) *http.Server {
 			http.Error(w, "missing msg parameter", http.StatusBadRequest)
 			return
 		}
-		fmt.Fprintln(w, msg)
+		fmt.Fprintln(w, msg) //nolint:errcheck // write error after headers are sent cannot be acted upon
 	})
 
 	return &http.Server{
