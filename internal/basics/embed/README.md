@@ -19,7 +19,7 @@ classDiagram
         Inner inner
     }
     class Inner
-    Outer *-- Inner : Has-a (Embedding)
+    Outer *-- Inner : Has-a (Looks like "Is-a")
 ```
 
 ### 📝 Example
