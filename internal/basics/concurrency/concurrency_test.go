@@ -2,335 +2,238 @@ package concurrency
 
 import (
 	"context"
-	"fmt"
-	"os"
-	"os/signal"
 	"sync"
-	"syscall"
+	"sync/atomic"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
-type counter struct {
-	counter int
+// 1. Goroutines & WaitGroup
+// WaitGroup is the canonical way to wait for multiple goroutines to complete.
+func TestWaitGroup(t *testing.T) {
+	var wg sync.WaitGroup
+	var counter int32
+
+	numGoroutines := 10
+	wg.Add(numGoroutines)
+
+	for i := 0; i < numGoroutines; i++ {
+		go func() {
+			defer wg.Done()
+			// atomic is another way to handle simple numeric synchronization
+			atomic.AddInt32(&counter, 1)
+		}()
+	}
+
+	wg.Wait() // Block until all wg.Done() calls are made
+	assert.Equal(t, int32(numGoroutines), counter)
 }
 
-// Bad example how to use go functions - run to see the results.
-// Not thread safe, run with -race to find the issue.
-func TestSimplestGoFunc(t *testing.T) {
-	t.Skip("Skipping: example test, comment out to run manually...")
+// 2. Mutex (Mutual Exclusion)
+// Use Mutex to protect shared state from concurrent access (Race Conditions).
+func TestMutex(t *testing.T) {
+	var mu sync.Mutex
+	var wg sync.WaitGroup
+	counter := 0
 
-	fmt.Println("Starting the test...")
-	c := &counter{}
-	go func() {
-		for i := 0; i < 1000; i++ {
-			c.counter++
-		}
-	}()
+	numGoroutines := 100
+	wg.Add(numGoroutines)
 
-	// What will be printed?
-	fmt.Println(c.counter)
-	fmt.Println("Terminating...")
-}
-
-// Unexpected results since it is not thread safe, run with -race to find the issue.
-func TestGoFuncWithWaitGroup(t *testing.T) {
-	t.Skip("Skipping: example test, comment out to run manually...")
-
-	fmt.Println("Starting the test...")
-	c := &counter{}
-	wg := sync.WaitGroup{}
-
-	for i := 0; i < 1000; i++ {
-		wg.Add(1)
+	for i := 0; i < numGoroutines; i++ {
 		go func() {
 			defer wg.Done()
 
-			c.counter++
+			mu.Lock()
+			// Critical section
+			counter++
+			mu.Unlock()
 		}()
 	}
 
 	wg.Wait()
-
-	// What will be printed?
-	fmt.Println(c.counter)
-	fmt.Println("Terminating...")
+	assert.Equal(t, numGoroutines, counter)
 }
 
-// Good example with expected results and thread safe.
-func TestGoFuncWithWaitGroupMutex(t *testing.T) {
-	t.Skip("Skipping: example test, comment out to run manually...")
+// 3. Channels (Communication)
+// Channels are used for "orchestration" and passing ownership of data.
+func TestUnbufferedChannel(t *testing.T) {
+	ch := make(chan string)
 
-	fmt.Println("Starting the test...")
-	c := &counter{}
-	wg := sync.WaitGroup{}
-	lock := sync.Mutex{}
+	go func() {
+		// This will block until the receiver is ready
+		ch <- "ping"
+	}()
 
-	for i := 0; i < 1000; i++ {
+	msg := <-ch // This blocks until a value is sent
+	assert.Equal(t, "ping", msg)
+}
+
+func TestBufferedChannel(t *testing.T) {
+	// Buffered channels don't block until the buffer is full
+	ch := make(chan int, 2)
+
+	ch <- 1
+	ch <- 2
+
+	assert.Equal(t, 2, len(ch))
+
+	assert.Equal(t, 1, <-ch)
+	assert.Equal(t, 2, <-ch)
+}
+
+// 4. Select (Multiplexing)
+// Select allows waiting on multiple channel operations.
+func TestSelect(t *testing.T) {
+	ch1 := make(chan string)
+	ch2 := make(chan string)
+
+	go func() {
+		time.Sleep(10 * time.Millisecond)
+		ch1 <- "one"
+	}()
+	go func() {
+		time.Sleep(20 * time.Millisecond)
+		ch2 <- "two"
+	}()
+
+	results := []string{}
+	for i := 0; i < 2; i++ {
+		select {
+		case res := <-ch1:
+			results = append(results, res)
+		case res := <-ch2:
+			results = append(results, res)
+		case <-time.After(1 * time.Second):
+			t.Fatal("timeout")
+		}
+	}
+
+	assert.Contains(t, results, "one")
+	assert.Contains(t, results, "two")
+}
+
+// 5. Worker Pool Pattern
+// A classic pattern to limit concurrency.
+func TestWorkerPool(t *testing.T) {
+	jobs := make(chan int, 100)
+	results := make(chan int, 100)
+
+	// Start 3 workers
+	for w := 1; w <= 3; w++ {
+		go func(id int, jobs <-chan int, results chan<- int) {
+			for j := range jobs {
+				// Simulate work
+				results <- j * 2
+			}
+		}(w, jobs, results)
+	}
+
+	// Send 5 jobs
+	for j := 1; j <= 5; j++ {
+		jobs <- j
+	}
+	close(jobs) // Closing 'jobs' tells workers to stop when done
+
+	// Collect results
+	count := 0
+	for i := 1; i <= 5; i++ {
+		res := <-results
+		assert.True(t, res%2 == 0)
+		count++
+	}
+	assert.Equal(t, 5, count)
+}
+
+// 6. sync.Once
+// Ensures a function is only executed once, regardless of how many goroutines call it.
+func TestSyncOnce(t *testing.T) {
+	var once sync.Once
+	counter := 0
+
+	increment := func() {
+		counter++
+	}
+
+	var wg sync.WaitGroup
+	for i := 0; i < 100; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-
-			lock.Lock()
-			c.counter++
-			lock.Unlock()
+			once.Do(increment)
 		}()
 	}
 
 	wg.Wait()
-
-	// What will be printed?
-	fmt.Println(c.counter)
-	fmt.Println("Terminating...")
+	assert.Equal(t, 1, counter)
 }
 
-// Bad endless go func example, terminating the run will terminate without printing the results.
-func TestGoFuncEndless(t *testing.T) {
-	t.Skip("Skipping: example test, comment out to run manually...")
-
-	fmt.Println("Starting the test...")
-	c := &counter{}
-	wg := sync.WaitGroup{}
-	lock := sync.Mutex{}
-
-	wg.Add(1)
-	go func() {
-		for {
-			lock.Lock()
-			c.counter++
-			lock.Unlock()
-		}
-	}()
-
-	wg.Wait()
-
-	// What will be printed?
-	fmt.Println(c.counter)
-	fmt.Println("Terminating...")
-}
-
-// Using OS signals to catch termination signal to print out counter results.
-// Good example how to make sure resources are closed when terminating running processes.
-func TestGoFuncEndlessWithChannel(t *testing.T) {
-	t.Skip("Skipping: example test, comment out to run manually...")
-
-	fmt.Println("Starting the test...")
-	c := &counter{}
-	lock := sync.Mutex{}
-
-	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+// 7. Context Cancellation
+// Proper way to stop goroutines.
+func TestContextCancellation(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	ch := make(chan int)
 
 	go func() {
-		for {
-			lock.Lock()
-			c.counter++
-			lock.Unlock()
-		}
-	}()
-
-	fmt.Println("Waiting...")
-	<-sigs
-
-	// What will be printed?
-	lock.Lock()
-	fmt.Println(c.counter)
-	lock.Unlock()
-
-	fmt.Println("Terminating...")
-}
-
-// Producer example, to show how signals behave when channel buffer is full without consumer.
-// Run to see the results.
-func TestChannelProducer(t *testing.T) {
-	t.Skip("Skipping: example test, comment out to run manually...")
-
-	fmt.Println("Starting the test...")
-	c := &counter{}
-	lock := sync.Mutex{}
-
-	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
-
-	numChan := make(chan int, 10)
-
-	// Producer
-	go func() {
-		for {
-			lock.Lock()
-			c.counter++
-
-			numChan <- c.counter
-			fmt.Println(c.counter)
-			lock.Unlock()
-		}
-	}()
-
-	fmt.Println("Waiting...")
-	s := <-sigs
-
-	fmt.Println(s)
-	fmt.Println("Terminating...")
-}
-
-// Simple producer consumer.
-func TestChannelProducerConsumer(t *testing.T) {
-	t.Skip("Skipping: example test, comment out to run manually...")
-
-	fmt.Println("Starting the test...")
-	c := &counter{}
-	lock := sync.Mutex{}
-
-	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
-
-	numChan := make(chan int)
-
-	// Producer
-	go func() {
-		for {
-			lock.Lock()
-			c.counter++
-
-			numChan <- c.counter
-			fmt.Printf("producer %d\n", c.counter)
-			lock.Unlock()
-		}
-	}()
-
-	// Consumer
-	go func() {
-		for {
-			counter := <-numChan
-			fmt.Printf("\t\t\t\tconsumer_0 %d\n", counter)
-			time.Sleep(time.Second)
-		}
-	}()
-
-	fmt.Println("Processing...")
-	s := <-sigs
-
-	fmt.Println(s)
-	fmt.Println("Terminating...")
-}
-
-// Single producer multiple consumers.
-func TestChannelProducerMultipleConsumers(t *testing.T) {
-	t.Skip("Skipping: example test, comment out to run manually...")
-
-	fmt.Println("Starting the test...")
-	c := &counter{}
-	lock := sync.Mutex{}
-
-	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
-
-	numChan := make(chan int)
-
-	// Producer
-	go func() {
-		for {
-			lock.Lock()
-			c.counter++
-
-			numChan <- c.counter
-			fmt.Printf("producer %d\n", c.counter)
-			lock.Unlock()
-		}
-	}()
-
-	// Consumers
-	for i := 0; i < 3; i++ {
-		consumerNum := i
-		go func() {
-			for {
-				counter := <-numChan
-				fmt.Printf("\t\t\t\tconsumer_%d %d\n", consumerNum, counter)
-				time.Sleep(time.Second * 3)
-			}
-		}()
-	}
-
-	fmt.Println("Processing...")
-	s := <-sigs
-
-	fmt.Println(s)
-	fmt.Println("Terminating...")
-}
-
-func TestCloseChannel(t *testing.T) {
-	simpleChannel := make(chan int)
-	close(simpleChannel)
-
-	_, ok := <-simpleChannel
-	if ok {
-		t.Fatal("something is wrong")
-	}
-}
-
-func TestWriteToClosedChannel(t *testing.T) {
-	simpleChannel := make(chan int)
-	close(simpleChannel)
-	defer func() {
-		if r := recover(); r != nil {
-			fmt.Println("recovered", r)
-		}
-	}()
-
-	simpleChannel <- 1
-}
-
-func TestCloseChannelForLoop(t *testing.T) {
-	simpleChannel := make(chan int)
-	ctx, _ := context.WithTimeout(context.Background(), time.Millisecond) // nolint
-
-	go func() {
+		i := 0
 		for {
 			select {
 			case <-ctx.Done():
-				return
-			case val := <-simpleChannel:
-				fmt.Println("value received:", val)
+				return // Stop when context is cancelled
+			case ch <- i:
+				i++
 			}
 		}
 	}()
 
-	close(simpleChannel)
-	<-ctx.Done()
+	// Read 3 values
+	assert.Equal(t, 0, <-ch)
+	assert.Equal(t, 1, <-ch)
+	assert.Equal(t, 2, <-ch)
+
+	cancel() // Signal the goroutine to stop
+
+	// Verify it stopped (can't easily verify "stopped" but we can verify ctx is done)
+	_, ok := <-ctx.Done()
+	assert.False(t, ok)
 }
 
-func TestCloseMultipleChannel(t *testing.T) {
-	simpleChannel := make(chan int)
-	defer func() {
-		if r := recover(); r != nil {
-			fmt.Println("recovered", r)
-		}
-	}()
+// 8. Closing Channels
+// range over a channel continues until the channel is closed.
+func TestRangeOverClosedChannel(t *testing.T) {
+	ch := make(chan int, 5)
+	ch <- 1
+	ch <- 2
+	ch <- 3
+	close(ch)
 
-	close(simpleChannel)
-	close(simpleChannel)
+	sum := 0
+	for v := range ch {
+		sum += v
+	}
+	assert.Equal(t, 6, sum)
+
+	// Receiving from a closed channel returns the zero value and false
+	val, ok := <-ch
+	assert.Equal(t, 0, val)
+	assert.False(t, ok)
 }
 
-func TestCtxCloseChannel(t *testing.T) {
-	simpleChannel := make(chan int)
-	ctx, cancelFunc := context.WithCancel(context.Background())
+func TestPanicClosingClosedChannel(t *testing.T) {
+	ch := make(chan int)
+	close(ch)
 
-	go func() {
-		defer func() {
-			if r := recover(); r != nil {
-				fmt.Println("recovered", r)
-			}
-		}()
+	assert.Panics(t, func() {
+		close(ch)
+	}, "closing a closed channel should panic")
+}
 
-		for { // nolint
-			select {
-			case <-ctx.Done():
-				fmt.Println("attempting to close")
-				close(simpleChannel)
-			}
-		}
-	}()
+func TestPanicWritingToClosedChannel(t *testing.T) {
+	ch := make(chan int)
+	close(ch)
 
-	cancelFunc()
-	<-simpleChannel
+	assert.Panics(t, func() {
+		ch <- 1
+	}, "writing to a closed channel should panic")
 }

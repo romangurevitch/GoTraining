@@ -1,49 +1,52 @@
 package embed
 
 import (
-	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-type embeddedStruct struct {
-	embeddedStruct1
-	num int
+// 1. Basic Struct Embedding (Composition)
+// The fields and methods of the embedded struct are "promoted" to the outer struct.
+type User struct {
+	Name string
 }
 
-type containerStruct struct {
-	embeddedStruct
-	str string
+func (u User) Greet() string {
+	return "Hi, I'm " + u.Name
 }
 
-// Note function receiver is on the embedded struct
-func (b embeddedStruct) describe() string {
-	return fmt.Sprintf("base with num=%v", b.num)
+type Admin struct {
+	User  // <--- Embedding! No field name.
+	Level int
 }
 
-func Test_base_describe(t *testing.T) {
-
-	co := containerStruct{ // A containerStruct embeds an embeddedStruct. An embedding looks like a field without a name.
-		embeddedStruct: embeddedStruct{ // When creating structs with literals, we have to initialize the embedding explicitly; here the embedded type serves as the field name.
-			num: 1,
-		},
-
-		str: "some name",
+func TestStructEmbedding_Promotion(t *testing.T) {
+	a := Admin{
+		User:  User{Name: "Alice"},
+		Level: 10,
 	}
 
-	t.Logf("co={num: %v, str: %v}\n", co.embeddedStruct.num, co.str) //nolint:staticcheck // explicit selector demo
-	t.Logf("also num: %d", co.embeddedStruct.embeddedStruct1.num)    //nolint:staticcheck // explicit selector demo
-	t.Logf("describe: %s", co.describe())
+	// 1. Promoted Fields: Can access Name directly on Admin
+	assert.Equal(t, "Alice", a.Name)
 
-	// What happens with the describe method if we embed a struct within a struct
-	t.Logf("describe: %s", co.describe())
+	// 2. Can still access through the inner name (the type name)
+	assert.Equal(t, "Alice", a.User.Name)
 
-	type describer interface {
-		describe() string
-	}
+	// 3. Promoted Methods: Can call Greet() directly on Admin
+	assert.Equal(t, "Hi, I'm Alice", a.Greet())
+}
 
-	var d describer = co                  // Since containerStruct embeds embeddedStruct, the methods of embeddedStruct also become methods of a container.
-	t.Logf("describer: %s", d.describe()) // Here we invoke a method that was embedded from base directly on co.
+// 2. Promotion to Interfaces
+// If the embedded type satisfies an interface, the outer type also does.
+type Greeter interface {
+	Greet() string
+}
 
-	// Do you think the following would be a valid call?
-	//t.Logf("str: %s", d.str)
+func TestStructEmbedding_Interfaces(t *testing.T) {
+	a := Admin{User: User{Name: "Bob"}}
+
+	// Admin satisfies Greeter because User does
+	var g Greeter = a
+	assert.Equal(t, "Hi, I'm Bob", g.Greet())
 }
