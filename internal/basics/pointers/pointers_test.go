@@ -53,3 +53,14 @@ func TestCounter(t *testing.T) {
 	c.Increment()
 	assert.Equal(t, 3, c.Value())
 }
+
+func TestNilPointerExample(t *testing.T) {
+	panicked := NilPointerExample()
+	assert.True(t, panicked, "dereferencing a nil pointer must cause a recoverable panic")
+}
+
+func TestReturnLocalPointer(t *testing.T) {
+	p := ReturnLocalPointer()
+	assert.NotNil(t, p, "pointer to local variable must not be nil after function returns")
+	assert.Equal(t, 42, *p, "value must be preserved on the heap after function returns")
+}

@@ -89,6 +89,17 @@ Use struct tags to map Go fields to external formats like JSON or Database colum
 type Account struct {
     Balance float64 `json:"balance" db:"total_amount"`
 }
+
+// New is the factory function
+func New(name string) User {
+    return &user{
+        Name: name,
+        role: "customer", // Default
+    }
+}
+
+func (u *user) GetName() string { return u.Name }
+func (u *user) IsAdmin() bool   { return u.role == "admin" }
 ```
 
 ---
