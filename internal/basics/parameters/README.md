@@ -1,37 +1,90 @@
-# Pointer Parameter vs Value Parameter
+# 📥 Function Parameters in Go
 
-## Running this demo
+Go is a pass-by-value language. Choosing between value and pointer parameters affects memory usage, mutability, and nil safety.
+
+---
+
+## 1. Core Concepts
+
+| Concept | Description / Purpose |
+| :--- | :--- |
+| **Pass-by-Value** | Function receives a copy of the argument; original is unchanged. |
+| **Pass-by-Reference (via Pointer)** | Function receives the memory address; can mutate the original. |
+| **Value Parameter** | Best for small types (int, string, small structs) and when mutability is unwanted. |
+| **Pointer Parameter** | Necessary for mutability or when copying large objects is expensive. |
+
+---
+
+## 2. 🗺️ Visual Representation
+
+```text
+  +-----------------------+                     +-----------------------+
+  |      [Value Copy]     |      Original       |      [Pointer Reference]|
+  |  (Memory duplicated)  |  <--------------    |  (Memory shared)      |
+  +-----------------------+                     +-----------------------+
+              |                                             |
+              v                                             v
+       (Safe, No mutation)       ------>             (Mutate in-place)
+```
+
+---
+
+## 3. 💻 Implementation Examples
+
+```go
+// 1. Value parameter (Safe, makes a copy)
+func valueParameter(c Currency, n int) []Currency {
+    var arr []Currency
+    for i := 0; i < n; i++ {
+        arr = append(arr, c) // Copying c each time
+    }
+    return arr
+}
+
+// 2. Pointer parameter (Efficient for large data, shared)
+func pointerParameter(c *Currency, n int) []*Currency {
+    var arr []*Currency
+    for i := 0; i < n; i++ {
+        arr = append(arr, c) // Sharing the address of c
+    }
+    return arr
+}
+```
+
+---
+
+## 📋 4. Common Patterns & Use Cases
+
+- **Large Struct Optimization**: Passing pointers to avoid expensive memory copying of giant data structures.
+- **Mutual Updates**: When a function must change the state of a passed-in object (e.g., `UpdateUser(u *User)`).
+- **Nil as Optional**: Using pointers to allow a `nil` value, effectively making the parameter optional.
+
+---
+
+## ⚠️ 5. Critical Pitfalls & Best Practices
+
+> [!WARNING]
+> Pointers introduce the risk of nil-pointer dereferences (panics). Always check for nil when a pointer is passed as an argument.
+
+1. **Don't Blindly Use Pointers**: Pointers are not always faster due to garbage collection overhead and potential heap allocation.
+2. **Value Safety**: Use value parameters for small types (ints, bools, strings) and when you want to guarantee that a function won't change your data.
+3. **Consistency**: If a struct has pointer methods, use pointers for that struct consistently.
+
+---
+
+## 🏃 Running the Examples
+
+Explore the benchmarks to see performance differences:
+- `parameters_test.go`: Compare performance of value vs pointer parameters under load.
 
 ```bash
-go test -bench '.Parameter.' -benchmem
-```
-```bash
-# Sample output
-goos: darwin
-goarch: amd64
-pkg: github.com/romangurevitch/go-training/internal/basics/parameters
-cpu: Intel(R) Core(TM) i7-8850H CPU @ 2.60GHz
-BenchmarkPointerParameter_1-12                  17398620                59.97 ns/op           40 B/op          2 allocs/op
-BenchmarkValueParameter_1-12                    30026976                42.62 ns/op           32 B/op          1 allocs/op
-BenchmarkPointerParameter_100-12                 1292474               938.7 ns/op          2072 B/op          9 allocs/op
-BenchmarkValueParameter_100-12                    540777              2254 ns/op            8160 B/op          8 allocs/op
-BenchmarkPointerParameter_10000-12                 12037             90051 ns/op          386330 B/op         21 allocs/op
-BenchmarkValueParameter_10000-12                    3024            513409 ns/op         1761258 B/op         21 allocs/op
-BenchmarkPointerParameter_1000000-12                  16          68624290 ns/op        45188403 B/op         41 allocs/op
-BenchmarkValueParameter_1000000-12                     1        1021090515 ns/op        1616732128 B/op       51 allocs/op
-BenchmarkPointerParameter_100000000-12                 1        6078855511 ns/op        4935060840 B/op       72 allocs/op
-BenchmarkValueParameter_100000000-12                   1        16039609332 ns/op       18827329504 B/op      62 allocs/op
-PASS
-ok      github.com/romangurevitch/go-training/internal/basics/parameters       38.480s
+# Run benchmarks with memory statistics
+go test -bench '.Parameter.' -benchmem ./internal/basics/parameters/...
 ```
 
-## Pointer Parameter Use Cases
+---
 
-- When we need to modify the parameter passed into the function, we have to use pointer type.
-- When the parameter is a huge in terms of memory usage, using pointer can save memory by not copying the parameter.
-However, it doesn't guarantee better performance. Therefore, we don't choose pointer parameter because of performance blindly.
+## 📚 Further Reading
 
-## Value Parameter Use Cases
-
-- When using value parameter, we don't need to worry about the nil exception. We also don't need to worry about
-the parameter being modified accidentally.
+- [Effective Go: Pointers vs Values](https://go.dev/doc/effective_go#pointers_vs_values)
+- [Go Wiki: Code Review Comments (Pointers)](https://github.com/golang/go/wiki/CodeReviewComments#receiver-type)
