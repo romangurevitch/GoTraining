@@ -1,60 +1,44 @@
-# HTTP Client & Server
+# 🌐 HTTP Client & Server in Go
 
 Go's `net/http` package includes production-ready client and server implementations. Both need explicit configuration — defaults are intentionally minimal.
 
-## Why this matters
+---
 
-HTTP is the backbone of most Go services. Getting the client and server configurations wrong leads to resource leaks, hanging requests, and subtle bugs that only appear under load.
+## 1. Core Concepts
+
+| Concept | Description / Purpose |
+| :--- | :--- |
+| **`http.Client`** | Sends HTTP requests and receives responses. Must be configured with timeouts. |
+| **`http.Server`** | Listens for incoming HTTP requests and routes them to handlers. |
+| **`http.ServeMux`** | An HTTP request multiplexer (router) that matches URL patterns to handlers. |
+| **`http.Handler`** | An interface with a `ServeHTTP` method that processes a single request. |
+| **Middleware** | Functions that wrap handlers to provide cross-cutting concerns (logging, auth). |
 
 ---
 
-## Client
+## 2. 🗺️ Visual Representation
 
-### Key rules
-
-- **Always set a timeout** — `http.DefaultClient` has no timeout and can block forever.
-- **Always close the response body** — unclosed bodies leak connections from the pool.
-- **Check `StatusCode`, not just `err`** — a non-nil `err` means the request could not be made (network failure, DNS error). A 4xx/5xx response still has `err == nil`.
-
-```go
-client := &http.Client{Timeout: 10 * time.Second}
-
-resp, err := client.Get("https://api.example.com/resource")
-if err != nil {
-    return err // network failure
-}
-defer resp.Body.Close() // ALWAYS close — even on non-2xx
-
-if resp.StatusCode != http.StatusOK {
-    return fmt.Errorf("unexpected status %d", resp.StatusCode)
-}
-
-body, err := io.ReadAll(resp.Body)
+```text
+  +-----------------------+                     +-----------------------+
+  |      HTTP Client      |      Request        |      HTTP Server      |
+  | (Timeout, Transport)  |  -------------->    | (Mux, Middleware)     |
+  +-----------------------+                     +-----------------------+
+              ^                                             |
+              |              Response                       |
+              +---------------------------------------------+
 ```
 
-### Common pitfalls
-
-- Using `http.DefaultClient` without a timeout in production code.
-- Forgetting `defer resp.Body.Close()` — connection pool exhaustion under load.
-- Treating a 404 or 500 as a Go error — it isn't. Check `resp.StatusCode`.
-
 ---
 
-## Server
-
-### Key rules
-
-- **Always set server timeouts** — an unconfigured server accepts slow-loris attacks.
-- **Use `http.ServeMux`** for routing; use middleware for cross-cutting concerns (logging, auth).
-- **Graceful shutdown** — use `srv.Shutdown(ctx)` to drain in-flight requests before exiting.
+## 3. 💻 Implementation Examples
 
 ```go
-mux := http.NewServeMux()
-mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-    w.WriteHeader(http.StatusOK)
-    fmt.Fprintln(w, "ok")
-})
+// 1. Client initialization with timeout
+client := &http.Client{
+    Timeout: 10 * time.Second,
+}
 
+// 2. Server with production-ready timeouts
 srv := &http.Server{
     Addr:         ":8080",
     Handler:      loggingMiddleware(mux),
@@ -62,39 +46,50 @@ srv := &http.Server{
     WriteTimeout: 10 * time.Second,
     IdleTimeout:  120 * time.Second,
 }
-```
 
-### Middleware pattern
-
-```go
-// A middleware accepts an http.Handler and returns one.
-// This lets you chain: A(B(C(handler)))
+// 3. Standard Middleware pattern
 func loggingMiddleware(next http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         log.Printf("%s %s", r.Method, r.URL.Path)
-        next.ServeHTTP(w, r) // always call next
+        next.ServeHTTP(w, r)
     })
 }
 ```
 
-### Graceful shutdown
+---
 
-```go
-// Block until OS signal, then drain in-flight requests.
-<-ctx.Done()
-shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-defer cancel()
-srv.Shutdown(shutdownCtx)
-```
+## 4. 📋 Common Patterns & Use Cases
 
-### Common pitfalls
-
-- No timeouts on the server → denial-of-service via slow clients.
-- Calling `log.Fatal` or `os.Exit` instead of graceful shutdown → in-flight requests are dropped.
-- Writing to `w` after `http.Error` or `w.WriteHeader` → headers already sent, second write is silently ignored.
+- **Graceful Shutdown**: Using `srv.Shutdown(ctx)` to drain in-flight requests before the process exits.
+- **Client Connection Pooling**: Reusing `http.Client` and `http.Transport` instances to maintain persistent connections.
+- **Route Specific Middleware**: Applying logic only to certain paths within a `ServeMux`.
 
 ---
 
-## When NOT to use the default mux
+## 5. ⚠️ Critical Pitfalls & Best Practices
 
-`http.DefaultServeMux` is a package-level global. Libraries that call `http.Handle(...)` can accidentally register routes into it. Always create an explicit `http.NewServeMux()`.
+> [!WARNING]
+> Never use `http.DefaultClient` or `http.ListenAndServe` in production. They lack timeouts and can lead to resource exhaustion or "hanging" processes.
+
+1. **Always Close Response Body**: Use `defer resp.Body.Close()` immediately after checking the error to prevent connection leaks.
+2. **Check StatusCode**: A nil error from `client.Do()` only means the request was sent and a response received; you must still check if it was a 4xx or 5xx.
+3. **Avoid Default Mux**: `http.DefaultServeMux` is a global. Libraries can register routes on it without your knowledge. Always use `http.NewServeMux()`.
+
+---
+
+## 🏃 Running the Examples
+
+Explore the unit tests for runnable patterns:
+- `client_test.go`: Demonstrates client configuration and error handling.
+
+```bash
+# Run tests with verbose output
+go test -v ./internal/basics/http/...
+```
+
+---
+
+## 📚 Further Reading
+
+- [Official Go Documentation: net/http](https://pkg.go.dev/net/http)
+- [Effective Go: HTTP Server](https://go.dev/doc/effective_go#http_server)
