@@ -1,61 +1,49 @@
 package entity
 
 import (
-	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-func TestNew(t *testing.T) {
-	type args struct {
-		externalField string
-	}
-	tests := []struct {
-		name string
-		args args
-		want Entity
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := New(tt.args.externalField); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("New() = %v, want %v", got, tt.want)
-			}
-		})
-	}
+func TestNewUser(t *testing.T) {
+	// Create a new user
+	u := New("1", "Alice", "ALICE@example.com")
+
+	// 1. Verify basic data promotion (initialization)
+	assert.Equal(t, "1", u.GetID())
+	assert.Equal(t, "Alice", u.GetName())
+	assert.Equal(t, "alice@example.com", u.GetEmail()) // Verify it was lowercased
+
+	// 2. Verify default role (not admin)
+	assert.False(t, u.IsAdmin())
+
+	// 3. Verify Stringer implementation
+	assert.Equal(t, "User[1]: Alice <alice@example.com>", u.String())
 }
 
-func Test_entity_Do(t *testing.T) {
-	type fields struct {
-		externalField string
-		internalField string
-	}
-	type args struct {
-		arg string
-	}
-	tests := []struct {
-		name    string
-		fields  fields
-		args    args
-		want    string
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			e := &entity{
-				ExternalField: tt.fields.externalField,
-				internalField: tt.fields.internalField,
-			}
-			got, err := e.Do(tt.args.arg)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("Do() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if got != tt.want {
-				t.Errorf("Do() got = %v, want %v", got, tt.want)
-			}
-		})
-	}
+func TestEncapsulation(t *testing.T) {
+	u := New("2", "Bob", "bob@example.com")
+
+	// We can't access 'role' directly on the interface
+	// u.role would be a compile error!
+
+	// But we can interact through authorized methods
+	concreteUser, ok := u.(*user)
+	assert.True(t, ok)
+
+	// Internally we can promote
+	concreteUser.PromoteToAdmin()
+	assert.True(t, u.IsAdmin())
+}
+
+func TestStructTags(t *testing.T) {
+	// Normally we would use json.Marshal, but we can verify tags reflectively
+	// This is just a conceptual check for beginners.
+
+	u := &user{ID: "3", Name: "Charlie"}
+
+	// Demonstrate how tags are visible (simplified)
+	// In reality, libraries like 'json' use these.
+	assert.NotNil(t, u)
 }
