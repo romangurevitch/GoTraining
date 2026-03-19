@@ -63,7 +63,7 @@ func (c *Client) CheckInventory(ctx context.Context, productID uuid.UUID, quanti
 	if err != nil {
 		return false, fmt.Errorf("failed to make request: %w", err)
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() //nolint:errcheck // Body is only read from, thus no special handling of a close error is required.
 
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
