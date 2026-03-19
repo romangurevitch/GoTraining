@@ -40,7 +40,7 @@ The API server uses Gin as the HTTP router. It groups routes logically and appli
 
 **Task:**
 - Open `internal/bank/api/server.go`.
-- Initialise the transfer handler: `transferHandler := transfer.New(svc)`.
+- Register the `transferHandler := transfer.New(svc)` initialization.
 - Wire the `POST /v1/transfers` route using the exact same pattern as the accounts routes.
 - Apply `middleware.JWTMiddleware` to the new group.
 - Apply `middleware.RequireScope("transfers:write")` to the specific route.
