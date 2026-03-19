@@ -18,7 +18,7 @@ func TestShapeArea(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		if got := PrintArea(tt.shape); got != tt.expected {
+		if got := PrintArea(tt.shape); math.Abs(got-tt.expected) > 1e-9 {
 			t.Errorf("expected area %v, got %v", tt.expected, got)
 		}
 	}
