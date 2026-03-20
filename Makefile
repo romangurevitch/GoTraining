@@ -5,9 +5,6 @@ include docker.mk
 include db.mk
 include internal/temporal/temporal.mk
 
-# Detect docker compose or docker-compose
-DOCKER_COMPOSE := $(shell docker compose version > /dev/null 2>&1 && echo "docker compose" || echo "docker-compose")
-
 .PHONY: all clean lint fmt tidy help
 
 all: tools generate clean tidy lint build test
