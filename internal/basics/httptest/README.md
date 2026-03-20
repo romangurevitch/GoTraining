@@ -28,7 +28,7 @@ sequenceDiagram
     T->>+H: MyHandler(recorder, request)
     H->>W: write response
     H-->>-T: return
-    T->>W: w.Result()
+    T->>W: read w.Result()
     Note right of T: assert StatusCode, Body...
 ```
 
@@ -42,17 +42,16 @@ sequenceDiagram
     T->>+S: spawn server (ts.URL)
     T->>C: http.Get(ts.URL)
     C->>S: HTTP request
-    S-->>C: HTTP response
+    S-->>-C: HTTP response
     C-->>T: resp, err
     Note right of T: assert StatusCode, Body...
-    T->>-S: ts.Close()
 ```
 
 ---
 
 ## 3. 💻 Implementation Examples
 
-### Recorder
+### Test Handler
 ```go
 func TestHandlerUsingRecorder(t *testing.T) {
     // 1. Initialisation

@@ -28,7 +28,7 @@ func TestHandlerUsingRecorder(t *testing.T) {
 	// 2. Execution
 	myHandler(w, req)
 	res := w.Result()
-	defer res.Body.Close()
+	defer func() { require.NoError(t, res.Body.Close()) }()
 
 	// 3. Finalisation (Verification)
 	assert.Equal(t, http.StatusOK, res.StatusCode)
@@ -50,7 +50,7 @@ func TestMockServerResponse(t *testing.T) {
 	// 2. Execution
 	res, err := http.Get(ts.URL)
 	assert.NoError(t, err)
-	defer res.Body.Close()
+	defer func() { require.NoError(t, res.Body.Close()) }()
 
 	// 3. Finalisation (Verification)
 	body, err := io.ReadAll(res.Body)
