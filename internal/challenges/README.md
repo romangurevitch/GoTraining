@@ -7,8 +7,9 @@ This directory contains all student exercises for the Go Training workshop.
 ```
 challenges/
 ├── basics/
-│   ├── fixme/    # Find and fix the bugs
-│   └── implme/   # Implement the function
+│   ├── 01-structs-and-pointers/
+│   ├── 02-interfaces-and-receivers/
+│   └── ...
 └── bank/         # Go Bank service quests
 ```
 
@@ -31,7 +32,4 @@ You'll implement the `POST /v1/transfers` API endpoint in a pre-scaffolded servi
 - JWT authentication and scope-based authorisation.
 - Table-driven unit testing for handlers.
 
-Everything below the API layer is pre-built so you can focus on building production-grade APIs.
-
 Run tests with: `make test-bank`
-

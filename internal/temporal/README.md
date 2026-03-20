@@ -4,6 +4,10 @@ Raw goroutines and channels are powerful for short-lived concurrent work, but th
 
 ---
 
+## Order Processing Demo (Order Saga)
+
+The demo features an **Order Processing Saga** demonstrating durable execution, signal handling, and child workflows. While the core banking service uses standard database transactions, this module explores how to orchestrate complex, multi-step business processes that require reliable state management across many services.
+
 ## 1. The Problem Temporal Solves
 
 Imagine a multi-step order flow: charge the customer → reserve inventory → send a confirmation email. Without Temporal, a crash between any two steps leaves inconsistent state and no automatic recovery.
