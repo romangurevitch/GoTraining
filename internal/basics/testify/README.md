@@ -17,14 +17,12 @@
 
 ## 2. 🗺️ Visual Representation
 
-```text
-  +-----------------------+                     +-----------------------+
-  |      Actual Value     |      Compare        |      Expected Value   |
-  |  (From logic)         |  -------------->    |  (Defined in test)    |
-  +-----------------------+                     +-----------------------+
-              |                                             |
-              v                                             v
-       Next Step: Continue       ------>             (Test Status: Pass)
+```mermaid
+flowchart LR
+    A["Actual Value\n(From logic)"] --"Compare"--> R{Match?}
+    E["Expected Value\n(Defined in test)"] --> R
+    R -- Yes --> P["Test: Pass\nContinue to next assertion"]
+    R -- No --> F["assert: log & continue\nrequire: log & stop"]
 ```
 
 ---

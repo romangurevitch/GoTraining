@@ -12,21 +12,28 @@ In Go, an **Entity** is a `struct` that groups related data with **methods** tha
 
 ## 🏗️ How Entities Work
 
-Go combines data and logic without the complexity of classes.
+Go combines data and logic without the complexity of classes:
 
-```text
-  +-------------------------------------------------------+
-  |                   Entity Structure                    |
-  +-------------------------------------------------------+
-  |  1. Data (Struct): Fields like ID, Name, Email        |
-  |  2. Factory (New): Function to safely create object   |
-  |  3. Behaviour (Methods): Logic that operates on data  |
-  +-------------------------------------------------------+
-            |
-            v
-  +-------------------------------------------------------+
-  | Result: A self-contained, testable domain object      |
-  +-------------------------------------------------------+
+1. **Data (Struct)**: Fields like `ID`, `Email` hold the entity's state.
+2. **Factory (New)**: A constructor function to safely create a valid object.
+3. **Behaviour (Methods)**: Logic that operates on the data.
+
+```mermaid
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
+classDiagram
+    direction LR
+    class User {
+        <<struct>>
+        +int ID
+        +string Email
+        -string role
+        +IsAdmin() bool
+    }
+    NewUser ..> User : creates
 ```
 
 ---

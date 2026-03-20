@@ -14,21 +14,14 @@ Benchmarking is the process of measuring the performance of your code. Go provid
 
 Go's benchmark runner calls your function repeatedly until it can provide a statistically significant result.
 
-```text
-  +-------------------------------------------------------+
-  |                   Benchmark Workflow                  |
-  +-------------------------------------------------------+
-  |  1. Start with b.N = 1                                |
-  |  2. Run the loop b.N times                            |
-  |  3. If too fast, increase b.N (e.g., 1, 2, 5, 10...)   |
-  |  4. Repeat until time limit (default 1s) is reached   |
-  |  5. Calculate averages: Total Time / b.N              |
-  +-------------------------------------------------------+
-            |
-            v
-  +-------------------------------------------------------+
-  | Result: BenchmarkSomeFunc  1000000  1050 ns/op         |
-  +-------------------------------------------------------+
+```mermaid
+flowchart TD
+    A["Start: b.N = 1"] --> B["Run loop b.N times"]
+    B --> C{Too fast?}
+    C -- Yes --> D["Increase b.N\ne.g. 1 → 2 → 5 → 10..."]
+    D --> B
+    C -- No --> E["Calculate averages\nTotal Time / b.N"]
+    E --> F["Result: BenchmarkSomeFunc  1000000  1050 ns/op"]
 ```
 
 ---

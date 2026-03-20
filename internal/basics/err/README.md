@@ -14,21 +14,21 @@ Errors in Go are values, not exceptions. They are treated as first-class citizen
 
 When an error happens deep in your code, you "wrap" it with more context as it moves up the stack.
 
-```text
-  +-------------------------------------------------------+
-  |                   Error Chain (Wrapping)              |
-  +-------------------------------------------------------+
-  |  1. Root Error: "database: connection timeout"        |
-  |  2. Middle Layer: "failed to fetch user: %w", root    |
-  |  3. Top Layer: "process request failed: %w", middle   |
-  +-------------------------------------------------------+
-            |
-            v
-  +-------------------------------------------------------+
-  | Result: "process request failed: ... timeout"         |
-  +-------------------------------------------------------+
+```mermaid
+flowchart TB
+    subgraph top["Top Layer: &quot;process request failed&quot;"]
+        subgraph mid["Middle Layer: &quot;failed to fetch user&quot;"]
+            root["Root Error\n&quot;database: connection timeout&quot;"]
+        end
+    end
 ```
+**Full wrapped error string**
+```
+process request failed: failed to fetch user: database: connection timeout
+|---------------------| |-------------------| |--------------------------|
+          TOP                  MIDDLE                    ROOT
 
+```
 ---
 
 ## ✍️ Anatomy of Error Handling

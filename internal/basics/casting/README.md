@@ -9,15 +9,9 @@ In Go, there are two primary ways to change or interpret types: **Type Conversio
 Type conversion is used when you have two compatible concrete types (like `int32` and `int64`) and you want to convert a value from one to the other.
 
 ### 🖼️ Pictorial Representation
-```text
-  +-------------+                     +-------------+
-  |   Source    |     T(value)        |    Target   |
-  |    Type     |  -------------->    |     Type    |
-  | (e.g. int)  |                     | (e.g. float)|
-  +-------------+                     +-------------+
-         |                                   |
-         v                                   v
-       [ 42 ]           ------>           [ 42.0 ]
+```mermaid
+flowchart LR
+    A["Source Type (e.g. int)\nValue: 42"] --"T(value)"--> B["Target Type (e.g. float)\nValue: 42.0"]
 ```
 
 ### 📝 Example
@@ -36,23 +30,11 @@ var f float64 = float64(i) // Manual conversion required
 Type assertion is used to extract a concrete value from an interface. It "asserts" that the interface holds a specific type.
 
 ### 🖼️ Pictorial Representation
-```text
-  +-----------------------+
-  |      Interface        |
-  |  (Dynamic Type + Val) |
-  +-----------------------+
-              |
-              |  v, ok := i.(T)
-              v
-     /-----------------\
-    |   Is it Type T?   |
-     \-----------------/
-      /               \
-    [Yes]            [No]
-      |                |
-      v                v
- v = Value        v = Zero Value
- ok = true        ok = false
+```mermaid
+flowchart TD
+    A["Interface Value i"] --"v, ok := i.(T)"--> B{Is it Type T?}
+    B -- Yes --> C["v = Value\nok = true"]
+    B -- No --> D["v = Zero Value\nok = false"]
 ```
 
 ### 📝 Example
@@ -60,10 +42,10 @@ Type assertion is used to extract a concrete value from an interface. It "assert
 var i interface{} = "hello"
 
 // Safe assertion
-s, ok := i.(string) 
+s, ok := i.(string)
 
 // Unsafe assertion (PANICS if not a string!)
-s := i.(string) 
+s := i.(string)
 ```
 
 ---

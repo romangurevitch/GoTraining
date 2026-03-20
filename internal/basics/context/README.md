@@ -11,14 +11,13 @@ A `Context` is a thread-safe object that carries information through a call grap
 ### 🖼️ The Context Tree
 Contexts are hierarchical. When a parent context is cancelled, all contexts derived from it are also cancelled.
 
-```text
-       context.Background() (Root)
-               |
-        +------+------+
-        |             |
-   WithCancel    WithTimeout (5s)
-        |             |
-   WithValue     WithCancel
+```mermaid
+graph TD
+    Root["context.Background() — Root"]
+    Root --> WC[WithCancel]
+    Root --> WT["WithTimeout (5s)"]
+    WC --> WV[WithValue]
+    WT --> WC2[WithCancel]
 ```
 
 ---

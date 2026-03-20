@@ -17,14 +17,11 @@ Mocking allows isolating units under test by providing controlled implementation
 
 ## 2. 🗺️ Visual Representation
 
-```text
-  +-----------------------+                     +-----------------------+
-  |      Interface        |      Calls          |      Mock Implementation|
-  |  (Dependency)         |  -------------->    |  (Programmed Response)|
-  +-----------------------+                     +-----------------------+
-              |                                             |
-              v                                             v
-       (Isolated Logic)          ------>             (Verified Calls)
+```mermaid
+flowchart LR
+    I["Interface\n(Dependency)"] --"Calls"--> M["Mock Implementation\n(Programmed Response)"]
+    I --> IL["Isolated Logic"]
+    M --> VC["Verified Calls"]
 ```
 
 ---

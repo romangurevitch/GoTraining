@@ -16,14 +16,10 @@
 
 ## 2. 🗺️ Visual Representation
 
-```text
-  +-----------------------+                     +-----------------------+
-  |    Global Variables   |      Assigned       |    init() Functions   |
-  |  (Memory Allocated)   |  -------------->    |  (Setup Logic Ran)    |
-  +-----------------------+                     +-----------------------+
-              |                                             |
-              v                                             v
-       Next Step: main()         ------>             (Ready for Use)
+```mermaid
+flowchart LR
+    V["Global Variables\n(Memory Allocated)"] --"Assigned"--> I["init() Functions\n(Setup Logic Ran)"]
+    I --> M["main()\n(Ready for Use)"]
 ```
 
 ---

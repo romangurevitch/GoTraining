@@ -14,18 +14,11 @@ Generics (introduced in Go 1.18) allow you to write code that works with multipl
 
 Generics act as a "blueprint". The compiler generates a specific version of your code for each type you use (Monomorphization).
 
-```text
-  +-------------------------------------------------------+
-  |              Generic Blueprint (Source)               |
-  |      func Print[T any](v T) { ... }                   |
-  +-------------------------------------------------------+
-            |
-            v
-  +-------------------------------------------------------+
-  |              Compiler Magic (Output)                  |
-  |  [Print(42)]   -> func PrintInt(v int)                |
-  |  [Print("Hi")] -> func PrintStr(v string)             |
-  +-------------------------------------------------------+
+```mermaid
+flowchart TD
+    A["Generic Blueprint (Source)\nfunc Print[T any](v T) { ... }"]
+    A --"Compiler (Monomorphization)"--> B["Print(42) → func PrintInt(v int)"]
+    A --"Compiler (Monomorphization)"--> C["Print(&quot;Hi&quot;) → func PrintStr(v string)"]
 ```
 
 ---

@@ -9,16 +9,17 @@ Go uses the term "embedding" in two different contexts: **Struct Embedding** (fo
 Go does not have classes or inheritance. Instead, it uses **composition** through struct embedding. When you embed one struct into another, the outer struct "borrows" the fields and methods of the inner one.
 
 ### 🖼️ Conceptual View
-```text
-  Traditional Inheritance        Go Struct Embedding
-  +-----------+                  +-----------+
-  |   Base    |                  |   Outer   |
-  +-----------+                  | +-------+ |
-        ^                        | | Inner | |
-        | (Is-a)                 | +-------+ | (Has-a, looks like Is-a)
-  +-----------+                  +-----------+
-  |   Child   |
-  +-----------+
+```mermaid
+classDiagram
+    class Base
+    class Child
+    Base <|-- Child : Is-a (Inheritance)
+
+    class Outer {
+        Inner inner
+    }
+    class Inner
+    Outer *-- Inner : Has-a (Looks like "Is-a")
 ```
 
 ### 📝 Example
@@ -45,14 +46,18 @@ fmt.Println(a.Name)    // "Alice" (Promoted field)
 Introduced in Go 1.16, the `embed` package allows you to include static files (like config, HTML, or images) directly into your compiled binary. No more missing config files in production!
 
 ### 🖼️ The Process
-```text
-  Source Code + Asset Files         Single Binary
-  +-------------+                   +-------------+
-  | main.go     |                   |  [Binary]   |
-  | config.json |  --- go build --> |  [Data]     |
-  | logo.png    |                   |  [Logic]    |
-  +-------------+                   +-------------+
-                                     (Runs anywhere!)
+```mermaid
+flowchart LR
+    subgraph src["Source Code + Assets"]
+        m[main.go]
+        c[config.json]
+        l[logo.png]
+    end
+    subgraph bin["Single Binary"]
+        b1[Binary Logic]
+        b2[Embedded Data]
+    end
+    src --"go build"--> bin
 ```
 
 ### 📝 Example

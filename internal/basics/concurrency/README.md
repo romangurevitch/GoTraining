@@ -9,15 +9,11 @@ Go is famous for its first-class support for concurrency. Unlike many other lang
 A goroutine is a function that is capable of running concurrently with other functions. They are extremely cheap (starting at ~2KB of stack memory).
 
 ### 🖼️ Conceptual View
-```text
-  Main Goroutine           New Goroutine
-  +------------+           +------------+
-  |  Step 1    |           |            |
-  |  Step 2    | ----+     |            |
-  |  Step 3    |     |     |  Parallel  |
-  |  Step 4    | <---+     |  Task      |
-  |  ...       |           |            |
-  +------------+           +------------+
+```mermaid
+flowchart LR
+    S2["Main: Step 2"] --> S4["Main: Step 4"]
+    S2 --"go func()"--> PT["New: Parallel Task"]
+    PT --"sync"--> S4
 ```
 
 ### 📝 Example
@@ -34,12 +30,15 @@ go doSomething() // Starts a new goroutine
 Channels are the pipes that connect concurrent goroutines. You can send values into channels from one goroutine and receive those values into another goroutine.
 
 ### 🖼️ Unbuffered vs Buffered
-```text
-  Unbuffered (Blocking)           Buffered (Non-blocking until full)
-  +-------+       +-------+       +-------+       +-------+
-  |  G1   | --|-->|  G2   |       |  G1   | --[###]-->|  G2   |
-  +-------+       +-------+       +-------+       +-------+
-    Wait for Handshake               Fill the Queue
+```mermaid
+flowchart LR
+    subgraph Unbuffered["Unbuffered Channel — blocks until both ready"]
+        G1[Goroutine 1] --"ch ← val"--> G2[Goroutine 2]
+    end
+    subgraph Buffered["Buffered Channel — blocks only when full"]
+        G3[Goroutine 1] --"ch ← val"--> BUF["[ ### Buffer ### ]"] --> G4[Goroutine 2]
+    end
+    G2 ~~~ G3
 ```
 
 ### 📝 Example

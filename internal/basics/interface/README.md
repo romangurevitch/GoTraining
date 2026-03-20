@@ -17,15 +17,26 @@ Interfaces in Go define behavior. They are satisfied implicitly, enabling powerf
 
 ## 2. 🗺️ Visual Representation
 
-```text
-  +-----------------------+                     +-----------------------+
-  |      Interface        |      Satisfies      |      Implementation   |
-  |  (Methods Required)   |  <--------------    |  (Methods Defined)    |
-  +-----------------------+                     +-----------------------+
-              |                                             |
-              v                                             v
-       (Decoupled Logic)         ------>             (Concrete Types)
+```mermaid
+%%{init: {'class': {'hideEmptyMembersBox': true}}}%%
+classDiagram
+    direction LR
+    class ReadWriter {
+        <<interface>>
+        +Read(p []byte) (n int, err error)
+        +Write(p []byte) (n int, err error)
+    }
+    class Buffer {
+        -data []byte
+        +Read(p []byte) (n int, err error)
+        +Write(p []byte) (n int, err error)
+    }
+    Buffer ..|> ReadWriter : satisfies implicitly
 ```
+
+> [!INFO}
+> Functions can accept `ReadWriter` rather than `Buffer` directly — any type implementing the
+> interface works, without the knowing the concrete type.
 
 ---
 
