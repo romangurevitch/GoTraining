@@ -18,7 +18,7 @@ Throughout this hands-on workshop, delve into the nuances of building robust app
 ## Prerequisites
 
 - [Go 1.26.1+](https://go.dev/dl/) installed.
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed (for database infrastructure).
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) with Docker Compose v2.23.0+ (for database infrastructure).
 - Basic experience with command-line tools is required.
 - Familiarity with at least one other programming language (e.g., Python, Bash, or Java).
 
