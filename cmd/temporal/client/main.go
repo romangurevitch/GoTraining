@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/google/uuid"
@@ -37,7 +39,7 @@ func main() {
 	})))
 
 	cfg := Config{}
-	flag.StringVar(&cfg.ConfigPath, "config", "./config/client/local/config.yaml", "path to config file")
+	flag.StringVar(&cfg.ConfigPath, "config", "./config/temporal/client/local/config.yaml", "path to config file")
 	flag.StringVar(&cfg.OrderPayload, "order", "", "json order payload (required to start workflow)")
 	flag.StringVar(&cfg.WorkflowName, "workflow", "ProcessOrder", "workflow to run: ProcessOrder or AutoProcessOrder")
 	flag.StringVar(&cfg.SignalName, "signal", "", "signal to send (e.g., pickOrder, shipOrder, markOrderAsDelivered, cancelOrder)")
@@ -45,13 +47,17 @@ func main() {
 	flag.BoolVar(&cfg.Wait, "wait", true, "wait for workflow to complete")
 	flag.Parse()
 
-	if err := run(cfg); err != nil {
+	// Create a cancellable context that responds to OS signals
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
+
+	if err := run(ctx, cfg); err != nil {
 		slog.Error("Application failed", "error", err)
 		os.Exit(1)
 	}
 }
 
-func run(cfg Config) error {
+func run(ctx context.Context, cfg Config) error {
 	appCfg, err := clientconfig.LoadConfig(cfg.ConfigPath)
 	if err != nil {
 		return fmt.Errorf("load config: %w", err)
@@ -73,23 +79,24 @@ func run(cfg Config) error {
 
 	// If signal is provided, handle signaling and return
 	if cfg.SignalName != "" {
-		return handleSignal(c, cfg.WorkflowID, cfg.SignalName)
+		return handleSignal(ctx, c, cfg.WorkflowID, cfg.SignalName)
 	}
 
 	// Otherwise, handle starting a new workflow
-	return handleStart(c, appCfg.Temporal.TaskQueueName, cfg)
+	return handleStart(ctx, c, appCfg.Temporal.TaskQueueName, cfg)
 }
 
-func handleSignal(c client.Client, workflowID, signalName string) error {
+func handleSignal(ctx context.Context, c client.Client, workflowID, signalName string) error {
 	if workflowID == "" {
 		return fmt.Errorf("workflow-id is required when signaling")
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	// Use a shorter timeout for signaling, but still respect the parent context
+	signalCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 
 	slog.Info("Sending signal", "signal", signalName, "workflow_id", workflowID)
-	err := c.SignalWorkflow(ctx, workflowID, "", signalName, nil)
+	err := c.SignalWorkflow(signalCtx, workflowID, "", signalName, nil)
 	if err != nil {
 		return fmt.Errorf("signal workflow %s: %w", workflowID, err)
 	}
@@ -98,7 +105,7 @@ func handleSignal(c client.Client, workflowID, signalName string) error {
 	return nil
 }
 
-func handleStart(c client.Client, taskQueue string, cfg Config) error {
+func handleStart(ctx context.Context, c client.Client, taskQueue string, cfg Config) error {
 	if cfg.OrderPayload == "" {
 		return fmt.Errorf("json order payload is required to start a workflow")
 	}
@@ -133,7 +140,7 @@ func handleStart(c client.Client, taskQueue string, cfg Config) error {
 	slog.Info("Starting workflow", "workflow", cfg.WorkflowName, "workflow_id", workflowID)
 
 	// Temporal ExecuteWorkflow accepts the function itself
-	workflowRun, err := c.ExecuteWorkflow(context.Background(), options, wfFunc, workflows.Params{Order: o})
+	workflowRun, err := c.ExecuteWorkflow(ctx, options, wfFunc, workflows.Params{Order: o})
 	if err != nil {
 		return fmt.Errorf("execute workflow: %w", err)
 	}
@@ -147,7 +154,7 @@ func handleStart(c client.Client, taskQueue string, cfg Config) error {
 		}
 
 		var result order.OrderStatus
-		if err := workflowRun.Get(context.Background(), &result); err != nil {
+		if err := workflowRun.Get(ctx, &result); err != nil {
 			return fmt.Errorf("workflow execution failed: %w", err)
 		}
 		slog.Info("Workflow completed", "status", result)

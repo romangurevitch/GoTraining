@@ -9,7 +9,7 @@ temporal-down: ## Stop Temporal and WireMock
 	docker compose down temporal wiremock
 
 worker-start: ## Start the Temporal order processing worker
-	go run ./cmd/temporal/worker/... -config="./config/worker/local/config.yaml"
+	go run ./cmd/temporal/worker/... -config="./config/temporal/worker/local/config.yaml"
 
 test-temporal: ## Run module 4 (Temporal) tests
 	go test ./internal/temporal/...

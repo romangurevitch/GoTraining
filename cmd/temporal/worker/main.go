@@ -26,7 +26,7 @@ func main() {
 	flag.Parse()
 
 	if *configPath == "" {
-		*configPath = "./config/worker/local/config.yaml"
+		*configPath = "./config/temporal/worker/local/config.yaml"
 	}
 
 	cfg, err := workerconfig.LoadConfig(*configPath)

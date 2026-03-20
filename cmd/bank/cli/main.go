@@ -9,11 +9,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const defaultBankAPIURL = "http://localhost:8082"
+
 func main() {
 	// API base URL can be configured via environment variable for flexibility.
 	apiURL := os.Getenv("BANK_API_URL")
 	if apiURL == "" {
-		apiURL = "http://localhost:8082" // Root URL, client handles /v1/
+		apiURL = defaultBankAPIURL // Root URL, client handles /v1/
 	}
 
 	// Initialize the Bank REST client.
