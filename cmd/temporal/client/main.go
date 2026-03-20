@@ -131,7 +131,7 @@ func handleStart(c client.Client, taskQueue string, cfg Config) error {
 	}
 
 	slog.Info("Starting workflow", "workflow", cfg.WorkflowName, "workflow_id", workflowID)
-	
+
 	// Temporal ExecuteWorkflow accepts the function itself
 	workflowRun, err := c.ExecuteWorkflow(context.Background(), options, wfFunc, workflows.Params{Order: o})
 	if err != nil {
