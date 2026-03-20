@@ -8,7 +8,7 @@ import (
 	"log/slog"
 	"os"
 
-	workerconfig "github.com/romangurevitch/go-training/cmd/worker/config"
+	workerconfig "github.com/romangurevitch/go-training/cmd/temporal/worker/config"
 	"github.com/romangurevitch/go-training/internal/temporal/activities"
 	"github.com/romangurevitch/go-training/internal/temporal/encryption"
 	"github.com/romangurevitch/go-training/internal/temporal/integrations/inventory"
@@ -26,7 +26,7 @@ func main() {
 	flag.Parse()
 
 	if *configPath == "" {
-		*configPath = "./config/worker/local/config.yaml"
+		*configPath = "./config/temporal/worker/local/config.yaml"
 	}
 
 	cfg, err := workerconfig.LoadConfig(*configPath)

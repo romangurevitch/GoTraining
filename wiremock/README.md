@@ -99,7 +99,7 @@ The easiest way to test scenarios is using the helper script:
 
 #### Test Success Scenario (Default)
 ```bash
-curl -X POST http://localhost:8080/inventory/check \
+curl -X POST http://localhost:8081/inventory/check \
   -H "Content-Type: application/json" \
   -d '{
     "product_id": "00000000-0000-0000-0000-000000000001",
@@ -119,18 +119,18 @@ Expected response:
 
 First, add the intermittent failure mappings:
 ```bash
-curl -X POST http://localhost:8080/__admin/mappings \
+curl -X POST http://localhost:8081/__admin/mappings \
   -H "Content-Type: application/json" \
   -d @wiremock/scenarios/inventory-intermittent-failure.json
 
-curl -X POST http://localhost:8080/__admin/mappings \
+curl -X POST http://localhost:8081/__admin/mappings \
   -H "Content-Type: application/json" \
   -d @wiremock/scenarios/inventory-intermittent-failure-recovery.json
 ```
 
 Set the scenario state:
 ```bash
-curl -X PUT http://localhost:8080/__admin/scenarios/IntermittentFailure/state \
+curl -X PUT http://localhost:8081/__admin/scenarios/IntermittentFailure/state \
   -H "Content-Type: application/json" \
   -d '{"state": "Started"}'
 ```
@@ -138,7 +138,7 @@ curl -X PUT http://localhost:8080/__admin/scenarios/IntermittentFailure/state \
 Make two requests:
 ```bash
 # First request - will return 503
-curl -X POST http://localhost:8080/inventory/check \
+curl -X POST http://localhost:8081/inventory/check \
   -H "Content-Type: application/json" \
   -d '{
     "product_id": "00000000-0000-0000-0000-000000000002",
@@ -146,7 +146,7 @@ curl -X POST http://localhost:8080/inventory/check \
   }'
 
 # Second request - will return 200
-curl -X POST http://localhost:8080/inventory/check \
+curl -X POST http://localhost:8081/inventory/check \
   -H "Content-Type: application/json" \
   -d '{
     "product_id": "00000000-0000-0000-0000-000000000002",
@@ -158,14 +158,14 @@ curl -X POST http://localhost:8080/inventory/check \
 
 Add the non-retryable mapping:
 ```bash
-curl -X POST http://localhost:8080/__admin/mappings \
+curl -X POST http://localhost:8081/__admin/mappings \
   -H "Content-Type: application/json" \
   -d @wiremock/scenarios/inventory-non-retryable-failure.json
 ```
 
 Make a request:
 ```bash
-curl -X POST http://localhost:8080/inventory/check \
+curl -X POST http://localhost:8081/inventory/check \
   -H "Content-Type: application/json" \
   -d '{
     "product_id": "00000000-0000-0000-0000-000000000003",
@@ -183,7 +183,7 @@ Expected response:
 
 Reset to default:
 ```bash
-curl -X POST http://localhost:8080/__admin/mappings/reset
+curl -X POST http://localhost:8081/__admin/mappings/reset
 docker compose restart wiremock
 ```
 
@@ -191,22 +191,22 @@ docker compose restart wiremock
 
 ### View all mappings
 ```bash
-curl http://localhost:8080/__admin/mappings
+curl http://localhost:8081/__admin/mappings
 ```
 
 ### View scenario state
 ```bash
-curl http://localhost:8080/__admin/scenarios
+curl http://localhost:8081/__admin/scenarios
 ```
 
 ### Reset all scenarios
 ```bash
-curl -X POST http://localhost:8080/__admin/scenarios/reset
+curl -X POST http://localhost:8081/__admin/scenarios/reset
 ```
 
 ### View request journal
 ```bash
-curl http://localhost:8080/__admin/requests
+curl http://localhost:8081/__admin/requests
 ```
 
 ## How It Works

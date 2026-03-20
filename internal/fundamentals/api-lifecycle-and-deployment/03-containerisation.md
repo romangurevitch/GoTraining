@@ -45,7 +45,7 @@ graph TD
         direction TB
         R1["FROM scratch"]
         R2["COPY --from=builder /app /app"]
-        R3["EXPOSE 8080"]
+        R3["EXPOSE 8082"]
         R4["ENTRYPOINT /app"]
         R1 --> R2 --> R3 --> R4
     end

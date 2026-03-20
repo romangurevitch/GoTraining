@@ -11,7 +11,7 @@ import (
 func TracingMiddleware(serviceName string) gin.HandlerFunc {
 	// Fallback keeps spans identifiable in Jaeger if the caller omits a service name.
 	if serviceName == "" {
-		serviceName = "bank-api"
+		serviceName = "bank-server"
 	}
 	return otelgin.Middleware(serviceName)
 }

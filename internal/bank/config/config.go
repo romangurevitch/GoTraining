@@ -18,9 +18,9 @@ func Init() {
 	Values = Config{
 		DatabaseURL:  envOrDefault("DATABASE_URL", "postgres://gotrainer:verysecret@localhost:5432/gobank?sslmode=disable"),
 		JWTSecret:    envOrDefault("JWT_SECRET", "super-secret-for-training-only"),
-		ServiceName:  envOrDefault("SERVICE_NAME", "bank-api"),
+		ServiceName:  envOrDefault("SERVICE_NAME", "bank-server"),
 		OTelEndpoint: envOrDefault("OTEL_EXPORTER_OTLP_ENDPOINT", "localhost:4318"),
-		Port:         envOrDefault("PORT", "8080"),
+		Port:         envOrDefault("PORT", "8082"),
 	}
 }
 
