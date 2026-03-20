@@ -7,8 +7,9 @@ This directory contains all student exercises for the Go Training workshop.
 ```
 challenges/
 ├── basics/
-│   ├── fixme/    # Find and fix the bugs
-│   └── implme/   # Implement the function
+│   ├── 01-structs-and-pointers/
+│   ├── 02-interfaces-and-receivers/
+│   └── ...
 └── bank/         # Go Bank service quests
 ```
 
