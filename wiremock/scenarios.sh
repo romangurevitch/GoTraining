@@ -1,6 +1,6 @@
 #!/bin/bash
 
-WIREMOCK_URL="http://localhost:8080"
+WIREMOCK_URL="http://localhost:8081"
 
 show_help() {
     echo "WireMock Scenario Manager"

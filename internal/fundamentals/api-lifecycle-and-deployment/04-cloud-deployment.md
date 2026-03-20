@@ -161,7 +161,7 @@ graph TD
         T1["image: account.dkr.ecr.region.amazonaws.com/myapp:1.4.2<br/>← immutable semver tag"]
         T2["cpu: 256 / memory: 512<br/>← right-size for your workload"]
         T3["healthCheck: GET /healthz<br/>interval: 10s, threshold: 3"]
-        T4["environment: [{PORT: 8080}]<br/>secrets: [{DB_URL: secretsmanager/prod/db}]"]
+        T4["environment: [{PORT: 8082}]<br/>secrets: [{DB_URL: secretsmanager/prod/db}]"]
         T5["logConfiguration: awslogs<br/>group: /ecs/myapp, region: ap-southeast-2"]
     end
 

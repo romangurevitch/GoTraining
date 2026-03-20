@@ -38,7 +38,7 @@ client := &http.Client{
 
 // 2. Server with production-ready timeouts
 srv := &http.Server{
-    Addr:         ":8080",
+    Addr:         ":8082",
     Handler:      loggingMiddleware(mux),
     ReadTimeout:  5 * time.Second,
     WriteTimeout: 10 * time.Second,

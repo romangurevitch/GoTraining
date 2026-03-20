@@ -35,7 +35,7 @@ type IssueTokenResponse struct {
 //
 // Example request:
 //
-//	curl -X POST localhost:8080/v1/token \
+//	curl -X POST localhost:8082/v1/token \
 //	  -H 'Content-Type: application/json' \
 //	  -d '{"sub":"alice","scope":"accounts:read transfers:write"}'
 func (h *Handler) IssueToken(c *gin.Context) {

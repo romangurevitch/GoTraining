@@ -11,7 +11,7 @@ Each layer has a specific job. Click through to explore how they work:
 - **[Service](service/README.md)**: The brain. Orchestrates operations and enforces business rules (like making sure you have enough funds before a transfer).
 - **[API](api/README.md)**: The front door. Exposes REST endpoints using Gin, complete with structured logging, OpenTelemetry tracing, and JWT auth.
 
-*Curious how it all boots up? The `app` and `config` packages wire these layers together in [cmd/bank-api/main.go](../../cmd/bank-api/main.go).*
+*Curious how it all boots up? The `app` and `config` packages wire these layers together in [cmd/bank/server/main.go](../../cmd/bank/server/main.go).*
 
 ## Your Exploration Journey
 

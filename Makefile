@@ -26,8 +26,8 @@ tidy: ## Tidy go.mod dependencies
 	go mod tidy
 
 # Thin-slice targets
-run-bank-api: build ## Start bank API server
-	./bin/bank-api
+run-bank-server: build ## Start bank server
+	./bin/bank-server
 
 run-bank-cli: build ## Use bank CLI (example: make run-bank-cli ARGS="account create 'John Doe'")
 	./bin/bank-cli $(ARGS)
