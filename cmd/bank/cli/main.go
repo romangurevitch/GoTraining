@@ -13,7 +13,7 @@ func main() {
 	// API base URL can be configured via environment variable for flexibility.
 	apiURL := os.Getenv("BANK_API_URL")
 	if apiURL == "" {
-		apiURL = "http://localhost:8080" // Root URL, client handles /v1/
+		apiURL = "http://localhost:8082" // Root URL, client handles /v1/
 	}
 
 	// Initialize the Bank REST client.
