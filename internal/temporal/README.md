@@ -27,9 +27,9 @@ For the best experience, we recommend using **2 terminals**:
 
 ---
 
-## Order Processing Demo
+## Order Processing Demo (Order Saga)
 
-The demo features two order processing workflows demonstrating durable execution, signal handling, and child workflows.
+The demo features an **Order Processing Saga** demonstrating durable execution, signal handling, and child workflows. While the core banking service uses standard database transactions, this module explores how to orchestrate complex, multi-step business processes that require reliable state management across many services.
 
 ### 1. Start Services & Worker (Terminal 1)
 

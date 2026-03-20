@@ -7,19 +7,16 @@ This directory contains all student exercises for the Go Training workshop.
 ```
 challenges/
 ├── basics/
-│   ├── fixme/    # Find and fix the bugs
-│   └── implme/   # Implement the function
+│   ├── 01-structs-and-pointers/
+│   ├── 02-interfaces-and-receivers/
+│   └── ...
 └── bank/         # Go Bank service quests
 ```
 
-## basics/fixme
+## basics/
 
-Short, focused exercises where buggy code is provided. Your task: identify the problem and fix it.
+Short, focused exercises for learning Go fundamentals. Each directory contains a `README.md` and a `challenge.go` file.
 Inspired by the [ConcurrencyWorkshop](https://github.com/) fixme pattern.
-
-## basics/implme
-
-Exercises with `panic("implement me!")` stubs. Your task: implement the function to make the tests pass.
 
 ## bank/
 
