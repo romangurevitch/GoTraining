@@ -1,29 +1,6 @@
-# Module 4: Temporal Orchestration
+# ⏱️ Temporal: Durable Workflow Orchestration
 
-## Why Temporal?
-
-Raw goroutines and channels are great for short-lived concurrent work, but break down for long-running operations that must survive failures, retries, and restarts. Temporal provides **durable execution**: workflows that automatically retry, resume, and track state across failures.
-
-## Prerequisites
-
-- **Docker Desktop** (running)
-- **Go** (1.21+)
-
-## Key Concepts
-
-| Concept | Description |
-|---|---|
-| **Workflow** | Deterministic, replayable business logic. No I/O directly — delegates to Activities. |
-| **Activity** | A single, retriable step (e.g., debit an account, send an email). Can have timeouts and retries. |
-| **Worker** | A process that polls Temporal for tasks and executes workflows/activities. |
-| **Task Queue** | The named queue a worker listens on. Workflows are dispatched to workers via task queues. |
-
-## Terminal Setup Strategy
-
-For the best experience, we recommend using **2 terminals**:
-
-1.  **Terminal 1 (Services & Worker)**: Starts the background infrastructure and then runs the Worker process. **Keep this terminal open** to watch the worker logs.
-2.  **Terminal 2 (Client & Signals)**: Used for all interaction—starting workflows and sending signals.
+Raw goroutines and channels are powerful for short-lived concurrent work, but they break down when tasks need to survive **process crashes**, **network failures**, and **restarts**. Temporal provides **durable execution**: your code runs to completion even if the machine dies halfway through.
 
 ---
 
@@ -31,68 +8,126 @@ For the best experience, we recommend using **2 terminals**:
 
 The demo features an **Order Processing Saga** demonstrating durable execution, signal handling, and child workflows. While the core banking service uses standard database transactions, this module explores how to orchestrate complex, multi-step business processes that require reliable state management across many services.
 
-### 1. Start Services & Worker (Terminal 1)
+## 1. The Problem Temporal Solves
 
-First, start the Temporal server and WireMock (they run in the background):
-```bash
-make temporal-up
+Imagine a multi-step order flow: charge the customer → reserve inventory → send a confirmation email. Without Temporal, a crash between any two steps leaves inconsistent state and no automatic recovery.
+
+```mermaid
+sequenceDiagram
+    participant App
+    participant DB
+    participant Email
+    App->>DB: Charge customer ✅
+    App--xEmail: 💥 Process crash — email never sent
+    Note over App,Email: State is now inconsistent
 ```
 
-Then, start the Worker in the **same terminal**. It will stay active and show you logs as work is processed:
-```bash
-make worker-start
+With Temporal, the Workflow is **durable**: it resumes exactly where it left off.
+
+```mermaid
+sequenceDiagram
+    participant W as Worker
+    participant T as Temporal Server
+    participant A as Activity
+
+    W->>A: Charge customer
+    A->>T: ✅ Done
+    T->>T: 📝 Record: ActivityCompleted
+
+    W->>A: Reserve inventory
+    A->>T: ✅ Done
+    T->>T: 📝 Record: ActivityCompleted
+
+    Note over W: 💥 Worker crashes
+    Note over W: ↩️Worker restarts  
+
+    W->>T: Replay: Polls Temporal
+    T-->>W: Replay: 2 steps already completed
+    Note over W,T: Skips completed steps,<br>resumes here ↓
+
+    W->>A: Send confirmation email
+    A->>T: ✅ Done
+    T->>T: 📝 Record: ActivityCompleted
 ```
 
-- **Temporal Web UI**: [http://localhost:8233](http://localhost:8233)
-- **WireMock (Inventory API)**: [http://localhost:8081](http://localhost:8081)
+---
 
-### 2. Execute Workflows (Terminal 2)
+## 2. Core Concepts
 
-Switch to your second terminal to interact with the system. We will explore two different ways of processing orders.
+| Concept | What it is | Analogy |
+|---|---|---|
+| **Workflow** | Deterministic, replayable orchestration logic. Never does I/O directly. | The recipe |
+| **Activity** | A single retriable step: an API call, DB write, email send. | One step in the recipe |
+| **Worker** | A process that polls Temporal and executes Workflows and Activities. | The chef |
+| **Task Queue** | A named queue Workers listen on; routes work to the right Workers. | The order ticket rail |
+| **Signal** | An external event sent into a running Workflow to influence its state. | A customer calling to change their order |
 
-#### Step 1: Automated Workflow
-Run a fully automated workflow. This drives the order through every stage automatically (`PLACED` → `PICKED` → `SHIPPED` → `COMPLETED`) using Activities.
+---
 
-```bash
-make workflow-auto
+## 3. How It Fits Together
+
+```mermaid
+flowchart LR
+    Client["Your Code\n(Workflow Client)"]
+    TS["Temporal Server\n(Durable State + Task Queue)"]
+    W["Worker\n(your process)"]
+    A1["Activity: Charge"]
+    A2["Activity: Ship"]
+
+    Client --"StartWorkflow"--> TS
+    W --"Poll"--> TS
+    TS --"Dispatch task"--> W
+    W --> A1
+    W --> A2
+    A1 & A2 --"Result"--> TS
 ```
 
-#### Step 2: Signal-Driven Workflow
-Next, run a workflow that requires external human/system interaction. This workflow will pause at each stage and wait for you to send a signal before proceeding.
+The **Temporal Server** is just a durable queue and state store — it holds no business logic. All your business logic lives in your Worker process.
 
-**A. Set your Workflow ID**
-Pick a unique name for your order:
-```bash
-export ID=my-order-1
-```
+---
 
-**B. Start the workflow**
-```bash
-make workflow-signal
-```
-*Note: This command returns immediately so you can use this same terminal for the next steps.*
+## 4. The Golden Rule: Workflows Must Be Deterministic
 
-### 3. Interacting with your Workflow (Terminal 2)
+Temporal reconstructs a Workflow's state by **replaying its event history** after a crash. This means Workflow code must always make the same decisions given the same history.
+For most non-deterministic functions used typically, Temporal's SDK offers deterministic alternatives. e.g.,
 
-While the signal-driven workflow is running, you must send signals to move it forward. These commands use the `ID` variable you set above:
+| ❌ Instead of this | ✅ Do this instead |
+|---|---|
+| `time.Now()` | `workflow.Now(ctx)` |
+| `rand.Int()` | `workflow.SideEffect(...)` |
+| `http.Get(url)` | Call an Activity |
+| `os.Getenv(...)` | Pass as Workflow input |
+| `go func() { ... }` | `workflow.Go(ctx, ...)` |
 
-```bash
-# Pick the order (moves from PLACED to PICKED)
-make workflow-pick
+Breaking this rule causes **non-determinism errors** — Temporal detects that the replayed decisions don't match history and panics the Workflow.
 
-# Ship the order (moves to SHIPPED)
-make workflow-ship
+Any complex non-deterministic code (e.g., network calls, I/O, database operations) should sit in an activity.
 
-# Mark as delivered (moves to COMPLETED)
-make workflow-deliver
+> [!TIP]
+> Temporal will not re-execute activities when replaying workflows. 
+> However, if an activity does not return or produce an error (i.e., the worker crashes or some other error prevents the activity from being recorded in Temporal's event history),
+> the activity may be re-executed. Because of this, Temporal recommends activities be ***idempotent***.
+>
+> This means that, executing the same activity with the same set of inputs multiple times should be the same as executing the activity once.
+> Be mindful when designing activities that they can be safely executed multiple times without causing unexpected side-effects.
 
-# Or cancel the order (before picking)
-make workflow-cancel
-```
+---
 
-> **Pro Tip**: Open the [Temporal Web UI](http://localhost:8233) to see your workflow's progress visually. You can see the event history, input/output data, and even send signals directly from the UI.
+## 5. What's in This Module
 
-## Self-Paced Resources
+| Directory | Contents |
+|---|---|
+| `order/` | Order domain model and status transitions |
+| `workflows/` | Workflow definitions (automated + signal-driven) |
+| `activities/` | Individual retriable steps (inventory, shipping) |
+| `integrations/` | External service clients (WireMock inventory API) |
+| `encryption/` | Data converter for payload encryption |
+
+Ready to run it? See the **[Order Processing Demo →](order/README.md)**
+
+---
+
+## 📚 Further Reading
 
 - [Temporal Go SDK documentation](https://docs.temporal.io/develop/go)
 - [Temporal tutorials](https://learn.temporal.io/)
