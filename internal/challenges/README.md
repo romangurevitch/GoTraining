@@ -7,16 +7,19 @@ This directory contains all student exercises for the Go Training workshop.
 ```
 challenges/
 ├── basics/
-│   ├── 01-structs-and-pointers/
-│   ├── 02-interfaces-and-receivers/
-│   └── ...
+│   ├── fixme/    # Find and fix the bugs
+│   └── implme/   # Implement the function
 └── bank/         # Go Bank service quests
 ```
 
-## basics/
+## basics/fixme
 
-Short, focused exercises for learning Go fundamentals. Each directory contains a `README.md` and a `challenge.go` file.
+Short, focused exercises where buggy code is provided. Your task: identify the problem and fix it.
 Inspired by the [ConcurrencyWorkshop](https://github.com/) fixme pattern.
+
+## basics/implme
+
+Exercises with `panic("implement me!")` stubs. Your task: implement the function to make the tests pass.
 
 ## bank/
 
@@ -28,7 +31,4 @@ You'll implement the `POST /v1/transfers` API endpoint in a pre-scaffolded servi
 - JWT authentication and scope-based authorisation.
 - Table-driven unit testing for handlers.
 
-Everything below the API layer is pre-built so you can focus on building production-grade APIs.
-
 Run tests with: `make test-bank`
-

@@ -120,8 +120,8 @@ Discover reliable, durable execution patterns for long-running workflows:
 Take on various exercises to test your understanding of Go:
 
 - [Challenges Overview](internal/challenges/README.md)
-- [01: Structs & Pointers](internal/challenges/basics/01-structs-and-pointers/README.md) — Diagnose and fix buggy code.
-- [02: Interfaces & Receivers](internal/challenges/basics/02-interfaces-and-receivers/README.md) — Complete the implementation to pass tests.
+- [Fix Me](internal/challenges/basics/fixme/README.md) — Diagnose and fix buggy code.
+- [Implement Me](internal/challenges/basics/implme/README.md) — Complete the implementation to pass tests.
 - [Go Bank Transfer Quest](internal/challenges/bank/README.md) — Build the `POST /v1/transfers` API endpoint.
 
 Navigate to the respective [directories](internal/challenges) to start the exercises.
