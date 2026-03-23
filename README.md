@@ -6,7 +6,7 @@ Throughout this hands-on workshop, delve into the nuances of building robust app
 
 ## Table of Contents
 
-0. [📅 Training Schedule](SCHEDULE.md)
+0. [Training Schedule](SCHEDULE.md)
 1. [Prerequisites](#prerequisites)
 2. [Getting Started](#getting-started)
 3. [Module 1: Modern API Engineering Principles](#module-1-modern-api-engineering-principles)
