@@ -10,7 +10,7 @@ These are the **Go building blocks challenges** for Day 1. Each challenge is a s
 4. Fix the bug or implement the function
 5. Run again — green means done
 
-## Track 1: Go Building Blocks (13:30)
+## Track 1: Go Building Blocks
 
 | # | Challenge | Type | Concept |
 |---|-----------|------|---------|
@@ -19,7 +19,7 @@ These are the **Go building blocks challenges** for Day 1. Each challenge is a s
 | 03 | [The Phantom Append](03-phantom-append/) | fixme | Append semantics + value receiver |
 | 04 | [Silent Errors](04-silent-errors/) | implme | Sentinel errors, errors.Is |
 
-## Track 2: Interfaces, Receivers & Context (14:30)
+## Track 2: Interfaces, Receivers & Context
 
 | # | Challenge | Type | Concept |
 |---|-----------|------|---------|
@@ -27,7 +27,7 @@ These are the **Go building blocks challenges** for Day 1. Each challenge is a s
 | 06 | [The Interface Lie](06-interface-lie/) | fixme | Typed nil in interface |
 | 07 | [The Ignored Cancel](07-ignored-cancel/) | implme | Context cancellation, goroutines, defer |
 
-## Track 3: Build, Package & Run (15:20)
+## Track 3: Build, Package & Run
 
 | # | Challenge | Type | Concept |
 |---|-----------|------|---------|

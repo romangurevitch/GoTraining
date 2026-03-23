@@ -12,5 +12,5 @@ type Account struct {
 //
 // TODO: fix the receiver so deposits actually change the balance.
 func (a Account) Deposit(amount int64) {
-	a.Balance += amount
+	a.Balance += amount // nolint:staticcheck // intentional bug for challenge
 }

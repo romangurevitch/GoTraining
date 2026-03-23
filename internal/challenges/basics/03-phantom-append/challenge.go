@@ -12,7 +12,7 @@ type WatchList struct {
 //
 // TODO: fix both bugs so suspects are actually stored.
 func (w WatchList) AddSuspect(id string) {
-	w.suspects = append(w.suspects, id)
+	w.suspects = append(w.suspects, id) // nolint:staticcheck // intentional bug for challenge
 }
 
 // Count returns the number of suspects on the list.

@@ -7,7 +7,7 @@ import "fmt"
 // (Lowercase first letter = package-private in Go.)
 //
 // TODO: implement this function.
-func formatName(first, last string) string {
+func formatName(first, last string) string { // nolint:unused // students implement and use this
 	panic("implement me")
 }
 
