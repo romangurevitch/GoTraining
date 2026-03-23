@@ -82,7 +82,10 @@ Explore the unit tests for runnable patterns:
 
 ```bash
 # Run tests with verbose output
-go test -v ./internal/basics/http/...
+cd internal/basics/http
+```
+```bash
+go test -v ./...
 ```
 
 ---

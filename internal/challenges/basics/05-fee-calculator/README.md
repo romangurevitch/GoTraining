@@ -5,7 +5,10 @@ Two account types need to report monthly fees. One compiles. The other won't bud
 
 ## The Crime Scene
 ```bash
-go test -v ./internal/challenges/basics/05-fee-calculator/...
+cd internal/challenges/basics/05-fee-calculator
+```
+```bash
+go test -v ./...
 ```
 
 ## Your Mission
@@ -21,8 +24,8 @@ go test -v ./internal/challenges/basics/05-fee-calculator/...
 <details>
 <summary>Hints (click to reveal)</summary>
 
-1. `SavingsAccount.MonthlyFee()` should use `(s SavingsAccount)` — value receiver. Return 5.0.
-2. `PremiumAccount.MonthlyFee()` should use `(p *PremiumAccount)` — pointer receiver. Return 25.0.
+1. `SavingsAccount.MonthlyFee()` should use `(s SavingsAccount)` — value receiver. Return 500 (representing $5.00).
+2. `PremiumAccount.MonthlyFee()` should use `(p *PremiumAccount)` — pointer receiver. Return 2500 (representing $25.00).
 3. In the test, `SavingsAccount{}` (value) satisfies `FeeCalculator`. `&PremiumAccount{}` (pointer) satisfies it after your fix.
 4. Try changing `*PremiumAccount` to `PremiumAccount` in the test — the compiler will reject it. That's the lesson.
 5. `TotalFees` is already implemented — don't modify it.

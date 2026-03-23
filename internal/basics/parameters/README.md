@@ -78,7 +78,10 @@ Explore the benchmarks to see performance differences:
 
 ```bash
 # Run benchmarks with memory statistics
-go test -bench '.Parameter.' -benchmem ./internal/basics/parameters/...
+cd internal/basics/parameters
+```
+```bash
+go test -bench '.Parameter.' -benchmem ./...
 ```
 
 ---

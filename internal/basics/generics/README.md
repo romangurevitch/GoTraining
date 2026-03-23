@@ -114,5 +114,8 @@ If your logic only works for one or two types, or if you find yourself using `an
 
 **Run the tests to see it all in action!**
 ```bash
-go test -v ./internal/basics/generics/...
+cd internal/basics/generics
+```
+```bash
+go test -v ./...
 ```

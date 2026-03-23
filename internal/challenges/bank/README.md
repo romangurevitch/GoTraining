@@ -95,7 +95,10 @@ We use table-driven tests and `httptest` to unit test the handler isolated from 
 **Definition of Done:**
 - Run the handler tests:
   ```bash
-  go test ./internal/bank/api/transfer/... -v
+  cd internal/bank/api/transfer
+  ```
+  ```bash
+  go test -v ./...
   ```
 - All tests pass successfully, confirming your handler perfectly maps edge cases.
 - Finally, verify the entire service is still green:

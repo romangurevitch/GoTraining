@@ -5,7 +5,10 @@ The payment processor silently swallowed a failed withdrawal. No exception. No c
 
 ## The Crime Scene
 ```bash
-go test -v ./internal/challenges/basics/04-silent-errors/...
+cd internal/challenges/basics/04-silent-errors
+```
+```bash
+go test -v ./...
 ```
 
 ## Your Mission

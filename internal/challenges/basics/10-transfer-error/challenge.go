@@ -7,14 +7,14 @@ import "fmt"
 type TransferError struct {
 	FromID string
 	ToID   string
-	Amount float64
+	Amount int64
 	Reason string
 }
 
 // Error implements the error interface.
 // TODO: return a descriptive string, e.g.:
 //
-//	"transfer from acc-001 to acc-002 of $100.00 failed: <reason>"
+//	"transfer from acc-001 to acc-002 of 10000 cents failed: <reason>"
 func (e *TransferError) Error() string {
 	_ = fmt.Sprintf // hint: use this
 	panic("implement me")
@@ -28,6 +28,6 @@ func (e *TransferError) Error() string {
 //   - on success, return nil
 //
 // TODO: implement the validation logic.
-func Transfer(fromID, toID string, amount float64) error {
+func Transfer(fromID, toID string, amount int64) error {
 	panic("implement me")
 }

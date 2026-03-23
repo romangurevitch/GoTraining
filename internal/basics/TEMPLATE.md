@@ -83,10 +83,15 @@ Explore the unit tests for runnable patterns:
 
 ```bash
 # Run tests with verbose output
-go test -v ./internal/basics/[module-name]/...
+cd internal/basics/[module-name]
+```
+```bash
+go test -v ./...
+```
 
 # Optional: Run with race detector if applicable
-# go test -v -race ./internal/basics/[module-name]/...
+```bash
+go test -v -race ./...
 ```
 
 ---

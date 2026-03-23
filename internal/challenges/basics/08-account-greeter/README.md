@@ -5,7 +5,10 @@ Build the greeting service — the simplest package CBA ships. It must be correc
 
 ## The Crime Scene
 ```bash
-go test -v ./internal/challenges/basics/08-account-greeter/...
+cd internal/challenges/basics/08-account-greeter
+```
+```bash
+go test -v ./...
 ```
 
 ## Your Mission

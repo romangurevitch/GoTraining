@@ -43,11 +43,17 @@ These are the **Go building blocks challenges** for Day 1. Each challenge is a s
 ## Running a Single Challenge
 
 ```bash
-go test -v ./internal/challenges/basics/01-frozen-account/...
+cd internal/challenges/basics/01-frozen-account
+```
+```bash
+go test -v ./...
 ```
 
 ## Running All Challenges
 
 ```bash
-go test ./internal/challenges/basics/...
+cd internal/challenges/basics
+```
+```bash
+go test -v ./...
 ```

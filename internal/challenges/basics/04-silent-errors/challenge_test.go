@@ -6,17 +6,17 @@ import (
 )
 
 func TestWithdraw_Success(t *testing.T) {
-	newBalance, err := Withdraw(100.0, 40.0)
+	newBalance, err := Withdraw(100, 40)
 	if err != nil {
 		t.Fatalf("expected no error for valid withdrawal, got: %v", err)
 	}
-	if newBalance != 60.0 {
-		t.Fatalf("expected new balance 60.0, got %.2f", newBalance)
+	if newBalance != 60 {
+		t.Fatalf("expected new balance 60, got %d", newBalance)
 	}
 }
 
 func TestWithdraw_InsufficientFunds(t *testing.T) {
-	_, err := Withdraw(50.0, 100.0)
+	_, err := Withdraw(50, 100)
 	if !errors.Is(err, ErrInsufficientFunds) {
 		t.Fatalf(
 			"expected ErrInsufficientFunds when balance < amount, got: %v\n"+
@@ -27,25 +27,25 @@ func TestWithdraw_InsufficientFunds(t *testing.T) {
 }
 
 func TestWithdraw_NegativeAmount(t *testing.T) {
-	_, err := Withdraw(100.0, -10.0)
+	_, err := Withdraw(100, -10)
 	if !errors.Is(err, ErrNegativeAmount) {
 		t.Fatalf("expected ErrNegativeAmount for amount <= 0, got: %v", err)
 	}
 }
 
 func TestWithdraw_ZeroAmount(t *testing.T) {
-	_, err := Withdraw(100.0, 0)
+	_, err := Withdraw(100, 0)
 	if !errors.Is(err, ErrNegativeAmount) {
 		t.Fatalf("expected ErrNegativeAmount for amount=0, got: %v", err)
 	}
 }
 
 func TestWithdraw_ExactBalance(t *testing.T) {
-	newBalance, err := Withdraw(100.0, 100.0)
+	newBalance, err := Withdraw(100, 100)
 	if err != nil {
 		t.Fatalf("expected no error when withdrawing exact balance, got: %v", err)
 	}
-	if newBalance != 0.0 {
-		t.Fatalf("expected new balance 0.0, got %.2f", newBalance)
+	if newBalance != 0 {
+		t.Fatalf("expected new balance 0, got %d", newBalance)
 	}
 }

@@ -5,12 +5,12 @@ import "fmt"
 // AMLChecker performs anti-money-laundering checks.
 // It implements the error interface so it can be returned as an error.
 type AMLChecker struct {
-	threshold float64
+	threshold int64
 }
 
 // Error implements the error interface.
 func (c *AMLChecker) Error() string {
-	return fmt.Sprintf("AML check failed: threshold %.2f exceeded", c.threshold)
+	return fmt.Sprintf("AML check failed: threshold %d exceeded", c.threshold)
 }
 
 // check simulates an AML check (always passes in this stub).
@@ -29,7 +29,7 @@ func runAMLCheck(skip bool) error {
 	if skip {
 		return checker // BUG: typed nil — the interface is not nil
 	}
-	checker = &AMLChecker{threshold: 10000}
+	checker = &AMLChecker{threshold: 1000000} // $10,000.00
 	return checker.check()
 }
 

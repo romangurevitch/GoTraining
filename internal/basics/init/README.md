@@ -70,7 +70,10 @@ Explore the unit tests for runnable patterns:
 
 ```bash
 # Run tests with verbose output
-go test -v ./internal/basics/init/...
+cd internal/basics/init
+```
+```bash
+go test -v ./...
 ```
 
 ---

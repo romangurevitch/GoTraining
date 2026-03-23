@@ -112,5 +112,8 @@ Explore the unit tests for runnable patterns:
 
 ```bash
 # Run with race detector (Highly Recommended)
-go test -v -race ./internal/basics/concurrency/...
+cd internal/basics/concurrency
+```
+```bash
+go test -v -race ./...
 ```

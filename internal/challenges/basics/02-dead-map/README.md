@@ -5,7 +5,10 @@ The transaction logger runs — until it doesn't. The map was declared. Was it e
 
 ## The Crime Scene
 ```bash
-go test -v ./internal/challenges/basics/02-dead-map/...
+cd internal/challenges/basics/02-dead-map
+```
+```bash
+go test -v ./...
 ```
 
 ## Your Mission
@@ -15,13 +18,13 @@ go test -v ./internal/challenges/basics/02-dead-map/...
 4. Run the tests again — they should pass.
 
 ## Key Lesson
-> **Python vs Go:** In Python, `{}` gives you a ready-to-use dict. In Go, `map[string]float64` declares the type but the value is `nil` — you must call `make(map[string]float64)` or use a composite literal `map[string]float64{}` before writing to it.
+> **Python vs Go:** In Python, `{}` gives you a ready-to-use dict. In Go, declaring a map only reserves the name and type — the value remains `nil`. You must initialize it using `make()` or a composite literal `{}` before you can write to it. Writing to a `nil` map will cause a runtime panic.
 
 <details>
 <summary>Hints (click to reveal)</summary>
 
 1. Look at the `NewLedger()` function — what is `entries` set to?
-2. `var m map[string]float64` declares a nil map. Reads return zero values silently. Writes panic.
-3. Fix: `entries: make(map[string]float64)` inside the struct literal in `NewLedger`.
-4. Alternatively: `entries: map[string]float64{}` works too.
+2. In Go, a declared map variable without an assignment is `nil`.
+3. Check the differences between `var m map[string]int64` and `m := make(map[string]int64)`.
+4. How can you ensure `entries` is not `nil` before it's used?
 </details>

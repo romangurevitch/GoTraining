@@ -136,11 +136,11 @@ import "testing"
 
 func TestDeposit_UpdatesBalance(t *testing.T) {
 	account := &Account{Balance: 0}
-	account.Deposit(100)
+	account.Deposit(10000)
 
-	if account.Balance != 100 {
+	if account.Balance != 10000 {
 		t.Fatalf(
-			"Balance should be 100 after Deposit(100) — got %.2f.\n"+
+			"Balance should be 10000 after Deposit(10000) — got %d.\n"+
 				"  Hint: check whether Deposit uses a value or pointer receiver.",
 			account.Balance,
 		)
@@ -148,13 +148,13 @@ func TestDeposit_UpdatesBalance(t *testing.T) {
 }
 
 func TestDeposit_MultipleDeposits(t *testing.T) {
-	account := &Account{Balance: 50}
-	account.Deposit(25)
-	account.Deposit(25)
+	account := &Account{Balance: 5000}
+	account.Deposit(2500)
+	account.Deposit(2500)
 
-	if account.Balance != 100 {
+	if account.Balance != 10000 {
 		t.Fatalf(
-			"Balance should be 100 after two Deposit(25) calls — got %.2f.",
+			"Balance should be 10000 after two Deposit(2500) calls — got %d.",
 			account.Balance,
 		)
 	}
@@ -169,7 +169,7 @@ package frozenaccount
 
 // Account holds a bank account balance.
 type Account struct {
-	Balance float64
+	Balance int64
 }
 
 // Deposit adds amount to the account balance.
@@ -178,7 +178,7 @@ type Account struct {
 // so the original balance is never updated.
 //
 // TODO: fix the receiver so deposits actually change the balance.
-func (a Account) Deposit(amount float64) {
+func (a Account) Deposit(amount int64) {
 	a.Balance += amount
 }
 ```
@@ -188,7 +188,7 @@ func (a Account) Deposit(amount float64) {
 ```bash
 go test -v ./internal/challenges/basics/01-frozen-account/...
 ```
-Expected: `FAIL` — "Balance should be 100 after Deposit(100) — got 0.00"
+Expected: `FAIL` — "Balance should be 10000 after Deposit(10000) — got 0"
 
 - [ ] **Step 1.4: Verify the test passes with the fix applied**
 
@@ -256,7 +256,7 @@ func TestRecord_StoresEntry(t *testing.T) {
 		if r := recover(); r != nil {
 			t.Fatalf(
 				"nil map panic — the entries map was never initialized.\n"+
-					"  Fix: use NewLedger() or initialize entries with make(map[string]float64).\n"+
+					"  Fix: use NewLedger() or initialize entries with make(map[string]int64).\n"+
 					"  Panic: %v",
 				r,
 			)
@@ -264,11 +264,11 @@ func TestRecord_StoresEntry(t *testing.T) {
 	}()
 
 	l := NewLedger()
-	l.Record("tx-1", 100.0)
+	l.Record("tx-1", 10000)
 
 	got := l.Balance("tx-1")
-	if got != 100.0 {
-		t.Fatalf("expected balance 100.0 for tx-1, got %.2f", got)
+	if got != 10000 {
+		t.Fatalf("expected balance 10000 for tx-1, got %d", got)
 	}
 }
 
@@ -280,14 +280,14 @@ func TestRecord_MultipleEntries(t *testing.T) {
 	}()
 
 	l := NewLedger()
-	l.Record("tx-1", 50.0)
-	l.Record("tx-2", 75.0)
+	l.Record("tx-1", 5000)
+	l.Record("tx-2", 7500)
 
-	if l.Balance("tx-1") != 50.0 {
-		t.Errorf("tx-1: expected 50.0, got %.2f", l.Balance("tx-1"))
+	if l.Balance("tx-1") != 5000 {
+		t.Errorf("tx-1: expected 5000, got %d", l.Balance("tx-1"))
 	}
-	if l.Balance("tx-2") != 75.0 {
-		t.Errorf("tx-2: expected 75.0, got %.2f", l.Balance("tx-2"))
+	if l.Balance("tx-2") != 7500 {
+		t.Errorf("tx-2: expected 7500, got %d", l.Balance("tx-2"))
 	}
 }
 ```
@@ -300,7 +300,7 @@ package deadmap
 
 // Ledger records transaction amounts by ID.
 type Ledger struct {
-	entries map[string]float64
+	entries map[string]int64
 	// BUG: entries is never initialized — it's nil until make() is called.
 }
 
@@ -312,12 +312,12 @@ func NewLedger() *Ledger {
 }
 
 // Record stores an amount for the given transaction ID.
-func (l *Ledger) Record(id string, amount float64) {
+func (l *Ledger) Record(id string, amount int64) {
 	l.entries[id] = amount // PANIC when entries is nil
 }
 
 // Balance returns the recorded amount for id (0 if not found).
-func (l *Ledger) Balance(id string) float64 {
+func (l *Ledger) Balance(id string) int64 {
 	return l.entries[id]
 }
 ```
@@ -331,7 +331,7 @@ Expected: `FAIL` — "nil map panic — the entries map was never initialized...
 
 - [ ] **Step 2.4: Verify test passes with the fix**
 
-Temporarily change `NewLedger` to return `&Ledger{entries: make(map[string]float64)}`, run, revert.
+Temporarily change `NewLedger` to return `&Ledger{entries: make(map[string]int64)}`, run, revert.
 Expected: `PASS`
 
 - [ ] **Step 2.5: Revert to buggy state and create README**
@@ -352,15 +352,15 @@ The transaction logger runs — until it doesn't. The map was declared. Was it e
 4. Run the tests again — they should pass.
 
 ## Key Lesson
-> **Python vs Go:** In Python, `{}` gives you a ready-to-use dict. In Go, `map[string]float64` declares the type but the value is `nil` — you must call `make(map[string]float64)` or use a composite literal `map[string]float64{}` before writing to it.
+> **Python vs Go:** In Python, `{}` gives you a ready-to-use dict. In Go, `map[string]int64` declares the type but the value is `nil` — you must call `make(map[string]int64)` or use a composite literal `map[string]int64{}` before writing to it.
 
 <details>
 <summary>Hints (click to reveal)</summary>
 
 1. Look at the `NewLedger()` function — what is `entries` set to?
-2. `var m map[string]float64` declares a nil map. Reads return zero values silently. Writes panic.
-3. Fix: `entries: make(map[string]float64)` inside the struct literal in `NewLedger`.
-4. Alternatively: `entries: map[string]float64{}` works too.
+2. `var m map[string]int64` declares a nil map. Reads return zero values silently. Writes panic.
+3. Fix: `entries: make(map[string]int64)` inside the struct literal in `NewLedger`.
+4. Alternatively: `entries: map[string]int64{}` works too.
 </details>
 ```
 
@@ -534,17 +534,17 @@ import (
 )
 
 func TestWithdraw_Success(t *testing.T) {
-	newBalance, err := Withdraw(100.0, 40.0)
+	newBalance, err := Withdraw(10000, 4000)
 	if err != nil {
 		t.Fatalf("expected no error for valid withdrawal, got: %v", err)
 	}
-	if newBalance != 60.0 {
-		t.Fatalf("expected new balance 60.0, got %.2f", newBalance)
+	if newBalance != 6000 {
+		t.Fatalf("expected new balance 6000, got %d", newBalance)
 	}
 }
 
 func TestWithdraw_InsufficientFunds(t *testing.T) {
-	_, err := Withdraw(50.0, 100.0)
+	_, err := Withdraw(5000, 10000)
 	if !errors.Is(err, ErrInsufficientFunds) {
 		t.Fatalf(
 			"expected ErrInsufficientFunds when balance < amount, got: %v\n"+
@@ -555,26 +555,26 @@ func TestWithdraw_InsufficientFunds(t *testing.T) {
 }
 
 func TestWithdraw_NegativeAmount(t *testing.T) {
-	_, err := Withdraw(100.0, -10.0)
+	_, err := Withdraw(10000, -1000)
 	if !errors.Is(err, ErrNegativeAmount) {
 		t.Fatalf("expected ErrNegativeAmount for amount <= 0, got: %v", err)
 	}
 }
 
 func TestWithdraw_ZeroAmount(t *testing.T) {
-	_, err := Withdraw(100.0, 0)
+	_, err := Withdraw(10000, 0)
 	if !errors.Is(err, ErrNegativeAmount) {
 		t.Fatalf("expected ErrNegativeAmount for amount=0, got: %v", err)
 	}
 }
 
 func TestWithdraw_ExactBalance(t *testing.T) {
-	newBalance, err := Withdraw(100.0, 100.0)
+	newBalance, err := Withdraw(10000, 10000)
 	if err != nil {
 		t.Fatalf("expected no error when withdrawing exact balance, got: %v", err)
 	}
-	if newBalance != 0.0 {
-		t.Fatalf("expected new balance 0.0, got %.2f", newBalance)
+	if newBalance != 0 {
+		t.Fatalf("expected new balance 0, got %d", newBalance)
 	}
 }
 ```
@@ -598,7 +598,7 @@ var ErrNegativeAmount = errors.New("negative or zero amount")
 // Returns (0, ErrNegativeAmount) if amount <= 0.
 // Returns (0, ErrInsufficientFunds) if balance < amount.
 // Returns (balance - amount, nil) on success.
-func Withdraw(balance, amount float64) (float64, error) {
+func Withdraw(balance, amount int64) (int64, error) {
 	panic("implement me")
 }
 ```
@@ -614,7 +614,7 @@ Expected: all tests panic with "implement me"
 
 Temporarily implement `Withdraw`:
 ```go
-func Withdraw(balance, amount float64) (float64, error) {
+func Withdraw(balance, amount int64) (int64, error) {
     if amount <= 0 {
         return 0, ErrNegativeAmount
     }
@@ -686,29 +686,29 @@ import "testing"
 
 func TestSavingsAccount_MonthlyFee(t *testing.T) {
 	// SavingsAccount uses a value receiver — both T and *T satisfy the interface.
-	var calc FeeCalculator = SavingsAccount{Balance: 1000}
-	if got := calc.MonthlyFee(); got != 5.0 {
-		t.Fatalf("SavingsAccount.MonthlyFee() = %.2f, want 5.00", got)
+	var calc FeeCalculator = SavingsAccount{Balance: 100000}
+	if got := calc.MonthlyFee(); got != 500 {
+		t.Fatalf("SavingsAccount.MonthlyFee() = %d, want 500", got)
 	}
 }
 
 func TestPremiumAccount_MonthlyFee(t *testing.T) {
 	// PremiumAccount must use a pointer receiver — only *PremiumAccount satisfies the interface.
 	// If you use a value receiver, this line will not compile.
-	var calc FeeCalculator = &PremiumAccount{Balance: 5000}
-	if got := calc.MonthlyFee(); got != 25.0 {
-		t.Fatalf("PremiumAccount.MonthlyFee() = %.2f, want 25.00", got)
+	var calc FeeCalculator = &PremiumAccount{Balance: 500000}
+	if got := calc.MonthlyFee(); got != 2500 {
+		t.Fatalf("PremiumAccount.MonthlyFee() = %d, want 2500", got)
 	}
 }
 
 func TestTotalFees(t *testing.T) {
 	accounts := []FeeCalculator{
-		SavingsAccount{Balance: 1000},
-		&PremiumAccount{Balance: 5000},
+		SavingsAccount{Balance: 100000},
+		&PremiumAccount{Balance: 500000},
 	}
 	total := TotalFees(accounts)
-	if total != 30.0 {
-		t.Fatalf("TotalFees() = %.2f, want 30.00", total)
+	if total != 3000 {
+		t.Fatalf("TotalFees() = %d, want 3000", total)
 	}
 }
 ```
@@ -722,18 +722,18 @@ package feecalculator
 // FeeCalculator calculates the monthly fee for an account.
 // Defined on the consumer side — this package decides what it needs.
 type FeeCalculator interface {
-	MonthlyFee() float64
+	MonthlyFee() int64
 }
 
 // SavingsAccount charges a flat $5/month fee.
 // Use a VALUE receiver — both SavingsAccount and *SavingsAccount will satisfy FeeCalculator.
 type SavingsAccount struct {
-	Balance float64
+	Balance int64
 }
 
 // MonthlyFee returns the monthly fee for a SavingsAccount.
-// TODO: implement — return 5.0
-func (s SavingsAccount) MonthlyFee() float64 {
+// TODO: implement — return 500
+func (s SavingsAccount) MonthlyFee() int64 {
 	panic("implement me")
 }
 
@@ -742,19 +742,19 @@ func (s SavingsAccount) MonthlyFee() float64 {
 // If you use a value receiver here, the test line `var calc FeeCalculator = &PremiumAccount{...}`
 // will compile but `var calc FeeCalculator = PremiumAccount{...}` won't — and that's the lesson.
 type PremiumAccount struct {
-	Balance float64
+	Balance int64
 }
 
 // MonthlyFee returns the monthly fee for a PremiumAccount.
-// TODO: implement using a POINTER receiver — return 25.0
-func (p *PremiumAccount) MonthlyFee() float64 {
+// TODO: implement using a POINTER receiver — return 2500
+func (p *PremiumAccount) MonthlyFee() int64 {
 	panic("implement me")
 }
 
 // TotalFees sums the monthly fees for all accounts.
 // Do not modify this function.
-func TotalFees(accounts []FeeCalculator) float64 {
-	var total float64
+func TotalFees(accounts []FeeCalculator) int64 {
+	var total int64
 	for _, a := range accounts {
 		total += a.MonthlyFee()
 	}
@@ -771,7 +771,7 @@ Expected: panic "implement me" on all tests
 
 - [ ] **Step 5.4: Verify tests pass with implementation**
 
-Implement both `MonthlyFee` methods (return 5.0 and 25.0), run, revert.
+Implement both `MonthlyFee` methods (return 500 and 2500), run, revert.
 Expected: `PASS`
 
 - [ ] **Step 5.5: Create README**
@@ -798,8 +798,8 @@ Two account types need to report monthly fees. One compiles. The other won't bud
 <details>
 <summary>Hints (click to reveal)</summary>
 
-1. `SavingsAccount.MonthlyFee()` should use `(s SavingsAccount)` — value receiver. Return 5.0.
-2. `PremiumAccount.MonthlyFee()` should use `(p *PremiumAccount)` — pointer receiver. Return 25.0.
+1. `SavingsAccount.MonthlyFee()` should use `(s SavingsAccount)` — value receiver. Return 500.
+2. `PremiumAccount.MonthlyFee()` should use `(p *PremiumAccount)` — pointer receiver. Return 2500.
 3. In the test, `SavingsAccount{}` (value) satisfies `FeeCalculator`. `&PremiumAccount{}` (pointer) satisfies it after your fix.
 4. Try changing `*PremiumAccount` to `PremiumAccount` in the test — the compiler will reject it. That's the lesson.
 5. `TotalFees` is already implemented — don't modify it.
@@ -862,7 +862,7 @@ import "fmt"
 
 // AMLChecker performs anti-money-laundering checks.
 type AMLChecker struct {
-	threshold float64
+	threshold int64
 }
 
 // check simulates an AML check (always passes in this stub).
@@ -881,7 +881,7 @@ func runAMLCheck(skip bool) error {
 	if skip {
 		return checker // BUG: typed nil — the interface is not nil
 	}
-	checker = &AMLChecker{threshold: 10000}
+	checker = &AMLChecker{threshold: 1000000}
 	return checker.check()
 }
 
@@ -1277,16 +1277,16 @@ var ErrNegativeRate = errors.New("interest rate cannot be negative")
 //
 // BUG: negative rate is not validated — Calculate returns a result instead of ErrNegativeRate.
 // (Do not fix this — your job is to write tests that CATCH this bug.)
-func Calculate(principal, rate float64, years int) (float64, error) {
+func Calculate(principal int64, rate float64, years int) (int64, error) {
 	if years < 0 {
 		return 0, errors.New("years cannot be negative")
 	}
 	// BUG: missing: if rate < 0 { return 0, ErrNegativeRate }
-	result := principal
+	result := float64(principal)
 	for i := 0; i < years; i++ {
 		result *= 1 + rate
 	}
-	return result, nil
+	return int64(result), nil
 }
 ```
 
@@ -1305,10 +1305,10 @@ import (
 // checkResult is a pre-built test helper. Use it in your table cases.
 // t.Helper() ensures that when a test fails, the error points to the
 // table row that failed — not to this function.
-func checkResult(t *testing.T, got, want float64) {
+func checkResult(t *testing.T, got, want int64) {
 	t.Helper()
-	if math.Abs(got-want) > 0.001 {
-		t.Errorf("got %.4f, want %.4f", got, want)
+	if got != want {
+		t.Errorf("got %d, want %d", got, want)
 	}
 }
 
@@ -1320,15 +1320,15 @@ func checkResult(t *testing.T, got, want float64) {
 func TestCalculate(t *testing.T) {
 	tests := []struct {
 		name      string
-		principal float64
+		principal int64
 		rate      float64
 		years     int
-		want      float64
+		want      int64
 		wantErr   error
 	}{
 		// TODO: add at least 5 test cases.
 		// Include:
-		//   - a normal case (e.g. 1000 at 5% for 1 year = 1050)
+		//   - a normal case (e.g. 100000 at 5% for 1 year = 105000)
 		//   - zero years (result == principal)
 		//   - zero rate (result == principal)
 		//   - negative years (want error)
@@ -1431,7 +1431,7 @@ import (
 )
 
 func TestTransfer_Success(t *testing.T) {
-	err := Transfer("acc-001", "acc-002", 100.0)
+	err := Transfer("acc-001", "acc-002", 10000)
 	if err != nil {
 		t.Fatalf("expected no error for valid transfer, got: %v", err)
 	}
@@ -1452,24 +1452,24 @@ func TestTransfer_ZeroAmount_ReturnsTransferError(t *testing.T) {
 		t.Errorf("TransferError.FromID = %q, want %q", te.FromID, "acc-001")
 	}
 	if te.Amount != 0 {
-		t.Errorf("TransferError.Amount = %.2f, want 0", te.Amount)
+		t.Errorf("TransferError.Amount = %d, want 0", te.Amount)
 	}
 }
 
 func TestTransfer_NegativeAmount_ReturnsTransferError(t *testing.T) {
-	err := Transfer("acc-X", "acc-Y", -50.0)
+	err := Transfer("acc-X", "acc-Y", -5000)
 
 	var te *TransferError
 	if !errors.As(err, &te) {
 		t.Fatalf("expected *TransferError for negative amount, got: %T %v", err, err)
 	}
-	if te.Amount != -50.0 {
-		t.Errorf("TransferError.Amount = %.2f, want -50.00", te.Amount)
+	if te.Amount != -5000 {
+		t.Errorf("TransferError.Amount = %d, want -5000", te.Amount)
 	}
 }
 
 func TestTransfer_SameAccount_ReturnsTransferError(t *testing.T) {
-	err := Transfer("acc-001", "acc-001", 100.0)
+	err := Transfer("acc-001", "acc-001", 10000)
 
 	var te *TransferError
 	if !errors.As(err, &te) {
@@ -1484,7 +1484,7 @@ func TestTransferError_ErrorString(t *testing.T) {
 	te := &TransferError{
 		FromID: "acc-A",
 		ToID:   "acc-B",
-		Amount: 500.0,
+		Amount: 50000,
 		Reason: "amount must be positive",
 	}
 	msg := te.Error()
@@ -1507,13 +1507,13 @@ import "fmt"
 type TransferError struct {
 	FromID string
 	ToID   string
-	Amount float64
+	Amount int64
 	Reason string
 }
 
 // Error implements the error interface.
 // TODO: return a descriptive string, e.g.:
-//   "transfer from acc-001 to acc-002 of $100.00 failed: <reason>"
+//   "transfer from acc-001 to acc-002 of 10000 failed: <reason>"
 func (e *TransferError) Error() string {
 	_ = fmt.Sprintf // hint: use this
 	panic("implement me")
@@ -1527,7 +1527,7 @@ func (e *TransferError) Error() string {
 //   - on success, return nil
 //
 // TODO: implement the validation logic.
-func Transfer(fromID, toID string, amount float64) error {
+func Transfer(fromID, toID string, amount int64) error {
 	panic("implement me")
 }
 ```

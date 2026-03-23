@@ -92,7 +92,10 @@ Explore the unit tests for runnable patterns:
 
 ```bash
 # Run tests with verbose output
-go test -v ./internal/basics/interface/...
+cd internal/basics/interface
+```
+```bash
+go test -v ./...
 ```
 
 ---

@@ -85,10 +85,10 @@ internal/challenges/basics/
 
 **The bug:**
 ```go
-type Account struct { Balance float64 }
+type Account struct { Balance int64 }
 
 // BUG: value receiver — mutates a copy, not the original
-func (a Account) Deposit(amount float64) {
+func (a Account) Deposit(amount int64) {
     a.Balance += amount
 }
 ```
@@ -111,15 +111,15 @@ func (a Account) Deposit(amount float64) {
 
 **Detective Brief:** *"The transaction logger runs without crashing — until it does. The map was declared. Was it ever born?"*
 
-**Concept:** `var m map[string]float64` declares a nil map. Reads return zero silently. Writes panic. Python's `{}` gives a ready dict; Go's map literal doesn't.
+**Concept:** `var m map[string]int64` declares a nil map. Reads return zero silently. Writes panic. Python's `{}` gives a ready dict; Go's map literal doesn't.
 
 **The bug:**
 ```go
 type Ledger struct {
-    entries map[string]float64 // never initialized
+    entries map[string]int64 // never initialized
 }
 
-func (l *Ledger) Record(id string, amount float64) {
+func (l *Ledger) Record(id string, amount int64) {
     l.entries[id] = amount // PANIC: assignment to entry in nil map
 }
 ```
@@ -129,16 +129,16 @@ func (l *Ledger) Record(id string, amount float64) {
 func TestRecord(t *testing.T) {
     defer func() {
         if r := recover(); r != nil {
-            t.Fatalf("nil map panic — initialize the map first.\n  hint: make(map[string]float64)\n  got: %v", r)
+            t.Fatalf("nil map panic — initialize the map first.\n  hint: make(map[string]int64)\n  got: %v", r)
         }
     }()
     l := &Ledger{}
-    l.Record("tx-1", 100.0)
-    // assert entries["tx-1"] == 100.0
+    l.Record("tx-1", 10000)
+    // assert entries["tx-1"] == 10000
 }
 ```
 
-**The fix:** Add `NewLedger() *Ledger { return &Ledger{entries: make(map[string]float64)} }` and use it.
+**The fix:** Add `NewLedger() *Ledger { return &Ledger{entries: make(map[string]int64)} }` and use it.
 
 **Key lesson:** `var m map[T]V` = nil. `make(map[T]V)` = live. Python `{}` = Go `map[T]V{}`.
 
@@ -195,7 +195,7 @@ var ErrNegativeAmount    = errors.New("negative amount")
 // Withdraw deducts amount from balance.
 // Returns ErrNegativeAmount if amount <= 0.
 // Returns ErrInsufficientFunds if balance < amount.
-func Withdraw(balance, amount float64) (float64, error) {
+func Withdraw(balance, amount int64) (int64, error) {
     panic("implement me")
 }
 ```
@@ -226,17 +226,17 @@ func Withdraw(balance, amount float64) (float64, error) {
 ```go
 // FeeCalculator is defined here — consumer side.
 type FeeCalculator interface {
-    MonthlyFee() float64
+    MonthlyFee() int64
 }
 
 // SavingsAccount — use a VALUE receiver (student implements this first, it "just works")
-type SavingsAccount struct{ Balance float64 }
+type SavingsAccount struct{ Balance int64 }
 
 // PremiumAccount — must use a POINTER receiver (student discovers why)
-type PremiumAccount struct{ Balance float64 }
+type PremiumAccount struct{ Balance int64 }
 
 // TotalFees — already provided, student does not modify
-func TotalFees(accounts []FeeCalculator) float64 { ... }
+func TotalFees(accounts []FeeCalculator) int64 { ... }
 ```
 
 The test passes `SavingsAccount{}` (value) and `&PremiumAccount{}` (pointer) into `[]FeeCalculator`. The test file compiles cleanly. If the student uses a value receiver for `PremiumAccount`, *their* file won't compile — the error is in `challenge.go`.
@@ -414,7 +414,7 @@ func Greet(accountID, first, last string) string {
 type TransferError struct {
     FromID string
     ToID   string
-    Amount float64
+    Amount int64
     Reason string
 }
 
@@ -424,7 +424,7 @@ func (e *TransferError) Error() string {
 
 // Transfer validates and records a transfer.
 // Returns *TransferError for business rule violations.
-func Transfer(fromID, toID string, amount float64) error {
+func Transfer(fromID, toID string, amount int64) error {
     panic("implement me")
 }
 ```

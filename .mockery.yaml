@@ -19,3 +19,9 @@ packages:
   github.com/romangurevitch/go-training/internal/bank/repository:
     interfaces:
       Repository: {}
+  github.com/romangurevitch/go-training/internal/temporal/activities:
+    interfaces:
+      InventoryChecker: {}
+  github.com/romangurevitch/go-training/internal/basics/mocking/calculator:
+    interfaces:
+      Adder: {}

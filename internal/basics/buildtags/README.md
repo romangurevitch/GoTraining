@@ -90,7 +90,14 @@ Separate your long-running integration tests from fast unit tests.
 
 func TestHeavyDatabase(t *testing.T) { ... }
 ```
-Run them with: `go test -tags=integration ./...`
+
+Run them with:
+```bash
+cd internal/basics/buildtags
+```
+```bash
+go test -tags=integration ./...
+```
 
 ### 🚩 Feature Flags
 Include experimental features in a build without affecting the stable production binary.

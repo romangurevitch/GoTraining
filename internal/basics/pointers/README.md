@@ -72,7 +72,10 @@ Explore the unit tests for runnable patterns:
 
 ```bash
 # Run tests with verbose output
-go test -v ./internal/basics/pointers/...
+cd internal/basics/pointers
+```
+```bash
+go test -v ./...
 ```
 
 ---

@@ -105,7 +105,10 @@ In the `benchmark.go` file in this directory, we compare two ways of calculating
 
 **Run it yourself to see which one scales better!**
 ```bash
-go test -bench=. -benchmem ./internal/basics/benchmark/...
+cd internal/basics/benchmark
+```
+```bash
+go test -bench=. -benchmem ./...
 ```
 
 ---

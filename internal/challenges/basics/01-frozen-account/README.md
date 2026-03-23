@@ -1,11 +1,14 @@
 # 🔍 Case 01: The Frozen Account
 
 ## The Detective Brief
-Alice deposits $100 into her account. The code compiles. The function runs without error. Her balance is still $0. The teller is baffled.
+Alice deposits \$100 into her account. The code compiles. The function runs without error. Her balance is still $0. The teller is baffled.
 
 ## The Crime Scene
 ```bash
-go test -v ./internal/challenges/basics/01-frozen-account/...
+cd internal/challenges/basics/01-frozen-account
+```
+```bash
+go test -v ./...
 ```
 
 ## Your Mission
@@ -15,7 +18,7 @@ go test -v ./internal/challenges/basics/01-frozen-account/...
 4. Run the tests again — they should pass.
 
 ## Key Lesson
-> **Python vs Go:** In Python, `self` is always a reference to the actual object. In Go, `func (a Account) Deposit(...)` receives a *copy* of the struct — mutations to `a` vanish when the function returns. Use `func (a *Account) Deposit(...)` to mutate the original.
+> **Python vs Go:** In Python, `self` is always a reference to the actual object. In Go, the "receiver" — the variable before the function name — can be passed by **value** (a copy) or by **pointer** (the original). If you mutate a copy, the changes vanish when the function returns. Choosing the right receiver type is the key to managing state in Go.
 
 <details>
 <summary>Hints (click to reveal)</summary>

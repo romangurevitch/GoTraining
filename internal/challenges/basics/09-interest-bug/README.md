@@ -5,7 +5,10 @@ The interest calculator passed code review. The team wants to ship it. Your job:
 
 ## The Crime Scene
 ```bash
-go test -v ./internal/challenges/basics/09-interest-bug/...
+cd internal/challenges/basics/09-interest-bug
+```
+```bash
+go test -v ./...
 ```
 
 ## Your Mission
@@ -22,9 +25,9 @@ go test -v ./internal/challenges/basics/09-interest-bug/...
 <details>
 <summary>Hints (click to reveal)</summary>
 
-1. A normal case: `{name: "5% for 1 year", principal: 1000, rate: 0.05, years: 1, want: 1050.0}`
+1. A normal case: `{name: "5% for 1 year", principal: 100000, rate: 0.05, years: 1, want: 105000}`
 2. Zero years: any principal and rate → `want: principal` (no compounding)
 3. Zero rate: any principal → `want: principal` (1+0 = 1, no growth)
 4. Negative years: `wantErr: errors.New("years cannot be negative")` — but use `errors.Is` wisely
-5. **The bug case**: `{name: "negative rate", principal: 1000, rate: -0.05, years: 1, want: 0, wantErr: ErrNegativeRate}` — add this and watch it fail!
+5. **The bug case**: `{name: "negative rate", principal: 100000, rate: -0.05, years: 1, want: 0, wantErr: ErrNegativeRate}` — add this and watch it fail!
 </details>

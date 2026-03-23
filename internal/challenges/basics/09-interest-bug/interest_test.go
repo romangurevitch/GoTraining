@@ -2,17 +2,16 @@ package interestbug
 
 import (
 	"errors"
-	"math"
 	"testing"
 )
 
 // checkResult is a pre-built test helper. Use it in your table cases.
 // t.Helper() ensures that when a test fails, the error points to the
 // table row that failed — not to this function.
-func checkResult(t *testing.T, got, want float64) {
+func checkResult(t *testing.T, got, want int64) {
 	t.Helper()
-	if math.Abs(got-want) > 0.001 {
-		t.Errorf("got %.4f, want %.4f", got, want)
+	if got != want {
+		t.Errorf("got %d, want %d", got, want)
 	}
 }
 
@@ -24,15 +23,15 @@ func checkResult(t *testing.T, got, want float64) {
 func TestCalculate(t *testing.T) {
 	tests := []struct {
 		name      string
-		principal float64
+		principal int64
 		rate      float64
 		years     int
-		want      float64
+		want      int64
 		wantErr   error
 	}{
 		// TODO: add at least 5 test cases.
 		// Include:
-		//   - a normal case (e.g. 1000 at 5% for 1 year = 1050)
+		//   - a normal case (e.g. 100000 at 5% for 1 year = 105000 cents)
 		//   - zero years (result == principal)
 		//   - zero rate (result == principal)
 		//   - negative years (want error)

@@ -74,5 +74,9 @@ You can find runnable examples in the test files:
 - `assertion_test.go`: Examples of interface assertions and type switches.
 
 ```bash
-go test -v ./internal/basics/casting/...
+# Run tests with verbose output
+cd internal/basics/casting
+```
+```bash
+go test -v ./...
 ```

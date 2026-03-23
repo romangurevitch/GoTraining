@@ -5,7 +5,10 @@ A transfer failed. The log says "error". Which account? How much? What rule? The
 
 ## The Crime Scene
 ```bash
-go test -v ./internal/challenges/basics/10-transfer-error/...
+cd internal/challenges/basics/10-transfer-error
+```
+```bash
+go test -v ./...
 ```
 
 ## Your Mission

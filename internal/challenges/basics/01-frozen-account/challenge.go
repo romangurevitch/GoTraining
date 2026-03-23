@@ -2,7 +2,7 @@ package frozenaccount
 
 // Account holds a bank account balance.
 type Account struct {
-	Balance float64
+	Balance int64
 }
 
 // Deposit adds amount to the account balance.
@@ -11,6 +11,6 @@ type Account struct {
 // so the original balance is never updated.
 //
 // TODO: fix the receiver so deposits actually change the balance.
-func (a Account) Deposit(amount float64) {
+func (a Account) Deposit(amount int64) {
 	a.Balance += amount
 }

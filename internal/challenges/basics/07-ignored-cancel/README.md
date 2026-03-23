@@ -5,7 +5,10 @@ The fraud monitor launched goroutines for every request. The requests completed.
 
 ## The Crime Scene
 ```bash
-go test -v -race -timeout 10s ./internal/challenges/basics/07-ignored-cancel/...
+cd internal/challenges/basics/07-ignored-cancel
+```
+```bash
+go test -v -race -timeout 10s ./...
 ```
 
 ## Your Mission
@@ -24,5 +27,5 @@ go test -v -race -timeout 10s ./internal/challenges/basics/07-ignored-cancel/...
 2. Replace `panic("implement me: call report on each iteration")` with `report(accountID)`.
 3. `defer close(stopped)` is already there — it signals the test when the goroutine exits. Don't remove it.
 4. Notice `defer cancel()` in the test. Always defer context cancellation — even if you expect it to be called anyway.
-5. Run with `-race` to check for data races: `go test -race ./internal/challenges/basics/07-ignored-cancel/...`
+5. Run with `-race` to check for data races: `go test -race ./...`
 </details>
