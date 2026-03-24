@@ -19,7 +19,7 @@ Before grading, you MUST read and understand these "Source of Truth" files to id
 ## 📊 Strict Grading Rubric (100 Points Total)
 
 ### 1. Specification & Design Maturity (20 pts)
-*   **Architectural Precision:** Does `spec.md` map PRD constraints (Amount > 1000) to Temporal primitives (Signals/Selectors)?
+*   **Architectural Precision:** Does `spec.md` map PRD constraints (Amount > 1000) to Temporal primitives (e.g., Signals, `AwaitWithTimeout`)?
 *   **Failure Mode Analysis:** Does the spec explicitly cover edge cases like destination account locks or partial database failures?
 *   *Project Guideline:* Penalize heavily if the spec ignores the existing `domain.AccountStatus` logic.
 
