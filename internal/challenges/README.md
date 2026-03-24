@@ -11,14 +11,17 @@ challenges/
 └── temporal/     # Durable Workflow & Agentic Go quest
 ```
 
-## basics/fixme
+## basics/
 
-Short, focused exercises where buggy code is provided. Your task: identify the problem and fix it.
-Inspired by the [ConcurrencyWorkshop](https://github.com/) fixme pattern.
+The **[Day 1 Challenges: Detective Briefs](basics/README.md)** are short exercises covering core Go building blocks, interfaces, concurrency, and testing.
 
-## basics/implme
+Each challenge is a short mystery. You will encounter different types of quests:
+- **fixme**: Buggy code is provided. Your task is to identify the problem and fix it.
+- **implme**: You'll find `panic("implement me!")` stubs. Your task is to implement the function to make the tests pass.
+- **testme**: You'll need to write tests to verify existing logic.
 
-Exercises with `panic("implement me!")` stubs. Your task: implement the function to make the tests pass.
+Run tests with: `make test-challenges`
+
 ## bank/
 
 The **[Go Bank Transfer Quest](bank/README.md)** is your introduction to building production API handlers. 
