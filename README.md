@@ -13,8 +13,9 @@ Throughout this hands-on workshop, delve into the nuances of building robust app
 4. [Module 2: Go Language Fundamentals](#module-2-go-language-fundamentals)
 5. [Module 3: Building the Data & API Service](#module-3-building-the-data--api-service)
 6. [Module 4: Temporal Orchestration](#module-4-temporal-orchestration)
-7. [Challenges](#challenges)
-8. [Further Learning & Resources](#further-learning--resources)
+7. [Module 5: Agentic Go & Durable Workflows](#module-5-agentic-go--durable-workflows)
+8. [Challenges](#challenges)
+9. [Further Learning & Resources](#further-learning--resources)
 
 ## Prerequisites
 
@@ -118,6 +119,13 @@ Discover reliable, durable execution patterns for long-running workflows:
 
 - [Temporal Overview](internal/temporal/README.md) — Workflow vs. Activity and the Replay model.
 - [Worker Entrypoint](cmd/temporal/worker/main.go) — Temporal worker implementation.
+
+## Module 5: Agentic Go & Durable Workflows
+
+Live demonstration and hands-on challenge: leveraging AI agents for ultra-efficient Go development.
+
+- [Durable Transfer Quest](internal/challenges/temporal/README.md) — Build a high-value transfer workflow with human-in-the-loop approval.
+- [Official Temporal Developer Skill](https://github.com/temporalio/skill-temporal-developer) — Use this expert skill to guide your implementation.
 
 ## Challenges
 
