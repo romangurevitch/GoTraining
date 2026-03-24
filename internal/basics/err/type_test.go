@@ -55,7 +55,10 @@ func TestErrorWrappingAndIs(t *testing.T) {
 	// Wrapping a sentinel error using %w
 	wrappedErr := fmt.Errorf("operation failed: %w", ErrNotFound)
 
-	// errors.Is looks down the chain
+	// Direct equality == fails when an error is wrapped
+	assert.False(t, wrappedErr == ErrNotFound, "== fails for wrapped errors")
+
+	// errors.Is looks down the chain and succeeds
 	assert.True(t, errors.Is(wrappedErr, ErrNotFound))
 
 	// Unwrapping
@@ -66,6 +69,10 @@ func TestErrorWrappingAndIs(t *testing.T) {
 func TestErrorWrappingAndAs(t *testing.T) {
 	originalErr := &ValidationError{Field: "email", Reason: "invalid format"}
 	wrappedErr := fmt.Errorf("user creation failed: %w", originalErr)
+
+	// Direct type assertion fails when an error is wrapped
+	_, ok := wrappedErr.(*ValidationError)
+	assert.False(t, ok, "type assertion fails for wrapped errors")
 
 	// errors.As looks down the chain and populates the target
 	var valErr *ValidationError

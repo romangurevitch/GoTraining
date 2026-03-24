@@ -29,6 +29,23 @@ flowchart LR
 
 ## 3. 💻 Implementation Examples
 
+### Basic Instantiation
+```go
+func InstantiationExamples() {
+    // 1. Using new() to allocate zeroed memory
+    p := new(int) // p is *int, *p is 0
+    *p = 42       // set the value at the allocated address
+
+    // 2. Using the address-of operator (&) on a variable
+    x := 100
+    ptr := &x     // ptr is *int pointing to x
+
+    // 3. Using & with struct literals (idiomatic)
+    c := &Counter{count: 10} // Allocates and initializes in one step
+}
+```
+
+### Modifying State
 ```go
 func IncrementPointer(n *int) {
     // 1. Initialisation (Address received as argument)

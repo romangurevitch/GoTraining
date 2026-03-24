@@ -9,6 +9,7 @@ Mocking allows isolating units under test by providing controlled implementation
 | Concept | Description / Purpose |
 | :--- | :--- |
 | **Mockery** | Tool that generates mocks for Go interfaces using the `testify` framework. |
+| **Go Mock (uber/mock)** | Official reflection-based mocking framework, part of the `uber-go` suite. |
 | **Type-Safe Expectations** | Catching signature changes at compile-time with `EXPECT()`. |
 | **Argument Matching** | Specifying rules for function arguments (e.g., `mock.Anything`). |
 
@@ -57,8 +58,8 @@ mockAdder.On("SingleDigitAdd", 1, 2).Return(3, nil)
 > Only mock interfaces you OWN. Mocking third-party libraries leads to fragile tests that break when external code changes. Use `httptest` or real instances for external libraries instead.
 
 1. **Keep Mocks Simple**: Don't build complex logic into your mocks. They should only return predefined values or simple errors.
-2. **Standardise on Mockery**: For consistency across the project, we use Mockery. It integrates seamlessly with `testify/assert` and `testify/require`.
-3. **Use AssertExpectations**: Always call `m.AssertExpectations(t)` to ensure all programmed calls actually happened.
+2. **Prefer Mockery with Testify**: For consistency with the rest of the project, we use Mockery to keep our tests concise and readable.
+3. **Use Mockery v2+**: Always prefer the type-safe `EXPECT()` API to catch signature changes at compile time.
 
 ---
 
@@ -69,10 +70,7 @@ Explore the unit tests for runnable patterns:
 
 ```bash
 # Run tests with verbose output
-cd internal/basics/mocking
-```
-```bash
-go test -v ./...
+go test -v ./internal/basics/mocking/...
 ```
 
 ---
@@ -80,4 +78,4 @@ go test -v ./...
 ## 📚 Further Reading
 
 - [Mockery: Documentation](https://github.com/vektra/mockery)
-- [Testify: Mock Package](https://github.com/stretchr/testify#mock-package)
+- [Uber Mock: Documentation](https://github.com/uber-go/mock)

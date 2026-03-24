@@ -23,7 +23,7 @@ go test -v ./...
 <details>
 <summary>Hints (click to reveal)</summary>
 
-1. `TransferError.Error()` — use `fmt.Sprintf("transfer from %s to %s of $%.2f failed: %s", e.FromID, e.ToID, e.Amount, e.Reason)`.
+1. `TransferError.Error()` — use `fmt.Sprintf("transfer from %s to %s of %d cents failed: %s", e.FromID, e.ToID, e.Amount, e.Reason)`.
 2. `Transfer()` — check `amount <= 0` first, then `fromID == toID`.
 3. Return `&TransferError{FromID: fromID, ToID: toID, Amount: amount, Reason: "amount must be positive"}` for invalid amount.
 4. Return `&TransferError{FromID: fromID, ToID: toID, Amount: amount, Reason: "cannot transfer to same account"}` for same-account.

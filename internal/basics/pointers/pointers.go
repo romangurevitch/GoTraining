@@ -1,5 +1,20 @@
 package pointers
 
+// CreatePointerWithNew demonstrates the built-in new() function, which allocates
+// memory for the specified type and returns a pointer to its zero value.
+func CreatePointerWithNew() *int {
+	p := new(int) // Allocates an integer, initializes to 0, returns *int
+	return p
+}
+
+// CreatePointerWithAddressOf demonstrates the more common approach of using the
+// address-of operator (&) to get a pointer to a struct literal or variable.
+func CreatePointerWithAddressOf() *Counter {
+	// Equivalent to new(Counter), but more idiomatic for structs
+	// and allows initialization of fields in one step.
+	return &Counter{count: 10}
+}
+
 // IncrementValue takes n by value and increments the copy.
 // The caller's variable is not affected.
 func IncrementValue(n int) int {

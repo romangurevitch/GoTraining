@@ -25,7 +25,7 @@ These are the **Go building blocks challenges** for Day 1. Each challenge is a s
 |---|-----------|------|---------|
 | 05 | [The Fee Calculator](05-fee-calculator/) | implme | Interface + pointer receiver method set |
 | 06 | [The Interface Lie](06-interface-lie/) | fixme | Typed nil in interface |
-| 07 | [The Ignored Cancel](07-ignored-cancel/) | implme | Context cancellation, goroutines, defer |
+| 07 | [Context and Goroutines](07-context-and-goroutines/) | implme | Context values, goroutines |
 
 ## Track 3: Build, Package & Run
 

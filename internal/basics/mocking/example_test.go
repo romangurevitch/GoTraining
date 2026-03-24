@@ -4,98 +4,121 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
-	"github.com/stretchr/testify/require"
+	"go.uber.org/mock/gomock"
 
+	"github.com/romangurevitch/go-training/internal/basics/mocking/calculator"
 	"github.com/romangurevitch/go-training/internal/basics/mocking/calculator/mocks"
 )
 
-// TestExampleFunction_Times shows how to assert the number of times a method is called.
+// TestExampleFunction_Times shows Times(n): the mock asserts the method is
+// called exactly n times. If called more or fewer times, the test fails.
 func TestExampleFunction_Times(t *testing.T) {
-	a := new(mocks.Adder)
+	ctrl := gomock.NewController(t)
+	a := mocks.NewMockAdder(ctrl)
 
-	// Expect exactly one call
-	a.On("SingleDigitAdd", 1, 2).Return(3, nil).Once()
+	// Expect exactly one call — calling it 0 or 2+ times fails the test.
+	a.EXPECT().SingleDigitAdd(1, 2).Return(3, nil).Times(1)
 
 	got, err := ExampleFunction(a, 1, 2)
-	require.NoError(t, err)
-	assert.Equal(t, 3, got)
-
-	a.AssertExpectations(t)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if got != 3 {
+		t.Errorf("got %d, want 3", got)
+	}
 }
 
-// TestExampleFunction_Run shows Run: execute custom logic when the mock is called.
-// This is often used to set internal state or perform side effects.
-func TestExampleFunction_Run(t *testing.T) {
-	a := new(mocks.Adder)
-	called := false
+// TestExampleFunction_DoAndReturn shows DoAndReturn: execute custom logic
+// instead of returning static values. Useful for dynamic responses or
+// verifying the arguments passed to the mock.
+func TestExampleFunction_DoAndReturn(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	a := mocks.NewMockAdder(ctrl)
 
-	a.On("SingleDigitAdd", 1, 2).
-		Return(3, nil).
-		Run(func(args mock.Arguments) {
-			called = true
+	a.EXPECT().
+		SingleDigitAdd(gomock.Any(), gomock.Any()).
+		DoAndReturn(func(x, y int) (int, error) {
+			if x+y >= 10 {
+				return 0, errors.New("too high")
+			}
+			return x + y, nil
 		})
 
-	_, _ = ExampleFunction(a, 1, 2)
-	assert.True(t, called)
-	a.AssertExpectations(t)
+	got, err := ExampleFunction(a, 3, 4)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if got != 7 {
+		t.Errorf("got %d, want 7", got)
+	}
 }
 
-// TestExampleFunction_Anything shows mock.Anything: allow any value for an argument.
-func TestExampleFunction_Anything(t *testing.T) {
-	a := new(mocks.Adder)
+// TestExampleFunction_InOrder shows InOrder: enforce that calls happen in a
+// specific sequence. If Subtract is called before Add, the test fails.
+func TestExampleFunction_InOrder(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	a := mocks.NewMockAdder(ctrl)
 
-	a.On("SingleDigitAdd", mock.Anything, mock.Anything).Return(10, nil)
+	first := a.EXPECT().SingleDigitAdd(1, 2).Return(3, nil)
+	a.EXPECT().SingleDigitAdd(3, 4).Return(7, nil).After(first)
 
-	got, _ := ExampleFunction(a, 5, 5)
-	assert.Equal(t, 10, got)
-	a.AssertExpectations(t)
+	_, _ = ExampleFunction(a, 1, 2)
+	_, _ = ExampleFunction(a, 3, 4)
 }
 
 func TestExampleFunction(t *testing.T) {
+	type args struct {
+		adder func() calculator.Adder
+		x     int
+		y     int
+	}
 	tests := []struct {
 		name    string
-		setup   func(m *mocks.Adder)
-		x, y    int
+		args    args
 		want    int
 		wantErr bool
 	}{
 		{
-			name: "success",
-			setup: func(m *mocks.Adder) {
-				m.On("SingleDigitAdd", 1, 2).Return(3, nil)
+			name: "no error testcase",
+			args: args{
+				adder: func() calculator.Adder {
+					ctrl := gomock.NewController(t)
+					a := mocks.NewMockAdder(ctrl)
+					a.EXPECT().SingleDigitAdd(1, 2).Return(3, nil)
+					return a
+				},
+				x: 1,
+				y: 2,
 			},
-			x:    1,
-			y:    2,
-			want: 3,
+			want:    3,
+			wantErr: false,
 		},
 		{
-			name: "error from mock",
-			setup: func(m *mocks.Adder) {
-				m.On("SingleDigitAdd", 1, 2).Return(0, errors.New("mock error"))
+			name: "error testcase",
+			args: args{
+				adder: func() calculator.Adder {
+					ctrl := gomock.NewController(t)
+					a := mocks.NewMockAdder(ctrl)
+					a.EXPECT().SingleDigitAdd(gomock.Any(), gomock.Any()).Return(0, errors.New("error"))
+					return a
+				},
+				x: 1,
+				y: 2,
 			},
-			x:       1,
-			y:       2,
+			want:    0,
 			wantErr: true,
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			m := new(mocks.Adder)
-			if tt.setup != nil {
-				tt.setup(m)
+			got, err := ExampleFunction(tt.args.adder(), tt.args.x, tt.args.y)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("ExampleFunction() error = %v, wantErr %v", err, tt.wantErr)
+				return
 			}
-
-			got, err := ExampleFunction(m, tt.x, tt.y)
-			if tt.wantErr {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-				assert.Equal(t, tt.want, got)
+			if got != tt.want {
+				t.Errorf("ExampleFunction() got = %v, want %v", got, tt.want)
 			}
-			m.AssertExpectations(t)
 		})
 	}
 }

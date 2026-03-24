@@ -24,8 +24,8 @@ go test -v ./...
 <details>
 <summary>Hints (click to reveal)</summary>
 
-1. `SavingsAccount.MonthlyFee()` should use `(s SavingsAccount)` — value receiver. Return 500 (representing $5.00).
-2. `PremiumAccount.MonthlyFee()` should use `(p *PremiumAccount)` — pointer receiver. Return 2500 (representing $25.00).
+1. Think about how to declare a method on `SavingsAccount` that operates on a copy.
+2. Think about how to declare a method on `PremiumAccount` that operates on a pointer.
 3. In the test, `SavingsAccount{}` (value) satisfies `FeeCalculator`. `&PremiumAccount{}` (pointer) satisfies it after your fix.
 4. Try changing `*PremiumAccount` to `PremiumAccount` in the test — the compiler will reject it. That's the lesson.
 5. `TotalFees` is already implemented — don't modify it.
