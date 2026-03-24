@@ -3,9 +3,9 @@ package contextandgoroutines
 import "context"
 
 // requestIDKey is an unexported type to prevent collisions with other context keys.
-type requestIDKey string
+type requestIDKey string // nolint:unused
 
-const key = requestIDKey("requestID")
+const key = requestIDKey("requestID") // nolint:unused
 
 // WithRequestID returns a new context with the given requestID.
 func WithRequestID(ctx context.Context, requestID string) context.Context {
