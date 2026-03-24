@@ -162,8 +162,9 @@ In a real system, code doesn't just run; it must be observable and registered co
 
 **Task:**
 - **Worker Registration:** Register your new Workflow and Activities in `cmd/temporal/worker/main.go`.
+- **Static Analysis:** Run `workflowcheck ./...` to catch non-deterministic code in your workflow (accidental use of `time.Now()`, native goroutines, or native `select`). Fix any violations — this is a mandatory gate in production CI pipelines.
 - **Trace Propagation:** Use Jaeger (if running) or the Temporal Web UI to verify that your trace ID flows from the HTTP request into the Workflow logic.
-- **Idempotency Check:** Manually "kill" your worker during an activity execution and verify that upon restart, the `TransferID` prevents a duplicate charge.
+- **Idempotency Check:** Manually kill your worker during an activity execution. Upon restart, verify that no duplicate ledger entries exist — the activity's `transferID` check should have prevented the duplicate write.
 
 **Definition of Done:**
 - The worker successfully processes your workflow without manual registration errors.
@@ -172,9 +173,6 @@ In a real system, code doesn't just run; it must be observable and registered co
 ---
 
 ## 💡 Engineering Pro-Tips
-
-### On Idempotency
-To get 100/100, your activities shouldn't just "be idempotent"; they should prove it. Consider adding a migration (`/migration`) to create a `deduplication_events` table or use a `UNIQUE` constraint on the `TransferID` in your `transactions` table.
 
 ### On Observability
 Use `workflow.GetLogger(ctx)` inside your workflow. It automatically suppresses logs during "Replay," ensuring your production logs aren't flooded with duplicate entries.
