@@ -6,11 +6,9 @@ This directory contains all student exercises for the Go Training workshop.
 
 ```
 challenges/
-├── basics/
-│   ├── 01-structs-and-pointers/
-│   ├── 02-interfaces-and-receivers/
-│   └── ...
-└── bank/         # Go Bank service quests
+├── basics/       # Core Go language fundamentals
+├── bank/         # Go Bank HTTP & Data layer quests
+└── temporal/     # Durable Workflow & Agentic Go quest
 ```
 
 ## basics/fixme
@@ -21,10 +19,9 @@ Inspired by the [ConcurrencyWorkshop](https://github.com/) fixme pattern.
 ## basics/implme
 
 Exercises with `panic("implement me!")` stubs. Your task: implement the function to make the tests pass.
-
 ## bank/
 
-The **[Go Bank Transfer Quest](bank/README.md)** is our main challenge! 
+The **[Go Bank Transfer Quest](bank/README.md)** is your introduction to building production API handlers. 
 
 You'll implement the `POST /v1/transfers` API endpoint in a pre-scaffolded service, focusing on:
 - Idiomatic HTTP handler patterns using Gin.
@@ -32,4 +29,14 @@ You'll implement the `POST /v1/transfers` API endpoint in a pre-scaffolded servi
 - JWT authentication and scope-based authorisation.
 - Table-driven unit testing for handlers.
 
-Run tests with: `make test-bank`
+## temporal/
+
+The **[Durable Transfer Quest](temporal/README.md)** is the final, high-stakes challenge! 
+
+You will transform the bank transfer into a robust **Distributed Transaction** using Temporal. This module focuses on:
+- **Agentic Engineering:** Using specialized AI tools to build complex logic.
+- **Workflow Orchestration:** Implementing the Compensation Pattern and Human-in-the-loop approvals.
+- **Durable Reliability:** Ensuring idempotency and surviving worker restarts.
+- **Full-Lifecycle Testing:** Unit, Integration, and the "Gold Standard" Replay tests.
+
+Evaluate your work using the **[Competition Grading Rubric](temporal/GRADING_PROMPT.md)**.
