@@ -1,7 +1,7 @@
 # 🔍 Case 08: The Account Greeter
 
 ## The Detective Brief
-Build the greeting service — the simplest package CBA ships. It must be correct, exported correctly, and testable. One exported function. One unexported helper. No excuses.
+Build the greeting service — the simplest package the bank ships. It must be correct, exported correctly, and testable. One exported function. One unexported helper. No excuses.
 
 ## The Crime Scene
 ```bash
