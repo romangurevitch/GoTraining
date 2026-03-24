@@ -130,12 +130,12 @@ Now, use your "primed" AI agent to implement the workflow logic based on your sp
 Now, implement the activities that interact with the database.
 
 **Task:**
-- Implement `DebitAccount` and `CreditAccount` in `internal/bank/temporal/activities.go`.
-- Ensure they are **idempotent** by using the `TransferID` as a unique key for the transaction.
-- Map domain errors (e.g., `InsufficientFunds`) to `temporal.NewNonRetryableApplicationError`.
+- Implement `DebitAccount`, `CreditAccount`, and `RefundDebitActivity` in `internal/bank/temporal/activities.go`.
+- Each activity receives a `transferID` parameter. Use it as a natural idempotency key when writing to the database — check for an existing record with that `transferID` before inserting, or use an `ON CONFLICT DO NOTHING` strategy. This prevents duplicate ledger entries if Temporal retries the activity.
+- Map domain errors (e.g., `domain.ErrInsufficientFunds`) to `temporal.NewNonRetryableApplicationError` so Temporal does not retry business logic failures.
 
 **Definition of Done:**
-- Run the activities against a mock repository or the real database.
+- Each activity handles a Temporal retry correctly: running the same activity twice with the same `transferID` produces exactly one ledger entry.
 
 ### Quest 6: End-to-End Integration
 Connect everything together.
