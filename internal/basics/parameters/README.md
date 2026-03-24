@@ -54,7 +54,7 @@ func pointerParameter(c *Currency, n int) []*Currency {
 
 ## 📋 4. Common Patterns & Use Cases
 
-- **Large Struct Optimization**: Passing pointers to avoid expensive memory copying of giant data structures.
+- **Large Struct Optimisation**: Passing pointers to avoid expensive memory copying of giant data structures.
 - **Mutual Updates**: When a function must change the state of a passed-in object (e.g., `UpdateUser(u *User)`).
 - **Nil as Optional**: Using pointers to allow a `nil` value, effectively making the parameter optional.
 

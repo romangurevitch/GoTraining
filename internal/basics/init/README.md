@@ -1,6 +1,6 @@
 # 🚀 The `init()` Function in Go
 
-`init()` runs automatically when a package is loaded, before `main()`. It is used for package-level initialization and setup.
+`init()` runs automatically when a package is loaded, before `main()`. It is used for package-level initialisation and setup.
 
 ---
 
@@ -9,7 +9,7 @@
 | Concept | Description / Purpose |
 | :--- | :--- |
 | **Package Initialisation** | The process where package-level variables are assigned their initial values. |
-| **`init()`** | A special function that runs after variables are initialized but before `main()`. |
+| **`init()`** | A special function that runs after variables are initialised but before `main()`. |
 | **Execution Order** | Variables -> `init()` (in file order) -> `main()`. |
 
 ---
@@ -27,10 +27,10 @@ flowchart LR
 ## 3. 💻 Implementation Examples
 
 ```go
-package initializer
+package initialiser
 
 var localVar string
-
+```
 func init() {
     // 1. Initialisation
     localVar = "is that what you expect?"
@@ -46,7 +46,7 @@ func GetVar() string {
 
 ## 4. 📋 Common Patterns & Use Cases
 
-- **Package Level Setup**: Initializing configurations or global states (though use sparingly).
+- **Package Level Setup**: Initialising configurations or global states (though use sparingly).
 - **Self-registration**: Registering drivers (e.g., `sql` drivers or `image` formats) into a central registry.
 - **Environment Variable Checks**: Validating that required environment variables are set during startup.
 
@@ -66,7 +66,7 @@ func GetVar() string {
 ## 🏃 Running the Examples
 
 Explore the unit tests for runnable patterns:
-- `init_test.go`: Shows the order of initialization across different files.
+- `init_test.go`: Shows the order of initialisation across different files.
 
 ```bash
 # Run tests with verbose output
@@ -81,4 +81,4 @@ go test -v ./...
 ## 📚 Further Reading
 
 - [Effective Go: The init function](https://go.dev/doc/effective_go#init)
-- [Official Go Documentation: Program initialization](https://go.dev/ref/spec#Package_initialization)
+- [Official Go Documentation: Program initialisation](https://go.dev/ref/spec#Package_initialization)

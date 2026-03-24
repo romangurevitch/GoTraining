@@ -57,7 +57,7 @@ mockAdder.On("SingleDigitAdd", 1, 2).Return(3, nil)
 > Only mock interfaces you OWN. Mocking third-party libraries leads to fragile tests that break when external code changes. Use `httptest` or real instances for external libraries instead.
 
 1. **Keep Mocks Simple**: Don't build complex logic into your mocks. They should only return predefined values or simple errors.
-2. **Standardize on Mockery**: For consistency across the project, we use Mockery. It integrates seamlessly with `testify/assert` and `testify/require`.
+2. **Standardise on Mockery**: For consistency across the project, we use Mockery. It integrates seamlessly with `testify/assert` and `testify/require`.
 3. **Use AssertExpectations**: Always call `m.AssertExpectations(t)` to ensure all programmed calls actually happened.
 
 ---

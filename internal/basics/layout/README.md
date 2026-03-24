@@ -1,6 +1,6 @@
 # 🏗️ Package Layout in Go
 
-Idiomatic Go projects follow a consistent layout that separates concerns. Proper organization prevents "god packages" and ensures clear boundaries.
+Idiomatic Go projects follow a consistent layout that separates concerns. Proper organisation prevents "god packages" and ensures clear boundaries.
 
 ---
 

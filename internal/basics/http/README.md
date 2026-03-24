@@ -31,7 +31,7 @@ flowchart LR
 ## 3. 💻 Implementation Examples
 
 ```go
-// 1. Client initialization with timeout
+// 1. Client initialisation with timeout
 client := &http.Client{
     Timeout: 10 * time.Second,
 }

@@ -14,11 +14,11 @@ go test -v ./...
 ## Your Mission
 1. Run the tests — they panic with a friendly message.
 2. Read `NewLedger()` in `challenge.go`.
-3. Initialize the map.
+3. Initialise the map.
 4. Run the tests again — they should pass.
 
 ## Key Lesson
-> **Python vs Go:** In Python, `{}` gives you a ready-to-use dict. In Go, declaring a map only reserves the name and type — the value remains `nil`. You must initialize it using `make()` or a composite literal `{}` before you can write to it. Writing to a `nil` map will cause a runtime panic.
+> **Python vs Go:** In Python, `{}` gives you a ready-to-use dict. In Go, declaring a map only reserves the name and type — the value remains `nil`. You must initialise it using `make()` or a composite literal `{}` before you can write to it. Writing to a `nil` map will cause a runtime panic.
 
 <details>
 <summary>Hints (click to reveal)</summary>

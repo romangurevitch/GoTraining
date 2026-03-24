@@ -28,8 +28,8 @@ Focus: Building scalable services, managing durable state with Temporal, and lev
 | 10:30 | **Codebase Walkthrough** | Investigating the "Go Bank" architecture: a deep dive into idiomatic project layout and cross-package dependencies. | [Module 3](README.md#module-3-building-the-data--api-service) |
 | 11:00 | **Transfer Funds Quest** | **Major Challenge:** Implementing a production-grade fund transfer endpoint end-to-end (OpenAPI -> Handler -> Service). | [Challenges](README.md#challenges) |
 | 12:00 | *Lunch Break* | | |
-| 13:00 | **Building Blocks Trivia** | *Sequence Breaker:* A fast-paced quiz on Go syntax, "gotchas," and runtime behavior. | |
+| 13:00 | **Building Blocks Trivia** | *Sequence Breaker:* A fast-paced quiz on Go syntax, "gotchas," and runtime behaviour. | |
 | 13:30 | **Temporal Orchestration** | Reliability at scale: Workflow concepts, signal handling, and the replay model for durable execution. | [Module 4](README.md#module-4-temporal-orchestration) |
 | 14:30 | **Testing & Service Isolation** | Robust verification: Unit testing with Mockery, integration testing, and an introduction to Infrastructure as Code. | [Module 2](README.md#module-2-go-language-fundamentals) |
 | 15:30 | **Agentic Go Demo** | Live demonstration: Leveraging AI agents and modern tooling for ultra-efficient Go development and refactoring. | |
-| 16:00 | **Wrap up & Feedback** | Final open Q&A session and program evaluation. | |
+| 16:00 | **Wrap up & Feedback** | Final open Q&A session and programme evaluation. | |

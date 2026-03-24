@@ -60,7 +60,7 @@ func TestMyTestSuite(t *testing.T) { suite.Run(t, new(MyTestSuite)) }
 
 1. **Clear Failure Messages**: Add custom error messages as arguments to `assert` functions to make failures easier to debug.
 2. **Mock Interaction**: Combine `testify/mock` with generated mocks (e.g., Mockery) for powerful dependency verification.
-3. **Avoid Over-Testing**: Don't assert every minor internal state; focus on verifying behavioral outcomes.
+3. **Avoid Over-Testing**: Don't assert every minor internal state; focus on verifying behavioural outcomes.
 
 ---
 

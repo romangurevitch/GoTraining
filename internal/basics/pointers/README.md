@@ -68,7 +68,7 @@ func ExampleUsage() {
 ## 🏃 Running the Examples
 
 Explore the unit tests for runnable patterns:
-- `pointers_test.go`: Coverage of value vs pointer behavior and nil safety.
+- `pointers_test.go`: Coverage of value vs pointer behaviour and nil safety.
 
 ```bash
 # Run tests with verbose output

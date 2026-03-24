@@ -1,6 +1,6 @@
 # Go Training Workshop
 
-Welcome to the immersive Go Training Workshop! This program is designed to deliver a profound understanding of Go programming, transitioning from interpreted or higher-level languages to building production-grade services and command-line tools.
+Welcome to the immersive Go Training Workshop! This programme is designed to deliver a profound understanding of Go programming, transitioning from interpreted or higher-level languages to building production-grade services and command-line tools.
 
 Throughout this hands-on workshop, delve into the nuances of building robust applications employing idiomatic design patterns, the standard library, and modern frameworks. Under expert guidance, unravel the design philosophies and engineering decisions that underpin effective Go development.
 

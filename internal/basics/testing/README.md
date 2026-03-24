@@ -68,7 +68,7 @@ func TestAdd(t *testing.T) {
 
 1. **Clear Test Names**: Name your subtests clearly to make it easy to identify which case failed.
 2. **Deterministic Tests**: Avoid tests that rely on external state or timing (unless specifically for benchmarking).
-3. **Small Assertions**: One `t.Run()` should ideally test only one specific aspect of your code's behavior.
+3. **Small Assertions**: One `t.Run()` should ideally test only one specific aspect of your code's behaviour.
 
 ---
 

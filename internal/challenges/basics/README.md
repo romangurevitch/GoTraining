@@ -15,7 +15,7 @@ These are the **Go building blocks challenges** for Day 1. Each challenge is a s
 | # | Challenge | Type | Concept |
 |---|-----------|------|---------|
 | 01 | [The Frozen Account](01-frozen-account/) | fixme | Value vs pointer receiver |
-| 02 | [The Dead Map](02-dead-map/) | fixme | Nil map initialization |
+| 02 | [The Dead Map](02-dead-map/) | fixme | Nil map initialisation |
 | 03 | [The Phantom Append](03-phantom-append/) | fixme | Append semantics + value receiver |
 | 04 | [Silent Errors](04-silent-errors/) | implme | Sentinel errors, errors.Is |
 

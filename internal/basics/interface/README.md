@@ -1,6 +1,6 @@
 # 🔌 Interfaces in Go
 
-Interfaces in Go define behavior. They are satisfied implicitly, enabling powerful decoupling and abstraction without explicit inheritance.
+Interfaces in Go define behaviour. They are satisfied implicitly, enabling powerful decoupling and abstraction without explicit inheritance.
 
 ---
 

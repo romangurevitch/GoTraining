@@ -13,13 +13,13 @@ This module covers the core building blocks of the Go programming language. Each
 <a name="structs--layout"></a>
 ### Structs & Layout
 - **[Entities](entity/README.md)** — Defining data structures
-- **[Package Layout](layout/README.md)** — Organizing your code idiomatically
+- **[Package Layout](layout/README.md)** — Organising your code idiomatically
 - **[Embedding](embed/README.md)** — Composition over inheritance
 
 <a name="behaviours"></a>
 ### Behaviours
 - **[Receivers](receivers/README.md)** — Adding methods to types
-- **[init()](init/README.md)** — Package initialization
+- **[init()](init/README.md)** — Package initialisation
 - **[Error Handling](err/README.md)** — Sentinel errors, wrapping, and the `error` interface
 - **[Interfaces](interface/README.md)** — Implicit implementation and decoupling
 
