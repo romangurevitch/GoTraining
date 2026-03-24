@@ -84,7 +84,9 @@ To work efficiently, your AI agent needs to understand the "Rules of the Road." 
 - The agent should answer accurately without you providing more context.
 
 ### Quest 2: Spec & Design (Contract-First)
-Now that your agent is "primed," work together to agree on the contract. 
+Now that your agent is "primed," work together to agree on the contract.
+
+> **Note:** `internal/bank/temporal/` does not exist yet. Create it as a new Go package as part of this quest. Your `spec.md` will live at `internal/bank/temporal/spec.md`.
 
 **Task:**
 - Read the [PRD.md](./PRD.md).
@@ -106,7 +108,7 @@ We'll start by defining the tests. This ensures our implementation is correct fr
     - **Happy Path:** Success for small amounts.
     - **Approval Path:** Wait for signal, then success.
     - **Rejection Path:** Immediate failure on rejection signal.
-    - **Workflow Path:** Simulate a failure in `CreditActivity` and verify `DebitActivity` is compensated (called as a refund).
+    - **Compensation Path:** Simulate a failure in `CreditActivity` and verify `RefundDebitActivity` is called as compensation.
 
 **Definition of Done:**
 - Your tests fail with "undefined" errors (because you haven't written the implementation yet).
