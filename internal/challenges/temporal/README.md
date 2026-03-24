@@ -118,7 +118,8 @@ Now, use your "primed" AI agent to implement the workflow logic based on your sp
 
 **Task:**
 - Implement the `DurableTransferWorkflow` in `internal/bank/temporal/workflow.go`.
-- Use a `workflow.Selector` for the approval gate and timeout.
+- Use `workflow.AwaitWithTimeout` for the approval gate — it blocks until the `ApprovalSignal` arrives or the 24-hour timeout expires, then returns `(conditionMet bool, err error)`.
+- Use `workflow.NewDisconnectedContext(ctx)` inside the compensation branch (when `CreditActivity` returns an error), before calling `RefundDebitActivity`, to obtain a context not tied to the parent workflow's cancellation. This ensures compensation runs even if the workflow is externally cancelled.
 - Implement the compensation pattern for the credit stage.
 - Use `workflow.ExecuteActivity` for all I/O operations.
 
