@@ -142,12 +142,20 @@ Connect everything together.
 
 **Task:**
 - Wire up a new API endpoint `POST /v1/durable-transfers` that starts the Temporal workflow.
+- Start the workflow with a deterministic `WorkflowID` — e.g. `"transfer-" + req.TransferID`. Temporal guarantees that a second `StartWorkflow` call with the same `WorkflowID` returns the existing execution rather than creating a duplicate.
 - Create a CLI command `bank-cli transfer approve <workflow-id>` that sends the approval signal.
 - Run a manual end-to-end test with a large amount (> $1,000) and approve it via the CLI.
 
 **Definition of Done:**
-- You can observe the workflow history in the [Temporal Web UI](http://localhost:8080).
+- You can observe the workflow history in the [Temporal Web UI](http://localhost:8233).
 - The funds are correctly moved only after approval.
+
+#### Export & Replay Test (Bonus)
+After a successful E2E run, export the workflow history:
+```bash
+temporal workflow show --workflow-id <your-workflow-id> --output json > internal/bank/temporal/testdata/transfer_history.json
+```
+Then write a `Test_ReplayHistory` test using `worker.NewWorkflowReplayer()` to verify your code handles existing histories correctly — the standard safety check before deploying changes to a live workflow.
 
 ### Quest 7: Production Hardening (The Final Mile)
 In a real system, code doesn't just run; it must be observable and registered correctly.
