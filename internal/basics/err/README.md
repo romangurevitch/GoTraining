@@ -93,7 +93,10 @@ In this directory, we demonstrate:
 
 **Run the tests to see the error chain in action!**
 ```bash
-go test -v ./internal/basics/err/...
+cd internal/basics/err
+```
+```bash
+go test -v ./...
 ```
 
 ---

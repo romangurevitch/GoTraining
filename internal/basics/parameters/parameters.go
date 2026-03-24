@@ -2,7 +2,7 @@ package parameters
 
 type Currency struct {
 	Code  string
-	Money float64
+	Money int64 // in cents
 	Fx    int64
 }
 

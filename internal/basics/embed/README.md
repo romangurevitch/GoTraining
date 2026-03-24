@@ -94,5 +94,8 @@ Explore the unit tests for runnable patterns:
 - `embed_file_test.go`: Using the `go:embed` directive.
 
 ```bash
-go test -v ./internal/basics/embed/...
+cd internal/basics/embed
+```
+```bash
+go test -v ./...
 ```

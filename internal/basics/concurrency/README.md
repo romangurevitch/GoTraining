@@ -108,9 +108,12 @@ Distribute tasks across a fixed number of workers to limit resource usage.
 ## 🧪 Running the Examples
 
 Explore the unit tests for runnable patterns:
-- `concurrency_test.go`: Basics, Mutexes, and Channel behaviors.
+- `concurrency_test.go`: Basics, Mutexes, and Channel behaviours.
 
 ```bash
 # Run with race detector (Highly Recommended)
-go test -v -race ./internal/basics/concurrency/...
+cd internal/basics/concurrency
+```
+```bash
+go test -v -race ./...
 ```

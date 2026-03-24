@@ -4,7 +4,7 @@ Benchmarking is the process of measuring the performance of your code. Go provid
 
 ## 📌 Why Benchmark?
 - **Performance Baseline**: Know how fast your code is today.
-- **Optimization**: Prove that your "faster" version actually is faster.
+- **Optimisation**: Prove that your "faster" version actually is faster.
 - **Regression Testing**: Ensure new changes don't slow down critical paths.
 - **Resource Usage**: Track memory allocations and CPU efficiency.
 
@@ -94,7 +94,7 @@ func BenchmarkAdd(b *testing.B) {
     for i := 0; i < b.N; i++ {
         r = Add(1, 2)
     }
-    result = r // Prevent compiler optimization
+    result = r // Prevent compiler optimisation
 }
 ```
 
@@ -105,7 +105,10 @@ In the `benchmark.go` file in this directory, we compare two ways of calculating
 
 **Run it yourself to see which one scales better!**
 ```bash
-go test -bench=. -benchmem ./internal/basics/benchmark/...
+cd internal/basics/benchmark
+```
+```bash
+go test -bench=. -benchmem ./...
 ```
 
 ---
@@ -120,4 +123,4 @@ From our own benchmarks on an Apple M3 Pro (ARM64):
 | 16         | ~159              | ~147              | Recursive is still faster |
 | 128        | ~1289             | ~1822             | **Iterative is ~40% faster** |
 
-*Note: The optimized recursive implementation now uses in-place multiplication (`res.Mul`), significantly reducing memory allocations (5 for n=128, matching the iterative version). Iterative only pulls ahead as the input size grows and the overhead of recursive function calls starts to outweigh the loop logic.*
+*Note: The optimised recursive implementation now uses in-place multiplication (`res.Mul`), significantly reducing memory allocations (5 for n=128, matching the iterative version). Iterative only pulls ahead as the input size grows and the overhead of recursive function calls starts to outweigh the loop logic.*

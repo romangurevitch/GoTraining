@@ -94,19 +94,8 @@ Always return an interface or a pointer from your factory function to hide imple
 Use struct tags to map Go fields to external formats like JSON or Database columns.
 ```go
 type Account struct {
-    Balance float64 `json:"balance" db:"total_amount"`
+    Balance int64 `json:"balance" db:"total_amount"` // in cents
 }
-
-// New is the factory function
-func New(name string) User {
-    return &user{
-        Name: name,
-        role: "customer", // Default
-    }
-}
-
-func (u *user) GetName() string { return u.Name }
-func (u *user) IsAdmin() bool   { return u.role == "admin" }
 ```
 
 ---
@@ -120,7 +109,10 @@ In `entity.go`, we demonstrate a complete User entity with:
 
 **Try running the tests to see it in action!**
 ```bash
-go test -v ./internal/basics/entity/...
+cd internal/basics/entity
+```
+```bash
+go test -v ./...
 ```
 
 ---

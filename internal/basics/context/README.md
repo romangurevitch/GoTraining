@@ -87,5 +87,8 @@ defer cancel() // Timer is stopped when function returns
 Explore `context_test.go` for practical examples of cancellation, tracing, and `t.Context()`.
 
 ```bash
-go test -v ./internal/basics/context/...
+cd internal/basics/context
+```
+```bash
+go test -v ./...
 ```

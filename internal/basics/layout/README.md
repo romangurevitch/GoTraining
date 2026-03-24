@@ -1,6 +1,6 @@
 # 🏗️ Package Layout in Go
 
-Idiomatic Go projects follow a consistent layout that separates concerns. Proper organization prevents "god packages" and ensures clear boundaries.
+Idiomatic Go projects follow a consistent layout that separates concerns. Proper organisation prevents "god packages" and ensures clear boundaries.
 
 ---
 
@@ -71,7 +71,10 @@ Explore the unit tests for runnable patterns:
 
 ```bash
 # Run tests with verbose output
-go test -v ./internal/basics/layout/...
+cd internal/basics/layout
+```
+```bash
+go test -v ./...
 ```
 
 ---

@@ -40,7 +40,7 @@ The API server uses Gin as the HTTP router. It groups routes logically and appli
 
 **Task:**
 - Open `internal/bank/api/server.go`.
-- Register the `transferHandler := transfer.New(svc)` initialization.
+- Register the `transferHandler := transfer.New(svc)` initialisation.
 - Wire the `POST /v1/transfers` route using the exact same pattern as the accounts routes.
 - Apply `middleware.JWTMiddleware` to the new group.
 - Apply `middleware.RequireScope("transfers:write")` to the specific route.
@@ -95,7 +95,10 @@ We use table-driven tests and `httptest` to unit test the handler isolated from 
 **Definition of Done:**
 - Run the handler tests:
   ```bash
-  go test ./internal/bank/api/transfer/... -v
+  cd internal/bank/api/transfer
+  ```
+  ```bash
+  go test -v ./...
   ```
 - All tests pass successfully, confirming your handler perfectly maps edge cases.
 - Finally, verify the entire service is still green:
@@ -144,7 +147,7 @@ APIs are useless without clients. Building a strongly-typed Go client makes inte
 Now that you've seen how the CLI consumes an existing client method, it's time to implement both sides from scratch. You'll write the `Transfer` client method and wire up the CLI command that calls it.
 
 **Task:**
-1. **File:** [pkg/client/bank/client.go](../../../pkg/client/bank/client.go) — Implement the `Transfer` method. Look at `GetAccount` to see how we build the URL, set headers (especially `Authorization: Bearer`), serialise the JSON body, and execute `httppkg.DoRequest`.
+1. **File:** [pkg/client/bank/client.go](../../../pkg/client/bank/client.go) — Implement the `Transfer` method. Look at `GetAccount` to see how we build the URL, set headers (especially `Authorisation: Bearer`), serialise the JSON body, and execute `httppkg.DoRequest`.
 2. **File:** [internal/bank/cli/transfer/transfer.go](../../bank/cli/transfer/transfer.go) — Wire up the CLI command. Parse the CLI arguments and invoke your newly written `bankClient.Transfer` method.
 
 **Definition of Done:**

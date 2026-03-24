@@ -31,7 +31,7 @@ flowchart LR
 ## 3. 💻 Implementation Examples
 
 ```go
-// 1. Client initialization with timeout
+// 1. Client initialisation with timeout
 client := &http.Client{
     Timeout: 10 * time.Second,
 }
@@ -82,7 +82,10 @@ Explore the unit tests for runnable patterns:
 
 ```bash
 # Run tests with verbose output
-go test -v ./internal/basics/http/...
+cd internal/basics/http
+```
+```bash
+go test -v ./...
 ```
 
 ---

@@ -9,7 +9,7 @@ include internal/temporal/temporal.mk
 
 all: tools generate clean tidy lint build test
 
-generate: $(MOCKERY) ## Generate mocks
+generate: $(MOCKERY) ## Generate all mocks
 	$(MOCKERY)
 
 clean: ## Remove build artifacts and test cache

@@ -1,11 +1,12 @@
 # Go Training Workshop
 
-Welcome to the immersive Go Training Workshop! This program is designed to deliver a profound understanding of Go programming, transitioning from interpreted or higher-level languages to building production-grade services and command-line tools.
+Welcome to the immersive Go Training Workshop! This programme is designed to deliver a profound understanding of Go programming, transitioning from interpreted or higher-level languages to building production-grade services and command-line tools.
 
 Throughout this hands-on workshop, delve into the nuances of building robust applications employing idiomatic design patterns, the standard library, and modern frameworks. Under expert guidance, unravel the design philosophies and engineering decisions that underpin effective Go development.
 
 ## Table of Contents
 
+0. [Training Schedule](SCHEDULE.md)
 1. [Prerequisites](#prerequisites)
 2. [Getting Started](#getting-started)
 3. [Module 1: Modern API Engineering Principles](#module-1-modern-api-engineering-principles)
@@ -48,14 +49,17 @@ To get the most out of this workshop, we recommend familiarising yourself with t
     Initialise dependencies and run the build/test suite:
     ```bash
     go mod tidy
+    make tools
+    make generate
     make build
     make test
     ```
 
 4. **Start Infrastructure**:
-    Launch the required database services:
+    Launch the required database services (PostgreSQL, Temporal, WireMock):
     ```bash
     make db-up
+    make temporal-up
     ```
 
 5. **Open the Project in an IDE**:
@@ -73,33 +77,33 @@ Explore the foundational concepts for building production-ready APIs and platfor
 
 Dive into the building blocks of Go by exploring the following topics:
 
-- [The Mental Shift](internal/basics)
+- [The Mental Shift](internal/basics/README.md#the-mental-shift)
     - [Pointers](internal/basics/pointers/README.md)
-    - [Type Assertions](internal/basics/casting/README.md)
+    - [Type Assertions & Casting](internal/basics/casting/README.md)
     - [Parameters](internal/basics/parameters/README.md)
-- [Structs & Layout](internal/basics)
+- [Structs & Layout](internal/basics/README.md#structs--layout)
     - [Entities](internal/basics/entity/README.md)
     - [Package Layout](internal/basics/layout/README.md)
     - [Embedding](internal/basics/embed/README.md)
-- [Behaviours](internal/basics)
+- [Behaviours](internal/basics/README.md#behaviours)
     - [Receivers](internal/basics/receivers/README.md)
     - [init()](internal/basics/init/README.md)
     - [Error Handling](internal/basics/err/README.md)
     - [Interfaces](internal/basics/interface/README.md)
-- [Concurrency & Context](internal/basics)
+- [Concurrency & Context](internal/basics/README.md#concurrency--context)
     - [Concurrency](internal/basics/concurrency/README.md)
     - [Context](internal/basics/context/README.md)
-- [Testing & Benchmarking](internal/basics)
+- [Testing & Benchmarking](internal/basics/README.md#testing--benchmarking)
     - [Testing](internal/basics/testing/README.md)
     - [Testify](internal/basics/testify/README.md)
     - [Benchmark](internal/basics/benchmark/README.md)
     - [HTTP Testing](internal/basics/httptest/README.md)
-- [Advanced Features](internal/basics)
+- [Advanced Features](internal/basics/README.md#advanced-features)
     - [Generics](internal/basics/generics/README.md)
     - [Mocking](internal/basics/mocking/README.md)
     - [Build Tags](internal/basics/buildtags/README.md)
 
-Navigate to the respective [directories](internal/basics) to find code examples and documentation.
+Navigate to the [Module 2 Overview](internal/basics/README.md) to find code examples and documentation.
 
 ## Module 3: Building the Data & API Service
 
@@ -113,18 +117,15 @@ Build a persistent storage layer and HTTP service for the "Go Bank" domain. This
 Discover reliable, durable execution patterns for long-running workflows:
 
 - [Temporal Overview](internal/temporal/README.md) — Workflow vs. Activity and the Replay model.
-- [Worker Entrypoint](cmd/temporal/worker/main.go) — Temporal worker implementation stub.
+- [Worker Entrypoint](cmd/temporal/worker/main.go) — Temporal worker implementation.
 
 ## Challenges
 
-Take on various exercises to test your understanding of Go:
+Take on various "Detective Brief" exercises to test your understanding of Go:
 
 - [Challenges Overview](internal/challenges/README.md)
-- [01: Structs & Pointers](internal/challenges/basics/01-structs-and-pointers/README.md) — Diagnose and fix buggy code.
-- [02: Interfaces & Receivers](internal/challenges/basics/02-interfaces-and-receivers/README.md) — Complete the implementation to pass tests.
-- [Go Bank Transfer Quest](internal/challenges/bank/README.md) — Build the `POST /v1/transfers` API endpoint.
-
-Navigate to the respective [directories](internal/challenges) to start the exercises.
+- [Day 1: Basics Challenges](internal/challenges/basics/README.md) — 10 detective mysteries covering core Go concepts.
+- [Day 2: Go Bank Transfer Quest](internal/challenges/bank/README.md) — Build the `POST /v1/transfers` API endpoint end-to-end.
 
 ## Further Learning & Resources
 

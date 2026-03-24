@@ -12,13 +12,13 @@ Generics (introduced in Go 1.18) allow you to write code that works with multipl
 
 ## 🏗️ How Generics Work (The Blueprint)
 
-Generics act as a "blueprint". The compiler generates a specific version of your code for each type you use (Monomorphization).
+Generics act as a "blueprint". The compiler generates a specific version of your code for each type you use (Monomorphisation).
 
 ```mermaid
 flowchart TD
     A["Generic Blueprint (Source)\nfunc Print[T any](v T) { ... }"]
-    A --"Compiler (Monomorphization)"--> B["Print(42) → func PrintInt(v int)"]
-    A --"Compiler (Monomorphization)"--> C["Print(&quot;Hi&quot;) → func PrintStr(v string)"]
+    A --"Compiler (Monomorphisation)"--> B["Print(42) → func PrintInt(v int)"]
+    A --"Compiler (Monomorphisation)"--> C["Print(&quot;Hi&quot;) → func PrintStr(v string)"]
 ```
 
 ---
@@ -71,7 +71,7 @@ func First[T any](s []T) (T, bool) {
 ```
 
 ### 2. Generic Interfaces
-Interfaces can also be parameterized. This describes **behaviour on T** rather than restricting what T is:
+Interfaces can also be parameterised. This describes **behaviour on T** rather than restricting what T is:
 ```go
 type Container[T any] interface {
     Add(T)
@@ -114,5 +114,8 @@ If your logic only works for one or two types, or if you find yourself using `an
 
 **Run the tests to see it all in action!**
 ```bash
-go test -v ./internal/basics/generics/...
+cd internal/basics/generics
+```
+```bash
+go test -v ./...
 ```

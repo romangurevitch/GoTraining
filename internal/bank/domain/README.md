@@ -1,6 +1,6 @@
 # Domain Layer
 
-Welcome to the **Domain Layer**, the absolute center of our Go Bank architecture. This package defines the core business entities, types, and the specific errors our bank cares about.
+Welcome to the **Domain Layer**, the absolute centre of our Go Bank architecture. This package defines the core business entities, types, and the specific errors our bank cares about.
 
 ## Meet the Entities
 

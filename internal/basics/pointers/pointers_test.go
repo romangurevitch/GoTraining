@@ -6,6 +6,20 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestBasicPointerInitialization(t *testing.T) {
+	t.Run("CreatePointerWithNew", func(t *testing.T) {
+		p := CreatePointerWithNew()
+		assert.NotNil(t, p)
+		assert.Equal(t, 0, *p, "new(int) should initialize the value to 0")
+	})
+
+	t.Run("CreatePointerWithAddressOf", func(t *testing.T) {
+		c := CreatePointerWithAddressOf()
+		assert.NotNil(t, c)
+		assert.Equal(t, 10, c.Value(), "&Counter{count: 10} should initialize the struct correctly")
+	})
+}
+
 func TestIncrementValue(t *testing.T) {
 	tests := []struct {
 		name  string

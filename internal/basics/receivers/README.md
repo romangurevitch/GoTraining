@@ -10,7 +10,7 @@ Methods in Go are functions with a receiver argument. Choosing between value and
 | :--- | :--- |
 | **Value Receiver** | Method receives a copy of the value; cannot mutate the original. |
 | **Pointer Receiver** | Method receives the address of the value; can mutate the original. |
-| **Methods** | Functions associated with a type, providing behavioral structure. |
+| **Methods** | Functions associated with a type, providing behavioural structure. |
 | **Consistency** | The rule that all methods for a type should typically use the same receiver style. |
 
 ---
@@ -58,7 +58,7 @@ func (c *Counter) Increment() {
 ## ⚠️ 5. Critical Pitfalls & Best Practices
 
 > [!WARNING]
-> Never copy a struct containing a `sync.Mutex`. Doing so copies the lock's state, leading to deadlocks or undefined behavior. Use a pointer receiver to prevent accidental copies.
+> Never copy a struct containing a `sync.Mutex`. Doing so copies the lock's state, leading to deadlocks or undefined behaviour. Use a pointer receiver to prevent accidental copies.
 
 1. **Rule of Consistency**: if any method for a type must have a pointer receiver, make **all** methods pointer receivers.
 2. **Small Types**: Use value receivers for small types (e.g., `int`, `string`, small structs like `time.Time`) that are naturally "value-like".
@@ -69,11 +69,14 @@ func (c *Counter) Increment() {
 ## 🏃 Running the Examples
 
 Explore the unit tests for runnable patterns:
-- `receivers_test.go`: Coverage of value vs pointer receiver behavior and concurrency safety.
+- `receivers_test.go`: Coverage of value vs pointer receiver behaviour and concurrency safety.
 
 ```bash
 # Run tests with verbose output
-go test -v ./internal/basics/receivers/...
+cd internal/basics/receivers
+```
+```bash
+go test -v ./...
 ```
 
 ---

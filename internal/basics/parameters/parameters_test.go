@@ -8,7 +8,7 @@ import (
 )
 
 func TestValueParameter(t *testing.T) {
-	c := Currency{Code: "USD", Money: 1.0, Fx: 100}
+	c := Currency{Code: "USD", Money: 100, Fx: 100}
 	result := valueParameter(c, 3)
 	require.Len(t, result, 3)
 	for _, got := range result {
@@ -23,7 +23,7 @@ func TestValueParameter_Empty(t *testing.T) {
 }
 
 func TestPointerParameter(t *testing.T) {
-	c := Currency{Code: "GBP", Money: 2.5, Fx: 200}
+	c := Currency{Code: "GBP", Money: 250, Fx: 200}
 	result := pointerParameter(c, 4)
 	require.Len(t, result, 4)
 	for _, ptr := range result {
@@ -59,7 +59,7 @@ func benchPointer(b *testing.B, n int) {
 	l := `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quam risus, tincidunt pretium diam ac, cursus euismod risus. Donec scelerisque turpis nunc, eu ullamcorper metus mollis ut. Proin vulputate vehicula urna ac facilisis. Curabitur mi nunc, dapibus eu ipsum vitae, ornare malesuada quam. Fusce tempus tincidunt nulla, vel finibus nisi eleifend nec. Duis finibus elit eu tellus hendrerit eleifend. Duis vestibulum velit id dolor tempor fringilla. Pellentesque pulvinar, urna quis mollis cursus, diam dui interdum lacus, sit amet tincidunt massa nibh id urna. Morbi dui felis, gravida a sapien id, posuere hendrerit leo. Cras ac viverra velit. Mauris eu finibus nibh, at pretium lorem. Donec a condimentum velit. Aenean lobortis gravida ligula. Vestibulum placerat feugiat magna ut porttitor. Nullam eget purus laoreet, malesuada mauris ac, mollis ligula.`
 	t := Currency{
 		Code:  l,
-		Money: 9999999999999999.9999,
+		Money: 9999999999999999,
 		Fx:    1234567890987654321,
 	}
 	for i := 0; i < b.N; i++ {
@@ -72,7 +72,7 @@ func benchValue(b *testing.B, n int) {
 	l := `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quam risus, tincidunt pretium diam ac, cursus euismod risus. Donec scelerisque turpis nunc, eu ullamcorper metus mollis ut. Proin vulputate vehicula urna ac facilisis. Curabitur mi nunc, dapibus eu ipsum vitae, ornare malesuada quam. Fusce tempus tincidunt nulla, vel finibus nisi eleifend nec. Duis finibus elit eu tellus hendrerit eleifend. Duis vestibulum velit id dolor tempor fringilla. Pellentesque pulvinar, urna quis mollis cursus, diam dui interdum lacus, sit amet tincidunt massa nibh id urna. Morbi dui felis, gravida a sapien id, posuere hendrerit leo. Cras ac viverra velit. Mauris eu finibus nibh, at pretium lorem. Donec a condimentum velit. Aenean lobortis gravida ligula. Vestibulum placerat feugiat magna ut porttitor. Nullam eget purus laoreet, malesuada mauris ac, mollis ligula.`
 	t := Currency{
 		Code:  l,
-		Money: 9999999999999999.9999,
+		Money: 9999999999999999,
 		Fx:    1234567890987654321,
 	}
 	for i := 0; i < b.N; i++ {

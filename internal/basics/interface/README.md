@@ -1,6 +1,6 @@
 # 🔌 Interfaces in Go
 
-Interfaces in Go define behavior. They are satisfied implicitly, enabling powerful decoupling and abstraction without explicit inheritance.
+Interfaces in Go define behaviour. They are satisfied implicitly, enabling powerful decoupling and abstraction without explicit inheritance.
 
 ---
 
@@ -92,7 +92,10 @@ Explore the unit tests for runnable patterns:
 
 ```bash
 # Run tests with verbose output
-go test -v ./internal/basics/interface/...
+cd internal/basics/interface
+```
+```bash
+go test -v ./...
 ```
 
 ---
