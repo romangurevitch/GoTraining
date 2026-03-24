@@ -17,6 +17,7 @@ Throughout this hands-on workshop, delve into the nuances of building robust app
 8. [Challenges](#challenges)
 9. [Further Learning & Resources](#further-learning--resources)
 
+
 ## Prerequisites
 
 - [Go 1.26.1+](https://go.dev/dl/) installed.
@@ -134,6 +135,7 @@ Take on various "Detective Brief" exercises to test your understanding of Go:
 - [Challenges Overview](internal/challenges/README.md)
 - [Day 1: Basics Challenges](internal/challenges/basics/README.md) — 10 detective mysteries covering core Go concepts.
 - [Day 2: Go Bank Transfer Quest](internal/challenges/bank/README.md) — Build the `POST /v1/transfers` API endpoint end-to-end.
+- [Day 2: Durable Transfer Quest](internal/challenges/temporal/README.md) — Build a robust distributed transaction with Temporal.
 
 ## Further Learning & Resources
 
