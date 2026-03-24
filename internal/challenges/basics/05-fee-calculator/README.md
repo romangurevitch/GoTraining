@@ -13,13 +13,13 @@ go test -v ./...
 
 ## Your Mission
 1. Run the tests — they panic (implement me).
-2. Implement `MonthlyFee` for `SavingsAccount` with a **value** receiver.
-3. Implement `MonthlyFee` for `PremiumAccount` with a **pointer** receiver.
-4. Run the tests — they should pass.
-5. Experiment: try a value receiver for `PremiumAccount`. What happens?
+2. Implement `MonthlyFee` for `SavingsAccount`.
+3. Implement `MonthlyFee` for `PremiumAccount`.
+4. Observe the compiler errors: why does one work with a value receiver and the other require a pointer?
+5. Run the tests again once they compile — they should pass.
 
 ## Key Lesson
-> **Python vs Go:** Python uses duck typing at runtime — if it has the method, it works. Go checks interface satisfaction at **compile time**. A pointer receiver method (`func (p *PremiumAccount) MonthlyFee()`) is only in `*PremiumAccount`'s method set, not `PremiumAccount`'s. Pass `&PremiumAccount{}`, not `PremiumAccount{}`.
+> **Python vs Go:** Python uses duck typing at runtime — if it has the method, it works. Go checks interface satisfaction at **compile time**. A crucial distinction in Go is the **Method Set**: if a method is declared on a pointer receiver (`*T`), then only the pointer type satisfies the interface. If you pass a value (`T`) where an interface is expected, it may fail to compile if the methods are bound to the pointer.
 
 <details>
 <summary>Hints (click to reveal)</summary>
