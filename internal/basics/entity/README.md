@@ -115,6 +115,10 @@ cd internal/basics/entity
 go test -v ./...
 ```
 
+## Your Next Step
+Now that you're defining your own data structures, it's time to learn how to organize them into a clean and maintainable project structure.
+Explore **[Package Layout](../layout/README.md)** to understand the idiomatic way to structure Go applications.
+
 ---
 
 ## 📚 Reference
@@ -125,3 +129,4 @@ go test -v ./...
 | **Private** | `lowercaseName` |
 | **Methods** | `func (receiver) Name()` |
 | **Composition** | Struct Embedding |
+

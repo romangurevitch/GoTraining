@@ -28,3 +28,8 @@ go test -v ./...
 3. Check the differences between `var m map[string]int64` and `m := make(map[string]int64)`.
 4. How can you ensure `entries` is not `nil` before it's used?
 </details>
+
+## Your Next Step
+The map is alive! But wait, there's a phantom in the transaction logs. Slices are behaving strangely, and data is disappearing into thin air.
+Head over to **[Case 03: The Phantom Append](../03-phantom-append/README.md)**.
+

@@ -211,4 +211,8 @@ graph TD
     end
 ```
 
-> Example: public-facing APIs use contract-first — external consumers need a stable, reviewed spec. Internal services may use code-first for speed.
+## Your Next Step
+
+Designing and building APIs is one thing, but how do we ensure they are secure and that we know what's happening inside them?
+
+Dive into the world of API security in: **[AuthN vs. AuthZ](../security-and-observability/01-authn-authz.md)**.

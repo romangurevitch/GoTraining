@@ -144,4 +144,8 @@ graph TD
     Signals --> Actions
 ```
 
-> Never remove a version without first checking traffic. Logs tell you when it is safe. Until then, keep the grace period open.
+## Your Next Step
+
+We now know how to manage the API's lifecycle, but how do we package it to ensure it runs consistently across every environment?
+
+Step into the world of portable deployments in: **[Containerisation](03-containerisation.md)**.

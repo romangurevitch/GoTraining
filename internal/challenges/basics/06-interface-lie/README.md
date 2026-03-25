@@ -29,3 +29,8 @@ go test -v ./...
 4. Compare returning the variable `checker` versus returning the literal `nil` when `skip` is true.
 5. The `Explain()` function in `challenge.go` can help you see what the interface actually holds.
 </details>
+
+## Your Next Step
+You've seen through the lie. Now, things are getting fast—and complicated. We need to track requests across goroutines without losing our way.
+Head over to **[Case 07: Context and Goroutines](../07-context-and-goroutines/README.md)**.
+

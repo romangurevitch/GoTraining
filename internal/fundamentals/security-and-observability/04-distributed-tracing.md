@@ -213,4 +213,8 @@ sequenceDiagram
     Note over MW,Log: Same trace_id in both your logs and Jaeger.<br/>Click trace → pivot to logs. Click log → pivot to trace.
 ```
 
-> Inject `trace_id` into every log line. Logs and traces become **navigable together** in Grafana.
+## Your Next Step
+
+We can now observe our API in production, but how do we manage its evolution over time without breaking our users?
+
+Learn the art of API evolution in: **[Versioning](../api-lifecycle-and-deployment/01-versioning.md)**.

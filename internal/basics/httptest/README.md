@@ -125,6 +125,10 @@ cd internal/basics/httptest
 go test -v ./...
 ```
 
+## Your Next Step
+Now that you've mastered the standard patterns, it's time to explore how to write more reusable, type-agnostic code.
+Explore **[Generics in Go](../generics/README.md)** to see how to use type parameters to reduce code duplication.
+
 ---
 
 ## 📚 Further Reading

@@ -99,6 +99,10 @@ cd internal/basics/err
 go test -v ./...
 ```
 
+## Your Next Step
+Once you can handle errors effectively, you can start using interfaces to decouple your code and make it more flexible and testable.
+Explore **[Interfaces in Go](../interface/README.md)** to master the power of implicit implementation.
+
 ---
 
 ## 📚 Best Practices
@@ -107,3 +111,4 @@ go test -v ./...
 - **Naming**: Custom error types end with `Error` (e.g., `ValidationError`).
 - **Return Pattern**: Always return the error as the last return value.
 - **Never Ignore**: Do not use `_ = someFunc()` if it returns an error.
+

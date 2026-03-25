@@ -241,4 +241,8 @@ graph TD
     end
 ```
 
-> When a stateless instance crashes, the load balancer routes to another. **No user session is lost.**
+## Your Next Step
+
+Statelessness allows us to scale our implementation, but how do we coordinate that implementation between different teams?
+
+Explore the different strategies for defining API contracts in: **[Contract-First vs. Code-First](04-contract-first-vs-code-first.md)**.

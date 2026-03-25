@@ -84,6 +84,10 @@ cd internal/basics/parameters
 go test -bench '.Parameter.' -benchmem ./...
 ```
 
+## Your Next Step
+With a solid grasp of how data flows through functions, you're ready to start building more complex, real-world data structures.
+Explore **[Entities & Structs](../entity/README.md)** to learn how to define and initialize your domain objects.
+
 ---
 
 ## 📚 Further Reading

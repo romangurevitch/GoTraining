@@ -213,4 +213,8 @@ graph TD
     end
 ```
 
-> Include enough context for the policy to make a meaningful decision. Sparse inputs produce blunt policies.
+## Your Next Step
+
+Secure policies are the invisible shield of your API, but when things go wrong, we need to see exactly what happened.
+
+Learn how to write logs that machines can actually read in: **[Structured Logging with `slog`](03-structured-logging-slog.md)**.

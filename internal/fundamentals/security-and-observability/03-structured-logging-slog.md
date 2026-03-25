@@ -211,4 +211,8 @@ graph TD
     end
 ```
 
-> `log/slog` is in the Go standard library since **1.21**. No external dependencies needed.
+## Your Next Step
+
+Structured logging gives us the "what" and "when," but in a distributed system, we also need the "how it all connects."
+
+Discover how to track requests across service boundaries in: **[Distributed Tracing](04-distributed-tracing.md)**.

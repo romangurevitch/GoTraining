@@ -117,3 +117,8 @@ cd internal/basics/concurrency
 ```bash
 go test -v -race ./...
 ```
+
+## Your Next Step
+Now that you're running multiple tasks concurrently, you need a way to manage their lifecycles, cancellations, and timeouts.
+Explore **[Context in Go](../context/README.md)** to learn how to propagate deadlines and signals across your application.
+

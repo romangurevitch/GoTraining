@@ -29,3 +29,8 @@ go test -v ./...
 4. The test uses `errors.Is(err, ErrInsufficientFunds)` — your returned error must be (or wrap) the sentinel.
 5. Never ignore the second return value from a Go function that returns `error`.
 </details>
+
+## Your Next Step
+Errors are now loud and clear. But why does the compiler hate our new account types? It's time to learn the subtle art of interface satisfaction.
+Head over to **[Case 05: The Fee Calculator](../05-fee-calculator/README.md)**.
+

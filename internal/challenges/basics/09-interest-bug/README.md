@@ -31,3 +31,8 @@ go test -v ./...
 4. Negative years: `wantErr: errors.New("years cannot be negative")` — but use `errors.Is` wisely
 5. **The bug case**: `{name: "negative rate", principal: 100000, rate: -0.05, years: 1, want: 0, wantErr: ErrNegativeRate}` — add this and watch it fail!
 </details>
+
+## Your Next Step
+Tests are passing, but one final hurdle remains. A transfer failed, and we need to know exactly why. It's time to build structured errors.
+Head over to **[Case 10: The Transfer Error](../10-transfer-error/README.md)**.
+

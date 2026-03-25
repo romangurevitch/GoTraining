@@ -118,7 +118,8 @@ Build a persistent storage layer and HTTP service for the "Go Bank" domain. This
 
 Discover reliable, durable execution patterns for long-running workflows:
 
-- [Temporal Overview](internal/temporal/README.md) — Workflow vs. Activity and the Replay model.
+- [Temporal Module Overview](internal/temporal/README.md) — Exploration journey and topics.
+- [Temporal Fundamentals](internal/temporal/temporal-orchestration.md) — Workflow vs. Activity and the Replay model.
 - [Worker Entrypoint](cmd/temporal/worker/main.go) — Temporal worker implementation.
 
 ## Module 5: Agentic Go & Durable Workflows
@@ -162,4 +163,4 @@ Deepen your Go expertise with these advanced topics and ecosystem libraries:
 - [Go Concurrency Patterns](https://go.dev/blog/concurrency-timeouts) — Techniques for timeouts and robust concurrent code.
 - [Benchmark Testing in Go](https://pkg.go.dev/testing#hdr-Benchmarks) — Measuring and optimising your application's performance.
 - [Locks in Go](https://go.dev/tour/concurrency/9) — Understanding `sync.Mutex` and shared memory.
-- [Temporal Documentation](https://docs.temporal.io/) — Durable execution for critical business workflows.
+- [Temporal Go SDK Guide](https://docs.temporal.io/dev-guide/go/foundations) — Core implementation and durable execution patterns.

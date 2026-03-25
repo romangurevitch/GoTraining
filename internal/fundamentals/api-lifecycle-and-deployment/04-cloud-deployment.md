@@ -175,4 +175,8 @@ graph TD
     end
 ```
 
-> Never bake secrets into the image. Inject them at runtime via AWS Secrets Manager. The image is immutable and shareable — secrets are not.
+## Your Next Step
+
+We've mastered the lifecycle of human-consumed APIs, but a new era is upon us. How do we design our APIs for the next generation of consumers: AI agents?
+
+Explore the future of API engineering in: **[Designing APIs for AI Consumption](../the-agentic-future/01-designing-apis-for-ai-consumption.md)**.

@@ -95,6 +95,10 @@ cd internal/basics/pointers
 go test -v ./...
 ```
 
+## Your Next Step
+After learning how to handle memory addresses with pointers, you'll often need to move data between different types or verify interface values.
+Explore **[Type Conversion & Assertion](../casting/README.md)** to learn how to safely transform data.
+
 ---
 
 ## 📚 Further Reading

@@ -29,3 +29,8 @@ go test -v ./...
 4. Return `&TransferError{FromID: fromID, ToID: toID, Amount: amount, Reason: "cannot transfer to same account"}` for same-account.
 5. Return `nil` on success.
 </details>
+
+## Your Next Step
+You've completed all the detective briefs! You're now ready to move from fixing bugs to building a full-scale production API handler.
+Jump into the **[Go Bank Transfer Quest](../../bank/README.md)** to start your next mission.
+

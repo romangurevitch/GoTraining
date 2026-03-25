@@ -30,7 +30,7 @@ flowchart LR
 package initialiser
 
 var localVar string
-```
+
 func init() {
     // 1. Initialisation
     localVar = "is that what you expect?"
@@ -71,10 +71,12 @@ Explore the unit tests for runnable patterns:
 ```bash
 # Run tests with verbose output
 cd internal/basics/init
-```
-```bash
 go test -v ./...
 ```
+
+## Your Next Step
+Now that your application is starting to take shape, you need a robust way to handle the inevitable errors that occur at runtime.
+Explore **[Error Handling](../err/README.md)** to learn Go's idiomatic approach to explicit error management.
 
 ---
 

@@ -198,4 +198,8 @@ graph TD
     end
 ```
 
-> Possibility of both: public APIs use REST. Internal microservice-to-microservice calls may use gRPC for throughput.
+## Your Next Step
+
+Choosing between REST and RPC is just the first step. To build truly reliable APIs, we must ensure that our operations are safe to repeat.
+
+Learn how to handle duplicate requests gracefully in: **[Idempotency](02-idempotency.md)**.

@@ -30,3 +30,8 @@ go test -v ./...
 4. Try changing `*PremiumAccount` to `PremiumAccount` in the test — the compiler will reject it. That's the lesson.
 5. `TotalFees` is already implemented — don't modify it.
 </details>
+
+## Your Next Step
+Interfaces can be tricky, but sometimes they flat out lie to you. It's time to investigate the case of the nil that isn't nil.
+Head over to **[Case 06: The Interface Lie](../06-interface-lie/README.md)**.
+

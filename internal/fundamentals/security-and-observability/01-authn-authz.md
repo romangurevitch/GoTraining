@@ -275,4 +275,8 @@ graph TD
     Codes --> RULE
 ```
 
-> Return `404` instead of `403` when revealing that a resource *exists* would itself be a security leak.
+## Your Next Step
+
+Understanding identity and permissions is critical, but how do we manage those permissions at scale without cluttering our application code with complex `if/else` logic?
+
+Explore how to externalise your authorisation rules in: **[Policy as Code](02-policy-as-code.md)**.

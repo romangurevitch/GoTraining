@@ -57,3 +57,12 @@ cd internal/challenges/basics
 ```bash
 go test -v ./...
 ```
+
+## Your Next Step
+
+Think you can find the bugs? It's time to put your detective hat on.
+
+Start with the first case: **[Case 01: The Frozen Account](01-frozen-account/README.md)**.
+
+---
+[← Back to Challenges Overview](../README.md)

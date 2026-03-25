@@ -60,7 +60,7 @@ func (c *Counter) Increment() {
 > [!WARNING]
 > Never copy a struct containing a `sync.Mutex`. Doing so copies the lock's state, leading to deadlocks or undefined behaviour. Use a pointer receiver to prevent accidental copies.
 
-1. **Rule of Consistency**: if any method for a type must have a pointer receiver, make **all** methods pointer receivers.
+1. **Rule of Consistency**: If any method for a type must have a pointer receiver, make **all** methods pointer receivers.
 2. **Small Types**: Use value receivers for small types (e.g., `int`, `string`, small structs like `time.Time`) that are naturally "value-like".
 3. **Avoid Nil Receivers**: While Go allows calling methods on nil pointers, it often causes panics unless the method explicitly handles the nil case.
 
@@ -78,6 +78,10 @@ cd internal/basics/receivers
 ```bash
 go test -v ./...
 ```
+
+## Your Next Step
+With methods providing behavior to your types, you might need to handle package-level setup before your code even starts running.
+Explore **[The init() Function](../init/README.md)** to understand how Go handles package initialization.
 
 ---
 

@@ -34,9 +34,9 @@ classDiagram
     Buffer ..|> ReadWriter : satisfies implicitly
 ```
 
-> [!INFO}
+> [!INFO]
 > Functions can accept `ReadWriter` rather than `Buffer` directly — any type implementing the
-> interface works, without the knowing the concrete type.
+> interface works, without knowing the concrete type.
 
 ---
 
@@ -97,6 +97,10 @@ cd internal/basics/interface
 ```bash
 go test -v ./...
 ```
+
+## Your Next Step
+With a decoupled architecture in place, you're ready to leverage Go's most famous feature: lightweight, built-in concurrency.
+Explore **[Concurrency in Go](../concurrency/README.md)** to learn about goroutines and channels.
 
 ---
 

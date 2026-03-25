@@ -1,7 +1,7 @@
 # 🔍 Case 01: The Frozen Account
 
 ## The Detective Brief
-Alice deposits \$100 into her account. The code compiles. The function runs without error. Her balance is still $0. The teller is baffled.
+Alice deposits $100 into her account. The code compiles. The function runs without error. Her balance is still $0. The teller is baffled.
 
 ## The Crime Scene
 ```bash
@@ -28,3 +28,8 @@ go test -v ./...
 3. Change exactly one token in the method signature.
 4. After the fix, `account.Deposit(100)` will update the balance of the original `account` variable.
 </details>
+
+## Your Next Step
+Cracked the case of the frozen account? Good. Now, there's another mystery waiting for you—a map that seems to have died before it even lived.
+Head over to **[Case 02: The Dead Map](../02-dead-map/README.md)**.
+

@@ -86,6 +86,10 @@ cd internal/basics/testing
 go test -v ./...
 ```
 
+## Your Next Step
+Now that you know the basics of testing, you can make your assertions more readable and expressive using the popular Testify library.
+Explore **[Testify in Go](../testify/README.md)** to see how to use fluent assertions and test suites.
+
 ---
 
 ## 📚 Further Reading
