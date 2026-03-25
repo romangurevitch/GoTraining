@@ -31,6 +31,7 @@ package initialiser
 
 var localVar string
 ```
+```
 func init() {
     // 1. Initialisation
     localVar = "is that what you expect?"

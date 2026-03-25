@@ -169,7 +169,7 @@ Now that you've seen how the CLI consumes an existing client method, it's time t
 
 Mastered the standard API handler? Now it's time to handle long-running, complex business processes that need to survive restarts and failures.
 
-Discover how to orchestrate durable workflows in the **[Temporal Overview](../../temporal/README.md)**.
+Discover how to orchestrate durable workflows in **[Module 4: Temporal Orchestration](../../temporal/README.md)**.
 
 ---
 [← Back to Challenges Overview](../README.md)
