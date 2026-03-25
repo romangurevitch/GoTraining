@@ -105,7 +105,7 @@ Explore **[Interfaces in Go](../interface/README.md)** to master the power of im
 
 ---
 
-## 📚 Best Practices
+## 💡 Pro-Tips
 
 - **Naming**: Sentinel errors start with `Err` (e.g., `ErrNotFound`).
 - **Naming**: Custom error types end with `Error` (e.g., `ValidationError`).
