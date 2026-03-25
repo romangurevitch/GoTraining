@@ -87,48 +87,30 @@ The **Temporal Server** is just a durable queue and state store — it holds no 
 Understanding where Temporal scales freely and where it imposes hard limits is essential to designing systems that don't hit walls in production.
 
 ```mermaid
-graph TB
-    Client(["🖥️ Client\nStartWorkflow / Signal"])
+flowchart TD
+    Client(["🖥️ Client<br/>StartWorkflow / Signal"]) --> TS
 
-    subgraph TS["Temporal Server  —  durable state & task queues"]
-        direction TB
-        TQ["Task Queue"]
-        EH["📜 Event History\n⚠️ Hard limit: ~50k events\n⚠️ Payload limit: 2MB per event\n⚠️ Signal limit: ~10k pending signals"]
-    end
-
-    subgraph WP["Worker Pool  —  scale horizontally, no limit"]
-        direction TB
-        W1["Worker 1"]
-        W2["Worker 2"]
-        W3["Worker N"]
-    end
-
-    subgraph WF["Workflow  —  orchestrator"]
-        direction TB
-        WFN["⚠️ Single goroutine — not concurrent\n⚠️ Bounded by event history\n⚠️ Must be deterministic\n✅ Durable across crashes\n✅ Retries, timeouts, signals built-in\n✅ Queryable state at any point"]
-    end
-
-    subgraph ACT["Activities  —  the black boxes"]
+    subgraph TS["Temporal Server (Durable State & Task Queues)"]
         direction LR
-        A1["🟦 Activity\n(DB write)"]
-        A2["🟦 Activity\n(HTTP call)"]
-        A3["🟦 Activity\n(Email send)"]
-        AN["🟦 Activity\n(anything)"]
+        TQ["Task Queue"]
+        EH["📜 Event History<br/>⚠️ ~50k events / 2MB payload / 10k signals"]
     end
 
-    subgraph ASCALE["Activity Scaling"]
-        direction TB
-        AS1["✅ Unlimited horizontal scale\n✅ Any language, any runtime\n✅ Arbitrary I/O, side-effects OK\n⚠️ Lose durability if called outside Temporal\n⚠️ Lose retries if called directly (not via workflow.ExecuteActivity)"]
+    subgraph WP["Worker Pool"]
+        Workers["Workers (1...N)<br/>Scales Horizontally"]
     end
 
-    Client -->|"StartWorkflow\nor Signal"| TS
-    TQ --> WP
-    WP --> WF
-    WF -->|"workflow.ExecuteActivity"| TQ
-    TQ --> ACT
-    ACT -->|"result / error"| EH
+    subgraph Logic["Execution Logic"]
+        direction LR
+        WF["<b>Workflows (Orchestrator)</b><br/>⚠️ Deterministic / Single-threaded<br/>⚠️ Bounded by history<br/>✅ Durable & Queryable<br/>✅ Retries, Timeouts, Signals"]
+        ACT["<b>Activities (The Black Boxes)</b><br/>✅ Horizontal scale / Side-effects OK<br/>✅ Any language/runtime<br/>⚠️ Lose durability if called directly<br/>🟦 DB, HTTP, Email, etc."]
+    end
+
+    TS <--"Poll / Dispatch"--> Workers
+    Workers --> Logic
+    WF --"workflow.ExecuteActivity"--> TQ
+    ACT --"result / error"--> EH
     WF -.->|"bounded by"| EH
-    ACT -.->|"scales independently"| ASCALE
 ```
 
 ### The Core Trade-off
