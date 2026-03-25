@@ -4,9 +4,9 @@ Raw goroutines and channels are powerful for short-lived concurrent work, but th
 
 ---
 
-## Order Processing Demo (Order Saga)
+## Order Processing Demo (Order Workflow)
 
-The demo features an **Order Processing Saga** demonstrating durable execution, signal handling, and child workflows. While the core banking service uses standard database transactions, this module explores how to orchestrate complex, multi-step business processes that require reliable state management across many services.
+The demo features an **Order Processing Workflow** demonstrating durable execution, signal handling, and child workflows. While the core banking service uses standard database transactions, this module explores how to orchestrate complex, multi-step business processes that require reliable state management across many services.
 
 ## 1. The Problem Temporal Solves
 
@@ -131,4 +131,4 @@ Ready to run it? See the **[Order Processing Demo →](order/README.md)**
 
 - [Temporal Go SDK documentation](https://docs.temporal.io/develop/go)
 - [Temporal tutorials](https://learn.temporal.io/)
-- [Saga pattern explained](https://microservices.io/patterns/data/saga.html)
+- [Compensation pattern explained](https://microservices.io/patterns/data/compensating-transaction.html)

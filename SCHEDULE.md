@@ -31,5 +31,5 @@ Focus: Building scalable services, managing durable state with Temporal, and lev
 | 13:00 | **Building Blocks Trivia** | *Sequence Breaker:* A fast-paced quiz on Go syntax, "gotchas," and runtime behaviour. | |
 | 13:30 | **Temporal Orchestration** | Reliability at scale: Workflow concepts, signal handling, and the replay model for durable execution. | [Module 4](README.md#module-4-temporal-orchestration) |
 | 14:30 | **Testing & Service Isolation** | Robust verification: Unit testing with Mockery, integration testing, and an introduction to Infrastructure as Code. | [Module 2](README.md#module-2-go-language-fundamentals) |
-| 15:30 | **Agentic Go Demo** | Live demonstration: Leveraging AI agents and modern tooling for ultra-efficient Go development and refactoring. | |
+| 15:15 | **Agentic Go & Durable Workflows** | **Hands-On Challenge:** Each participant builds a high-value transfer workflow with human-in-the-loop approval using their AI agent. Work through the quests in order — get as far as you can. Full quest guide remains available for self-study after the session. | [Challenges](internal/challenges/temporal/README.md) |
 | 16:00 | **Wrap up & Feedback** | Final open Q&A session and programme evaluation. | |
