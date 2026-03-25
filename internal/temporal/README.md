@@ -16,9 +16,10 @@ Start your journey with the fundamentals: **[Temporal Overview & Concepts](tempo
 
 ## Resources
 
-- [Temporal Go SDK Documentation](https://docs.temporal.io/develop/go)
-- [Temporal Tutorials](https://learn.temporal.io/)
-- [The Replay Model Explained](https://docs.temporal.io/concepts/what-is-a-replay)
+- [Temporal Learning Center](https://learn.temporal.io/) — Official tutorials and self-paced courses.
+- [Temporal Go SDK Guide](https://docs.temporal.io/dev-guide/go/foundations) — Core implementation details.
+- [Temporal Encyclopedia](https://docs.temporal.io/temporal) — Conceptual deep-dives into the platform.
+- [Glossary](https://docs.temporal.io/glossary) — Precise definitions of Temporal terminology.
 
 ---
 [← Back to Main README](../../README.md)
