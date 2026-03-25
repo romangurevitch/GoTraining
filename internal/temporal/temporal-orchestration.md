@@ -82,7 +82,93 @@ The **Temporal Server** is just a durable queue and state store — it holds no 
 
 ---
 
-## 4. The Golden Rule: Workflows Must Be Deterministic
+## 4. Scaling, Limits & Best Practices
+
+Understanding where Temporal scales freely and where it imposes hard limits is essential to designing systems that don't hit walls in production.
+
+```mermaid
+graph TB
+    Client(["🖥️ Client\nStartWorkflow / Signal"])
+
+    subgraph TS["Temporal Server  —  durable state & task queues"]
+        direction TB
+        TQ["Task Queue"]
+        EH["📜 Event History\n⚠️ Hard limit: ~50k events\n⚠️ Payload limit: 2MB per event\n⚠️ Signal limit: ~10k pending signals"]
+    end
+
+    subgraph WP["Worker Pool  —  scale horizontally, no limit"]
+        direction TB
+        W1["Worker 1"]
+        W2["Worker 2"]
+        W3["Worker N"]
+    end
+
+    subgraph WF["Workflow  —  orchestrator"]
+        direction TB
+        WFN["⚠️ Single goroutine — not concurrent\n⚠️ Bounded by event history\n⚠️ Must be deterministic\n✅ Durable across crashes\n✅ Retries, timeouts, signals built-in\n✅ Queryable state at any point"]
+    end
+
+    subgraph ACT["Activities  —  the black boxes"]
+        direction LR
+        A1["🟦 Activity\n(DB write)"]
+        A2["🟦 Activity\n(HTTP call)"]
+        A3["🟦 Activity\n(Email send)"]
+        AN["🟦 Activity\n(anything)"]
+    end
+
+    subgraph ASCALE["Activity Scaling"]
+        direction TB
+        AS1["✅ Unlimited horizontal scale\n✅ Any language, any runtime\n✅ Arbitrary I/O, side-effects OK\n⚠️ Lose durability if called outside Temporal\n⚠️ Lose retries if called directly (not via workflow.ExecuteActivity)"]
+    end
+
+    Client -->|"StartWorkflow\nor Signal"| TS
+    TQ --> WP
+    WP --> WF
+    WF -->|"workflow.ExecuteActivity"| TQ
+    TQ --> ACT
+    ACT -->|"result / error"| EH
+    WF -.->|"bounded by"| EH
+    ACT -.->|"scales independently"| ASCALE
+```
+
+### The Core Trade-off
+
+| | Workflow | Activity |
+|---|---|---|
+| **Scale** | One execution per workflow ID | Unlimited — add workers freely |
+| **Concurrency** | Single goroutine (use `workflow.Go` for fan-out) | Fully concurrent, no restrictions |
+| **Durability** | Every step recorded in event history | Only recorded when called via Temporal |
+| **Retries** | Orchestrates retries of activities | Retried automatically by Temporal |
+| **State** | Queryable at any point in time | Stateless black box |
+| **Hard limits** | ~50k events, 2MB payload, ~10k signals | None imposed by Temporal |
+| **I/O** | ❌ Never — use Activities instead | ✅ All I/O lives here |
+| **Determinism** | ✅ Required — same inputs → same path | ❌ Not required — side-effects are fine |
+
+### Best Practices
+
+**Keep Workflows thin:**
+- Workflows are orchestrators, not executors. They decide *what* to do and *when*; Activities do the actual work.
+- A workflow that makes a direct HTTP call or writes to a DB is a bug waiting to surface during replay.
+
+**Push all I/O into Activities:**
+- Network calls, database writes, file access, randomness, current time — all belong in Activities.
+- Activities are free to use any library, spawn goroutines, or block indefinitely.
+
+**Use `continue-as-new` before hitting history limits:**
+- Long-running workflows (polling loops, perpetual workflows) will eventually breach the ~50k event limit.
+- Call `workflow.NewContinueAsNewError` to start a fresh execution that inherits your current state, resetting the history counter.
+
+**Keep payloads small:**
+- Each activity result is stored in the event history. Storing large blobs (images, CSVs) will exhaust the 2MB per-event limit fast.
+- Store large data externally (S3, GCS) and pass only references (URLs, IDs) through Temporal.
+
+**Size your Task Queues by workload type:**
+- Separate CPU-bound activities (e.g., image processing) from I/O-bound ones (e.g., DB writes) onto different task queues.
+- This lets you scale worker pools independently without one workload starving the other.
+
+---
+
+## 5. The Golden Rule: Workflows Must Be Deterministic
 
 Temporal reconstructs a Workflow's state by **replaying its event history** after a crash. This means Workflow code must always make the same decisions given the same history.
 For most non-deterministic functions used typically, Temporal's SDK offers deterministic alternatives. e.g.,
