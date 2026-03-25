@@ -18,7 +18,7 @@ Start your journey with the fundamentals: **[Temporal Overview & Concepts](tempo
 
 - [Temporal Go SDK Documentation](https://docs.temporal.io/develop/go)
 - [Temporal Tutorials](https://learn.temporal.io/)
-- [The Replay Model Explained](https://docs.temporal.io/concepts/what-is-replay)
+- [The Replay Model Explained](https://docs.temporal.io/concepts/what-is-a-replay)
 
 ---
 [← Back to Main README](../../README.md)
