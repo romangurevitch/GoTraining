@@ -30,8 +30,7 @@ flowchart LR
 package initialiser
 
 var localVar string
-```
-```
+
 func init() {
     // 1. Initialisation
     localVar = "is that what you expect?"
@@ -80,3 +79,10 @@ go test -v ./...
 ## Your Next Step
 Now that your application is starting to take shape, you need a robust way to handle the inevitable errors that occur at runtime.
 Explore **[Error Handling](../err/README.md)** to learn Go's idiomatic approach to explicit error management.
+
+---
+
+## 📚 Further Reading
+
+- [Effective Go: The init function](https://go.dev/doc/effective_go#init)
+- [Official Go Documentation: Program initialisation](https://go.dev/ref/spec#Package_initialization)

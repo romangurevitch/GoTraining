@@ -82,3 +82,10 @@ go test -v ./...
 ## Your Next Step
 With methods providing behavior to your types, you might need to handle package-level setup before your code even starts running.
 Explore **[The init() Function](../init/README.md)** to understand how Go handles package initialization.
+
+---
+
+## 📚 Further Reading
+
+- [Effective Go: Pointers vs. Values](https://go.dev/doc/effective_go#pointers_vs_values)
+- [Go Wiki: Code Review Comments (Receivers)](https://github.com/golang/go/wiki/CodeReviewComments#receiver-type)

@@ -101,3 +101,10 @@ go test -v ./...
 ## Your Next Step
 With a decoupled architecture in place, you're ready to leverage Go's most famous feature: lightweight, built-in concurrency.
 Explore **[Concurrency in Go](../concurrency/README.md)** to learn about goroutines and channels.
+
+---
+
+## 📚 Further Reading
+
+- [Official Go Documentation: Interfaces](https://go.dev/doc/effective_go#interfaces)
+- [Code Review Comments: Interfaces](https://github.com/golang/go/wiki/CodeReviewComments#interfaces)

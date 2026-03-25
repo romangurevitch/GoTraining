@@ -80,3 +80,10 @@ go test -v ./...
 ## Your Next Step
 After organizing your packages, you'll want to learn how to use composition and embed static assets directly into your binaries.
 Explore **[Embedding in Go](../embed/README.md)** to see how to compose types and bundle files.
+
+---
+
+## 📚 Further Reading
+
+- [Standard Go Project Layout](https://github.com/golang-standards/project-layout)
+- [Effective Go: Package Names](https://go.dev/doc/effective_go#package-names)

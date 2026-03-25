@@ -76,3 +76,10 @@ go test -v ./internal/basics/mocking/...
 ## Your Next Step
 Finally, you'll want to learn how to control which parts of your code are compiled based on the environment or specific build needs.
 Explore **[Go Build Tags](../buildtags/README.md)** to master conditional compilation.
+
+---
+
+## 📚 Further Reading
+
+- [Mockery: Documentation](https://github.com/vektra/mockery)
+- [Uber Mock: Documentation](https://github.com/uber-go/mock)

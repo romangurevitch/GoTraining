@@ -160,7 +160,10 @@ sequenceDiagram
     CI->>Registry: docker push myapp:1.4.2
     CI->>Registry: docker push myapp:latest
 
-    ## Your Next Step
+    Note over CI,Registry: Tag with immutable semver AND latest<br/>Deployment config references the semver tag
+```
+
+## Your Next Step
 
 Containerisation makes our API portable, but where should it live?
 

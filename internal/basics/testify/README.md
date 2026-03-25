@@ -81,3 +81,10 @@ go test -v ./...
 ## Your Next Step
 After ensuring your code is correct, the next logical step is to measure and optimize its performance.
 Explore **[Benchmarking in Go](../benchmark/README.md)** to learn how to identify and eliminate bottlenecks.
+
+---
+
+## 📚 Further Reading
+
+- [Testify: GitHub Documentation](https://github.com/stretchr/testify)
+- [Testing in Go with Testify](https://pkg.go.dev/github.com/stretchr/testify)
