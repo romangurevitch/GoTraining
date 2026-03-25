@@ -179,8 +179,6 @@ Head back to the **[Challenges Overview](../README.md)** to review your progress
 ---
 [← Back to Main README](../../../README.md)
 
----
-
 ## 💡 Engineering Pro-Tips
 
 ### On Observability
