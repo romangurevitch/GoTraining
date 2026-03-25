@@ -163,4 +163,4 @@ Deepen your Go expertise with these advanced topics and ecosystem libraries:
 - [Go Concurrency Patterns](https://go.dev/blog/concurrency-timeouts) — Techniques for timeouts and robust concurrent code.
 - [Benchmark Testing in Go](https://pkg.go.dev/testing#hdr-Benchmarks) — Measuring and optimising your application's performance.
 - [Locks in Go](https://go.dev/tour/concurrency/9) — Understanding `sync.Mutex` and shared memory.
-- [Temporal Documentation](https://docs.temporal.io/) — Durable execution for critical business workflows.
+- [Temporal Go SDK Guide](https://docs.temporal.io/dev-guide/go/foundations) — Core implementation and durable execution patterns.
