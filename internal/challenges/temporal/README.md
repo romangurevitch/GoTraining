@@ -177,7 +177,7 @@ Congratulations! You've navigated the agentic workflow and built a robust, durab
 Head back to the **[Challenges Overview](../README.md)** to review your progress and find additional resources.
 
 ---
-[← Back to Main README](../../README.md)
+[← Back to Main README](../../../README.md)
 
 ---
 
