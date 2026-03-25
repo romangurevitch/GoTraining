@@ -34,7 +34,7 @@ Before grading, you MUST read and understand these "Source of Truth" files to id
 *   **Idempotency:** Is the workflow started with a deterministic `WorkflowID` (e.g. `"transfer-{transferID}"`) to prevent duplicate workflow executions? Are the activities (`DebitAccount`, `CreditAccount`, `RefundDebitActivity`) also idempotent with respect to Temporal activity retries — i.e., does each activity use `transferID` as a natural key to prevent duplicate DB writes?
 
 ### 4. Developer Experience (DX) & Tooling (15 pts)
-*   **Makefile Integration:** Are there clear targets (e.g., `make test-durable`, `make run-worker`)?
+*   **Makefile Integration:** Are there clear targets (e.g., `make test-durable`, `make worker-start`)?
 *   **CLI UX:** Does the `bank-cli` implementation for transfer approval follow the project's Cobra/Viper conventions?
 *   **Observability:** Does logging use `slog.InfoContext(ctx, ...)` to ensure OpenTelemetry trace IDs are propagated? (Using `slog.Info` without context is a failure).
 
