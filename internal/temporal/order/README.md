@@ -102,3 +102,12 @@ make workflow-cancel   # PLACED → CANCELLED
 | Workflow pausing between signals | Temporal durably suspending state with zero CPU usage |
 | Restarting the Worker mid-workflow | The Workflow resumes from where it left off — durable execution |
 | Event history in the Web UI | The full audit trail Temporal uses to replay Workflows |
+
+## Your Next Step
+
+Now that you've seen the power of durable execution, it's time to build your own robust workflow.
+
+Take on the final challenge: **[Durable Transfer Quest](../../challenges/temporal/README.md)**.
+
+---
+[← Back to Temporal Overview](../README.md)

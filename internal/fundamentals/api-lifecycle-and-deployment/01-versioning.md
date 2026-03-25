@@ -166,4 +166,8 @@ graph LR
     BETA --> GA --> DEP --> SUNSET
 ```
 
-> Every version has a lifecycle. Communicate it early, enforce it consistently.
+## Your Next Step
+
+Managing versions is just half the battle. When it's time to retire an old API, how do we do it without causing a PR disaster?
+
+Learn the secrets of elegant API retirements in: **[Graceful Sunsetting](02-graceful-sunsetting.md)**.

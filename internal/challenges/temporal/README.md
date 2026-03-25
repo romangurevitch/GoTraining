@@ -170,6 +170,15 @@ In a real system, code doesn't just run; it must be observable and registered co
 - The worker successfully processes your workflow without manual registration errors.
 - No duplicate transactions exist in the database after a simulated crash.
 
+## Your Next Step
+
+Congratulations! You've navigated the agentic workflow and built a robust, durable banking operation with Temporal.
+
+Head back to the **[Challenges Overview](../README.md)** to review your progress and find additional resources.
+
+---
+[← Back to Main README](../../README.md)
+
 ---
 
 ## 💡 Engineering Pro-Tips

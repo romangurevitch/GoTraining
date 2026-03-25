@@ -157,5 +157,8 @@ graph TD
     C6["✅ Idempotency-Key supported on all POST/PATCH"]
     C7["✅ Error responses include machine-readable error codes"]
 
-    C1 --> C2 --> C3 --> C4 --> C5 --> C6 --> C7
-```
+## Your Next Step
+
+Designing APIs for AI is only half the battle. How do we standardize the communication between these models and our tools?
+
+Discover the standard for AI-tool interaction in: **[Model Context Protocol (MCP)](02-model-context-protocol.md)**.

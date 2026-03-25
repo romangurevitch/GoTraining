@@ -111,3 +111,7 @@ Include experimental features in a build without affecting the stable production
 3. **Legacy Syntax:** You might see `// +build` in older codebases. Go 1.17+ prefers `//go:build`, but the compiler still supports both for backwards compatibility.
 
 [Customising Go Binaries with Build Tags](https://www.digitalocean.com/community/tutorials/customizing-go-binaries-with-build-tags)
+
+## Your Next Step
+Congratulations! You've completed the fundamentals of Go. Now it's time to apply everything you've learned to build a real-world API service.
+Explore **[Module 3: Building the Data & API Service](../../bank/README.md)** to start building the Go Bank application.

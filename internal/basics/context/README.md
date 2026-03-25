@@ -92,3 +92,7 @@ cd internal/basics/context
 ```bash
 go test -v ./...
 ```
+
+## Your Next Step
+With all these powerful features at your disposal, it's time to ensure your code works exactly as expected through rigorous testing.
+Explore **[Testing in Go](../testing/README.md)** to learn the fundamentals of unit testing and table-driven tests.

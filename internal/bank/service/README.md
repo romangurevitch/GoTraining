@@ -10,10 +10,11 @@ Welcome to the **Service Layer**—the brain of the Go Bank! This package sits r
 
 ## Built for Testing
 
-We interact with this layer through the [Service](service.go) interface. Why? So we can easily mock it out when testing our API handlers! (You can find the generated mock in [mocks/mock_service.go](mocks/mock_service.go)).
+We interact with this layer through the [Service](service.go) interface. Why? So we can easily mock it out when testing our API handlers! (You can find the generated mock in [mocks/service.go](mocks/service.go)).
 
 ## Your Next Step
 
 This layer is completely ready to go. 
 
 Read through the `Transfer` method in [service.go](service.go) to see how it enforces rules and uses the repository. The final step before building is to see how the HTTP requests come in. Head over to the **[API Layer](../api/README.md)**!
+

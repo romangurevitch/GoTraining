@@ -43,3 +43,12 @@ You will transform the bank transfer into a robust **Distributed Transaction** u
 - **Full-Lifecycle Testing:** Unit, Integration, and the "Gold Standard" Replay tests.
 
 Evaluate your work using the **[Competition Grading Rubric](temporal/GRADING_PROMPT.md)**.
+
+## Your Exploration Journey
+
+Ready to put your skills to the test? We've prepared a series of challenges that increase in complexity as you progress through the training.
+
+Start with the basics: **[Day 1 Challenges: Detective Briefs](basics/README.md)**.
+
+---
+[← Back to Main README](../../README.md)

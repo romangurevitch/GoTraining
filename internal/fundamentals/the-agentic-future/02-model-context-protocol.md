@@ -232,4 +232,8 @@ graph TD
     end
 ```
 
-> MCP does not replace REST. It **wraps** your existing REST API with a machine-readable capability layer that agents can safely discover and invoke.
+## Your Next Step
+
+MCP provides the protocol, but how does an agent know which tool to use in the first place?
+
+Learn how agents find the right capabilities in: **[Tool Discovery](03-tool-discovery.md)**.

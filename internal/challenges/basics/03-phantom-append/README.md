@@ -27,3 +27,8 @@ go test -v ./...
 2. Bug 2: In Go, `append` returns a new slice header. If you don't assign this return value back to your slice, what happens to the changes?
 3. How can you ensure that both the struct mutation and the slice update are preserved?
 </details>
+
+## Your Next Step
+You've banished the phantom! But in the world of banking, silence is rarely golden. A payment just failed, and it didn't say a word.
+Head over to **[Case 04: Silent Errors](../04-silent-errors/README.md)**.
+

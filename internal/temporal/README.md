@@ -123,12 +123,17 @@ Any complex non-deterministic code (e.g., network calls, I/O, database operation
 | `integrations/` | External service clients (WireMock inventory API) |
 | `encryption/` | Data converter for payload encryption |
 
-Ready to run it? See the **[Order Processing Demo →](order/README.md)**
+## Your Next Step
 
----
+Ready to see durable execution in action? We've prepared a demo that runs real workflows locally.
+
+Experience Temporal first-hand in the **[Order Processing Demo](order/README.md)**.
 
 ## 📚 Further Reading
 
 - [Temporal Go SDK documentation](https://docs.temporal.io/develop/go)
 - [Temporal tutorials](https://learn.temporal.io/)
 - [Compensation pattern explained](https://microservices.io/patterns/data/compensating-transaction.html)
+
+---
+[← Back to Main README](../../README.md)

@@ -88,9 +88,6 @@ cd internal/basics/http
 go test -v ./...
 ```
 
----
-
-## 📚 Further Reading
-
-- [Official Go Documentation: net/http](https://pkg.go.dev/net/http)
-- [Effective Go: HTTP Server](https://go.dev/doc/effective_go#http_server)
+## Your Next Step
+With your HTTP services built, you need a way to test them efficiently without relying on an actual network.
+Explore **[HTTP Testing](../httptest/README.md)** to learn how to test handlers and clients in isolation.

@@ -187,6 +187,8 @@ All three incidents share the same underlying failures despite being in differen
 - **API6:2023 — Unrestricted Access to Sensitive Business Flows** — Coinbase
 - **API8:2023 — Security Misconfiguration** — Optus (no auth on endpoint)
 
----
+## Your Next Step
 
-> These incidents are why API security must be treated as a first-class design concern — not a post-deployment checklist item.
+Now that we've seen what happens when API design principles are ignored, let's dive into the core technical patterns used to build robust services.
+
+Explore the foundations of modern API architecture in: **[REST vs. RPC](../api-fundamentals/01-rest-vs-rpc.md)**.

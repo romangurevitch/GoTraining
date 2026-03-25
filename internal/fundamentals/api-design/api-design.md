@@ -276,6 +276,8 @@ Network-level rules that block traffic before it reaches your application. Inter
 Encrypted tunnel for accessing private networks. Internal APIs that aren't meant to be public should sit behind a VPN, not just an undocumented URL.
 > **Bad design:** "security through obscurity" — an internal API assumed safe because its URL isn't published. URLs get leaked through logs, referrer headers, and browser history.
 
----
+## Your Next Step
 
-> For real-world consequences of ignoring these principles, see the [Notable API Incidents](notable-api-incidents.md)
+API design principles are the foundation, but what happens when they are ignored?
+
+Explore the real-world consequences of poor design in: **[Notable API Incidents](notable-api-incidents.md)**.

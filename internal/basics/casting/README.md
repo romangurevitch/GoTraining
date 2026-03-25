@@ -80,3 +80,7 @@ cd internal/basics/casting
 ```bash
 go test -v ./...
 ```
+
+## Your Next Step
+Now that you can safely convert between types, it's essential to understand how these values are passed to functions.
+Explore **[Function Parameters](../parameters/README.md)** to master how Go handles value and pointer arguments.

@@ -99,11 +99,6 @@ cd internal/basics/err
 go test -v ./...
 ```
 
----
-
-## 📚 Best Practices
-
-- **Naming**: Sentinel errors start with `Err` (e.g., `ErrNotFound`).
-- **Naming**: Custom error types end with `Error` (e.g., `ValidationError`).
-- **Return Pattern**: Always return the error as the last return value.
-- **Never Ignore**: Do not use `_ = someFunc()` if it returns an error.
+## Your Next Step
+Once you can handle errors effectively, you can start using interfaces to decouple your code and make it more flexible and testable.
+Explore **[Interfaces in Go](../interface/README.md)** to master the power of implicit implementation.

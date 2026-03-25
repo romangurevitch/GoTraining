@@ -189,5 +189,8 @@ sequenceDiagram
     API-->>MCP: 201 Created {"transfer_id":"txn_abc"}
     MCP-->>Agent: {"result":{"transfer_id":"txn_abc","status":"completed"}}
 
-    Note over Agent,API: Discovery → Read → Act. The full agentic loop.
-```
+    ## Your Next Step
+
+We've explored the future of API engineering and how agents will interact with our services. Now, it's time to get our hands dirty with the language that makes it all possible.
+
+Dive into the core of Go development in: **[Module 2: Go Language Fundamentals](../../basics/README.md)**.

@@ -99,3 +99,8 @@ cd internal/basics/embed
 ```bash
 go test -v ./...
 ```
+
+## Your Next Step
+Now that you've mastered composition and embedding, it's time to add behavior to your data structures using methods.
+Explore **[Method Receivers](../receivers/README.md)** to learn how to define functions that belong to your types.
+

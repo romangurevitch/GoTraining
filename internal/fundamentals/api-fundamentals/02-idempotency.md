@@ -219,4 +219,8 @@ graph TD
     end
 ```
 
-> Every operation with a **financial side effect** must be idempotent. Retries happen. Networks fail. Design for it.
+## Your Next Step
+
+Idempotency ensures single operations are safe, but how do we scale these operations across thousands of servers?
+
+Learn the secrets of horizontal scalability in: **[Statelessness](03-statelessness.md)**.

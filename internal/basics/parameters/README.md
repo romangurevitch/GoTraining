@@ -84,9 +84,6 @@ cd internal/basics/parameters
 go test -bench '.Parameter.' -benchmem ./...
 ```
 
----
-
-## 📚 Further Reading
-
-- [Effective Go: Pointers vs Values](https://go.dev/doc/effective_go#pointers_vs_values)
-- [Go Wiki: Code Review Comments (Pointers)](https://github.com/golang/go/wiki/CodeReviewComments#receiver-type)
+## Your Next Step
+With a solid grasp of how data flows through functions, you're ready to start building more complex, real-world data structures.
+Explore **[Entities & Structs](../entity/README.md)** to learn how to define and initialize your domain objects.

@@ -27,3 +27,8 @@ go test -v -race ./...
 2. Use `ctx.Value(key)` to retrieve the value. You'll need to assert the type: `val, ok := ctx.Value(key).(string)`.
 3. For `RunAsync`, just use `go task()`.
 </details>
+
+## Your Next Step
+Concurrency mastered! Now, let's get back to basics and build something the whole bank can use. It's time to learn about package visibility and exporting.
+Head over to **[Case 08: The Account Greeter](../08-account-greeter/README.md)**.
+

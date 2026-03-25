@@ -30,3 +30,8 @@ go test -v ./...
 3. Try calling `formatName` from a different package — the compiler will reject it.
 4. The test file is in the same package (`package accountgreeter`) so it can test unexported behaviour indirectly.
 </details>
+
+## Your Next Step
+The greeter is ready for the world. But is the interest calculator actually correct? It's time for some detective work in the test suite.
+Head over to **[Case 09: The Interest Bug](../09-interest-bug/README.md)**.
+

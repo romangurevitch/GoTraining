@@ -13,3 +13,4 @@ Welcome to the **Repository Layer**—our data vault! This package handles all c
 We've already set up the Postgres interactions for you!
 
 Feel free to explore how `go-jet` queries are written. Now that you know where the data is stored, let's see how business rules are enforced by moving to the **[Service Layer](../service/README.md)**.
+

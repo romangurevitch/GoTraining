@@ -119,3 +119,7 @@ cd internal/basics/generics
 ```bash
 go test -v ./...
 ```
+
+## Your Next Step
+With complex, generic code, you'll often need to isolate your dependencies to keep your tests focused and reliable.
+Explore **[Mocking in Go](../mocking/README.md)** to learn how to use Mockery to generate type-safe mocks.

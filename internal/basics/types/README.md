@@ -37,3 +37,7 @@ Explore the unit tests for runnable patterns:
 cd internal/basics/types
 go test -v ./...
 ```
+
+## Your Next Step
+Now that you've mastered the basic types, it's time to understand how Go handles memory addresses and sharing data efficiently.
+Explore **[Pointers in Go](../pointers/README.md)** to see how to work with indirect values.

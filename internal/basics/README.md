@@ -6,6 +6,7 @@ This module covers the core building blocks of the Go programming language. Each
 
 <a name="the-mental-shift"></a>
 ### The Mental Shift
+- **[Basic Types](types/README.md)** — Variables, slices, and maps
 - **[Pointers](pointers/README.md)** — Memory addresses and indirect values
 - **[Type Assertions & Casting](casting/README.md)** — Working with dynamic types and interfaces
 - **[Parameters](parameters/README.md)** — Passing values vs. pointers
@@ -33,6 +34,7 @@ This module covers the core building blocks of the Go programming language. Each
 - **[Testing](testing/README.md)** — Unit testing and table-driven tests
 - **[Testify](testify/README.md)** — Fluent assertions and requirements
 - **[Benchmark](benchmark/README.md)** — Performance measurement
+- **[HTTP Client & Server](http/README.md)** — Building production-ready services
 - **[HTTP Testing](httptest/README.md)** — Testing handlers without a network
 
 <a name="advanced-features"></a>
@@ -40,3 +42,12 @@ This module covers the core building blocks of the Go programming language. Each
 - **[Generics](generics/README.md)** — Writing type-agnostic code
 - **[Mocking](mocking/README.md)** — Using Mockery for dependency isolation
 - **[Build Tags](buildtags/README.md)** — Conditional compilation
+
+## Your Exploration Journey
+
+Ready to master the fundamentals of Go? We've designed a guided path to take you from the basic types to advanced compilation techniques.
+
+Start your journey with the building blocks: **[Basic Types](types/README.md)**.
+
+---
+[← Back to Main README](../../README.md)
