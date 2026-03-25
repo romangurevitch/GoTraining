@@ -119,3 +119,14 @@ go test -v ./...
 Now that you're defining your own data structures, it's time to learn how to organize them into a clean and maintainable project structure.
 Explore **[Package Layout](../layout/README.md)** to understand the idiomatic way to structure Go applications.
 
+---
+
+## 📚 Reference
+
+| Feature | Go Keyword/Convention |
+|---------|-----------------------|
+| **Public** | `CapitalizedName` |
+| **Private** | `lowercaseName` |
+| **Methods** | `func (receiver) Name()` |
+| **Composition** | Struct Embedding |
+

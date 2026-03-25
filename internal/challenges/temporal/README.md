@@ -177,6 +177,7 @@ Congratulations! You've navigated the agentic workflow and built a robust, durab
 Head back to the **[Challenges Overview](../README.md)** to review your progress and find additional resources.
 
 ---
+[← Back to Main README](../../../README.md)
 
 ## 💡 Engineering Pro-Tips
 
@@ -194,6 +195,3 @@ Once you've finished, use the **Comprehensive Technical Audit** to evaluate your
 2. Copy the entire content of the file.
 3. Paste it into your AI agent (Gemini, Copilot, or Cursor).
 4. Review the detailed feedback and score.
-
----
-[← Back to Main README](../../../README.md)
