@@ -87,48 +87,42 @@ The **Temporal Server** is just a durable queue and state store — it holds no 
 Understanding where Temporal scales freely and where it imposes hard limits is essential to designing systems that don't hit walls in production.
 
 ```mermaid
-graph TB
-    Client(["🖥️ Client\nStartWorkflow / Signal"])
+flowchart TD
+    Client(["🖥️ Client<br/>StartWorkflow / Signal"]) --> TS
 
-    subgraph TS["Temporal Server  —  durable state & task queues"]
-        direction TB
-        TQ["Task Queue"]
-        EH["📜 Event History\n⚠️ Hard limit: ~50k events\n⚠️ Payload limit: 2MB per event\n⚠️ Signal limit: ~10k pending signals"]
-    end
-
-    subgraph WP["Worker Pool  —  scale horizontally, no limit"]
-        direction TB
-        W1["Worker 1"]
-        W2["Worker 2"]
-        W3["Worker N"]
-    end
-
-    subgraph WF["Workflow  —  orchestrator"]
-        direction TB
-        WFN["⚠️ Single goroutine — not concurrent\n⚠️ Bounded by event history\n⚠️ Must be deterministic\n✅ Durable across crashes\n✅ Retries, timeouts, signals built-in\n✅ Queryable state at any point"]
-    end
-
-    subgraph ACT["Activities  —  the black boxes"]
+    subgraph TS["Temporal Server (Durable State & Task Queues)"]
         direction LR
-        A1["🟦 Activity\n(DB write)"]
-        A2["🟦 Activity\n(HTTP call)"]
-        A3["🟦 Activity\n(Email send)"]
-        AN["🟦 Activity\n(anything)"]
+        TQ["Task Queue"]
+        EH["📜 Event History<br/>⚠️ Hard limit: ~50k events<br/>⚠️ Payload limit: 2MB per event<br/>⚠️ Signal limit: ~10k pending signals"]
     end
 
-    subgraph ASCALE["Activity Scaling"]
-        direction TB
-        AS1["✅ Unlimited horizontal scale\n✅ Any language, any runtime\n✅ Arbitrary I/O, side-effects OK\n⚠️ Lose durability if called outside Temporal\n⚠️ Lose retries if called directly (not via workflow.ExecuteActivity)"]
+    subgraph WP["Worker Pool (Scales Horizontally)"]
+        direction LR
+        W1["Worker 1"] --- W2["Worker 2"] --- W3["Worker N"]
     end
 
-    Client -->|"StartWorkflow\nor Signal"| TS
-    TQ --> WP
-    WP --> WF
-    WF -->|"workflow.ExecuteActivity"| TQ
-    TQ --> ACT
-    ACT -->|"result / error"| EH
+    subgraph Logic["Execution Logic"]
+        direction LR
+        subgraph WF["Workflows (Orchestrator)"]
+            WFN["⚠️ Single goroutine — not concurrent<br/>⚠️ Bounded by event history<br/>⚠️ Must be deterministic<br/>✅ Durable across crashes<br/>✅ Retries, timeouts, signals built-in<br/>✅ Queryable state at any point"]
+        end
+        subgraph ACT["Activities (The Black Boxes)"]
+            direction TB
+            AS1["✅ Unlimited horizontal scale<br/>✅ Any language, any runtime<br/>✅ Arbitrary I/O, side-effects OK<br/>⚠️ Lose durability if called outside Temporal<br/>⚠️ Lose retries if called directly"]
+            subgraph EX["Examples"]
+                direction LR
+                A1["🟦 DB write"] --- A2["🟦 HTTP call"] --- A3["🟦 Email"]
+            end
+        end
+    end
+
+    TS --"Dispatch task"--> WP
+    WP --"Poll"--> TS
+    WP --"Execute"--> WF
+    WP --"Execute"--> ACT
+    WF --"workflow.ExecuteActivity"--> TQ
+    ACT --"result / error"--> EH
     WF -.->|"bounded by"| EH
-    ACT -.->|"scales independently"| ASCALE
 ```
 
 ### The Core Trade-off
