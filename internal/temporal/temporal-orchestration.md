@@ -172,7 +172,7 @@ Any complex non-deterministic code (e.g., network calls, I/O, database operation
 > However, if an activity does not return or produce an error (i.e., the worker crashes or some other error prevents the activity from being recorded in Temporal's event history),
 > the activity may be re-executed. Because of this, Temporal recommends activities be ***idempotent***.
 >
-> This means that, executing the same activity with the same set of inputs multiple times should be the same as executing the activity once.
+> This means that executing the same activity with the same set of inputs multiple times should be the same as executing the activity once.
 > Be mindful when designing activities that they can be safely executed multiple times without causing unexpected side-effects.
 
 ## Your Next Step
