@@ -82,5 +82,5 @@ go test -v ./...
 ```
 
 ## Your Next Step
-Now that you've mastered the building blocks of the language, it's time to ensure your code works exactly as expected.
-Explore **[Testing in Go](../testing/README.md)** to learn the fundamentals of unit testing and table-driven tests.
+Now that you've mastered the building blocks of the language, it's time to build production-ready services.
+Explore **[HTTP Client & Server](../http/README.md)** to learn how to build and consume web services.

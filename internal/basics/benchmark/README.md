@@ -126,5 +126,5 @@ From our own benchmarks on an Apple M3 Pro (ARM64):
 *Note: The optimised recursive implementation now uses in-place multiplication (`res.Mul`), significantly reducing memory allocations (5 for n=128, matching the iterative version). Iterative only pulls ahead as the input size grows and the overhead of recursive function calls starts to outweigh the loop logic.*
 
 ## Your Next Step
-Now that your code is correct and fast, you're ready to expose it to the world through a production-ready HTTP API.
-Explore **[HTTP Client & Server](../http/README.md)** to learn how to build and consume web services.
+Now that your code is correct and fast, you need a way to test your HTTP handlers efficiently without relying on an actual network.
+Explore **[HTTP Testing](../httptest/README.md)** to learn how to test handlers and clients in isolation.

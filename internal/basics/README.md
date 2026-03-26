@@ -24,13 +24,16 @@ This module covers the core building blocks of the Go programming language. Each
 - **[Interfaces](interface/README.md)** — Implicit implementation and decoupling
 - **[Type Assertions & Casting](casting/README.md)** — Working with dynamic types and interfaces
 
+<a name="http-services"></a>
+### HTTP Services
+- **[HTTP Client & Server](http/README.md)** — Building production-ready services
+
 <a name="testing--benchmarking"></a>
 ### Testing & Performance
 - **[Testing](testing/README.md)** — Unit testing and table-driven tests
 - **[Testify](testify/README.md)** — Fluent assertions and requirements
 - **[Mocking](mocking/README.md)** — Using Mockery for dependency isolation
 - **[Benchmark](benchmark/README.md)** — Performance measurement
-- **[HTTP Client & Server](http/README.md)** — Building production-ready services
 - **[HTTP Testing](httptest/README.md)** — Testing handlers without a network
 
 <a name="concurrency--context"></a>
