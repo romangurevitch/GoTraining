@@ -126,8 +126,8 @@ go test -v ./...
 ```
 
 ## Your Next Step
-With your HTTP services built and tested, you're ready to leverage Go's most famous feature: lightweight, built-in concurrency.
-Explore **[Concurrency in Go](../concurrency/README.md)** to learn about goroutines and channels.
+With your HTTP services built and tested, it's time to measure and optimise their performance.
+Explore **[Benchmarking in Go](../benchmark/README.md)** to learn how to identify and eliminate bottlenecks.
 
 ---
 

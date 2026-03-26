@@ -121,5 +121,5 @@ go test -v ./...
 ```
 
 ## Your Next Step
-With complex, generic code, you'll often need to isolate your dependencies to keep your tests focused and reliable.
-Explore **[Mocking in Go](../mocking/README.md)** to learn how to use Mockery to generate type-safe mocks.
+With a full command of Go's type system, the final step is to learn how to conditionally include or exclude code at compile time.
+Explore **[Build Tags](../buildtags/README.md)** to see how to use build constraints for cross-platform and feature-flag builds.

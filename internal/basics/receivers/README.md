@@ -80,8 +80,8 @@ go test -v ./...
 ```
 
 ## Your Next Step
-With methods providing behavior to your types, you can now learn how to use composition to share that behavior and structure.
-Explore **[Embedding in Go](../embed/README.md)** to see how to compose types and share methods.
+With methods providing behavior to your types, you're ready to define contracts between types using interfaces.
+Explore **[Interfaces in Go](../interface/README.md)** to master implicit implementation and decoupling.
 
 ---
 

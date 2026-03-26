@@ -82,5 +82,5 @@ go test -v ./...
 ```
 
 ## Your Next Step
-Now that you've mastered the building blocks of the language, it's time to build production-ready services.
-Explore **[HTTP Client & Server](../http/README.md)** to learn how to build and consume web services.
+Now that you understand how to work with interfaces and dynamic types, you can explore how Go uses composition to share structure and behaviour.
+Explore **[Embedding in Go](../embed/README.md)** to see how to compose types and promote methods.

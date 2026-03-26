@@ -75,8 +75,8 @@ go test -v ./...
 ```
 
 ## Your Next Step
-Once you can manage package-level setup, you're ready to use interfaces to decouple your code and make it more flexible.
-Explore **[Interfaces in Go](../interface/README.md)** to master the power of implicit implementation.
+With your code well-organised, it's time to ensure it's correct and reliable through systematic testing.
+Explore **[Testing in Go](../testing/README.md)** to learn the fundamentals of unit testing and table-driven tests.
 
 ---
 

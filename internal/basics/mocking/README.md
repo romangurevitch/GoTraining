@@ -74,8 +74,8 @@ go test -v ./internal/basics/mocking/...
 ```
 
 ## Your Next Step
-After ensuring your tests are isolated and reliable, the next step is to measure and optimize their performance.
-Explore **[Benchmarking in Go](../benchmark/README.md)** to learn how to identify and eliminate bottlenecks.
+With your testing foundation in place, it's time to build and test real HTTP services.
+Explore **[HTTP Client & Server](../http/README.md)** to learn how to build and consume production-ready web services.
 
 ---
 

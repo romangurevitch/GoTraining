@@ -114,4 +114,4 @@ Include experimental features in a build without affecting the stable production
 
 ## Your Next Step
 Congratulations! You've completed the fundamentals of Go. Now it's time to apply everything you've learned to build a real-world API service.
-Explore **[Module 3: Building the Data & API Service](../../bank/README.md)** to start building the Go Bank application.
+Explore **[Module 3: Building the Data & API Service](../../../README.md#module-3-building-the-data--api-service)** to start building the Go Bank application.
