@@ -4,43 +4,43 @@ This module covers the core building blocks of the Go programming language. Each
 
 ## Topics
 
-<a name="the-mental-shift"></a>
-### The Mental Shift
+<a name="the-basics--the-mental-shift"></a>
+### The Basics & The Mental Shift
 - **[Basic Types](types/README.md)** — Variables, slices, and maps
 - **[Pointers](pointers/README.md)** — Memory addresses and indirect values
-- **[Type Assertions & Casting](casting/README.md)** — Working with dynamic types and interfaces
 - **[Parameters](parameters/README.md)** — Passing values vs. pointers
-
-<a name="structs--layout"></a>
-### Structs & Layout
-- **[Entities](entity/README.md)** — Defining data structures
-- **[Package Layout](layout/README.md)** — Organising your code idiomatically
-- **[Embedding](embed/README.md)** — Composition over inheritance
-
-<a name="behaviours"></a>
-### Behaviours
-- **[Receivers](receivers/README.md)** — Adding methods to types
-- **[init()](init/README.md)** — Package initialisation
 - **[Error Handling](err/README.md)** — Sentinel errors, wrapping, and the `error` interface
+
+<a name="defining-data--structure"></a>
+### Defining Data & Structure
+- **[Entities](entity/README.md)** — Defining data structures (Structs)
+- **[Receivers](receivers/README.md)** — Adding methods to types
+- **[Embedding](embed/README.md)** — Composition over inheritance
+- **[Package Layout](layout/README.md)** — Organising your code idiomatically
+- **[init()](init/README.md)** — Package initialisation
+
+<a name="abstraction--polymorphism"></a>
+### Abstraction & Polymorphism
 - **[Interfaces](interface/README.md)** — Implicit implementation and decoupling
+- **[Type Assertions & Casting](casting/README.md)** — Working with dynamic types and interfaces
+
+<a name="testing--performance"></a>
+### Testing & Performance
+- **[Testing](testing/README.md)** — Unit testing and table-driven tests
+- **[Testify](testify/README.md)** — Fluent assertions and requirements
+- **[Mocking](mocking/README.md)** — Using Mockery for dependency isolation
+- **[Benchmark](benchmark/README.md)** — Performance measurement
+- **[HTTP Client & Server](http/README.md)** — Building production-ready services
+- **[HTTP Testing](httptest/README.md)** — Testing handlers without a network
 
 <a name="concurrency--context"></a>
 ### Concurrency & Context
 - **[Concurrency](concurrency/README.md)** — Goroutines and Channels
 - **[Context](context/README.md)** — Cancellation, deadlines, and request-scoped values
 
-<a name="testing--benchmarking"></a>
-### Testing & Benchmarking
-- **[Testing](testing/README.md)** — Unit testing and table-driven tests
-- **[Testify](testify/README.md)** — Fluent assertions and requirements
-- **[Benchmark](benchmark/README.md)** — Performance measurement
-- **[HTTP Client & Server](http/README.md)** — Building production-ready services
-- **[HTTP Testing](httptest/README.md)** — Testing handlers without a network
-
 <a name="advanced-features"></a>
 ### Advanced Features
 - **[Generics](generics/README.md)** — Writing type-agnostic code
-- **[Mocking](mocking/README.md)** — Using Mockery for dependency isolation
 - **[Build Tags](buildtags/README.md)** — Conditional compilation
 
 ## Your Exploration Journey
