@@ -96,8 +96,8 @@ go test -v ./...
 ```
 
 ## Your Next Step
-After learning how to handle memory addresses with pointers, you'll often need to move data between different types or verify interface values.
-Explore **[Type Conversion & Assertion](../casting/README.md)** to learn how to safely transform data.
+After learning how to handle memory addresses with pointers, you'll need to understand how these values are passed to functions.
+Explore **[Function Parameters](../parameters/README.md)** to master how Go handles value and pointer arguments.
 
 ---
 

@@ -75,8 +75,8 @@ go test -v ./...
 ```
 
 ## Your Next Step
-Now that your application is starting to take shape, you need a robust way to handle the inevitable errors that occur at runtime.
-Explore **[Error Handling](../err/README.md)** to learn Go's idiomatic approach to explicit error management.
+Once you can manage package-level setup, you're ready to use interfaces to decouple your code and make it more flexible.
+Explore **[Interfaces in Go](../interface/README.md)** to master the power of implicit implementation.
 
 ---
 

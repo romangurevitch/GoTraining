@@ -80,8 +80,8 @@ go test -v ./...
 ```
 
 ## Your Next Step
-With methods providing behavior to your types, you might need to handle package-level setup before your code even starts running.
-Explore **[The init() Function](../init/README.md)** to understand how Go handles package initialization.
+With methods providing behavior to your types, you can now learn how to use composition to share that behavior and structure.
+Explore **[Embedding in Go](../embed/README.md)** to see how to compose types and share methods.
 
 ---
 

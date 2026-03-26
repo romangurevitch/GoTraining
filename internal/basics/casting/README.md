@@ -82,5 +82,5 @@ go test -v ./...
 ```
 
 ## Your Next Step
-Now that you can safely convert between types, it's essential to understand how these values are passed to functions.
-Explore **[Function Parameters](../parameters/README.md)** to master how Go handles value and pointer arguments.
+Now that you've mastered the building blocks of the language, it's time to ensure your code works exactly as expected.
+Explore **[Testing in Go](../testing/README.md)** to learn the fundamentals of unit testing and table-driven tests.

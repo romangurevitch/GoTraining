@@ -74,8 +74,8 @@ go test -v ./internal/basics/mocking/...
 ```
 
 ## Your Next Step
-Finally, you'll want to learn how to control which parts of your code are compiled based on the environment or specific build needs.
-Explore **[Go Build Tags](../buildtags/README.md)** to master conditional compilation.
+After ensuring your tests are isolated and reliable, the next step is to measure and optimize their performance.
+Explore **[Benchmarking in Go](../benchmark/README.md)** to learn how to identify and eliminate bottlenecks.
 
 ---
 

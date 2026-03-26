@@ -116,8 +116,8 @@ go test -v ./...
 ```
 
 ## Your Next Step
-Now that you're defining your own data structures, it's time to learn how to organize them into a clean and maintainable project structure.
-Explore **[Package Layout](../layout/README.md)** to understand the idiomatic way to structure Go applications.
+Now that you're defining your own data structures, it's time to add behavior to them using methods.
+Explore **[Method Receivers](../receivers/README.md)** to learn how to define functions that belong to your types.
 
 ---
 

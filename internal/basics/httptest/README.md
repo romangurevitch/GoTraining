@@ -126,8 +126,8 @@ go test -v ./...
 ```
 
 ## Your Next Step
-Now that you've mastered the standard patterns, it's time to explore how to write more reusable, type-agnostic code.
-Explore **[Generics in Go](../generics/README.md)** to see how to use type parameters to reduce code duplication.
+With your HTTP services built and tested, you're ready to leverage Go's most famous feature: lightweight, built-in concurrency.
+Explore **[Concurrency in Go](../concurrency/README.md)** to learn about goroutines and channels.
 
 ---
 
