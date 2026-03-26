@@ -74,8 +74,8 @@ go test -v ./internal/basics/mocking/...
 ```
 
 ## Your Next Step
-Finally, you'll want to learn how to control which parts of your code are compiled based on the environment or specific build needs.
-Explore **[Go Build Tags](../buildtags/README.md)** to master conditional compilation.
+With your testing foundation in place, it's time to build and test real HTTP services.
+Explore **[HTTP Client & Server](../http/README.md)** to learn how to build and consume production-ready web services.
 
 ---
 

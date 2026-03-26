@@ -99,8 +99,8 @@ go test -v ./...
 ```
 
 ## Your Next Step
-With a decoupled architecture in place, you're ready to leverage Go's most famous feature: lightweight, built-in concurrency.
-Explore **[Concurrency in Go](../concurrency/README.md)** to learn about goroutines and channels.
+With a decoupled architecture using interfaces, you'll often need to move data between different types or verify specific interface values.
+Explore **[Type Conversion & Assertion](../casting/README.md)** to learn how to safely transform data and dynamic types.
 
 ---
 

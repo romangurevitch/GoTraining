@@ -78,8 +78,8 @@ go test -v ./...
 ```
 
 ## Your Next Step
-After organizing your packages, you'll want to learn how to use composition and embed static assets directly into your binaries.
-Explore **[Embedding in Go](../embed/README.md)** to see how to compose types and bundle files.
+After organizing your packages, you'll often need to handle package-level setup before your code even starts running.
+Explore **[The init() Function](../init/README.md)** to understand how Go handles package initialization.
 
 ---
 

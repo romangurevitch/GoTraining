@@ -75,8 +75,8 @@ go test -v ./...
 ```
 
 ## Your Next Step
-Now that your application is starting to take shape, you need a robust way to handle the inevitable errors that occur at runtime.
-Explore **[Error Handling](../err/README.md)** to learn Go's idiomatic approach to explicit error management.
+With your code well-organised, it's time to ensure it's correct and reliable through systematic testing.
+Explore **[Testing in Go](../testing/README.md)** to learn the fundamentals of unit testing and table-driven tests.
 
 ---
 

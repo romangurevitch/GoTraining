@@ -4,43 +4,39 @@ This module covers the core building blocks of the Go programming language. Each
 
 ## Topics
 
-<a name="the-mental-shift"></a>
-### The Mental Shift
+### The Basics & The Mental Shift
 - **[Basic Types](types/README.md)** — Variables, slices, and maps
 - **[Pointers](pointers/README.md)** — Memory addresses and indirect values
-- **[Type Assertions & Casting](casting/README.md)** — Working with dynamic types and interfaces
 - **[Parameters](parameters/README.md)** — Passing values vs. pointers
+- **[Error Handling](err/README.md)** — Sentinel errors, wrapping, and the `error` interface
 
-<a name="structs--layout"></a>
-### Structs & Layout
-- **[Entities](entity/README.md)** — Defining data structures
-- **[Package Layout](layout/README.md)** — Organising your code idiomatically
+### Defining Data & Behaviour
+- **[Entities](entity/README.md)** — Defining data structures (Structs)
+- **[Receivers](receivers/README.md)** — Adding methods to types
+- **[Interfaces](interface/README.md)** — Implicit implementation and decoupling
+- **[Type Assertions & Casting](casting/README.md)** — Working with dynamic types and interfaces
 - **[Embedding](embed/README.md)** — Composition over inheritance
 
-<a name="behaviours"></a>
-### Behaviours
-- **[Receivers](receivers/README.md)** — Adding methods to types
+### Code Organisation
+- **[Package Layout](layout/README.md)** — Organising your code idiomatically
 - **[init()](init/README.md)** — Package initialisation
-- **[Error Handling](err/README.md)** — Sentinel errors, wrapping, and the `error` interface
-- **[Interfaces](interface/README.md)** — Implicit implementation and decoupling
 
-<a name="concurrency--context"></a>
+### Testing
+- **[Testing](testing/README.md)** — Unit testing and table-driven tests
+- **[Testify](testify/README.md)** — Fluent assertions and requirements
+- **[Mocking](mocking/README.md)** — Using Mockery for dependency isolation
+
+### HTTP Services
+- **[HTTP Client & Server](http/README.md)** — Building production-ready services
+- **[HTTP Testing](httptest/README.md)** — Testing handlers without a network
+- **[Benchmark](benchmark/README.md)** — Performance measurement
+
 ### Concurrency & Context
 - **[Concurrency](concurrency/README.md)** — Goroutines and Channels
 - **[Context](context/README.md)** — Cancellation, deadlines, and request-scoped values
 
-<a name="testing--benchmarking"></a>
-### Testing & Benchmarking
-- **[Testing](testing/README.md)** — Unit testing and table-driven tests
-- **[Testify](testify/README.md)** — Fluent assertions and requirements
-- **[Benchmark](benchmark/README.md)** — Performance measurement
-- **[HTTP Client & Server](http/README.md)** — Building production-ready services
-- **[HTTP Testing](httptest/README.md)** — Testing handlers without a network
-
-<a name="advanced-features"></a>
 ### Advanced Features
 - **[Generics](generics/README.md)** — Writing type-agnostic code
-- **[Mocking](mocking/README.md)** — Using Mockery for dependency isolation
 - **[Build Tags](buildtags/README.md)** — Conditional compilation
 
 ## Your Exploration Journey

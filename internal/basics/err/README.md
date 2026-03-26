@@ -100,8 +100,8 @@ go test -v ./...
 ```
 
 ## Your Next Step
-Once you can handle errors effectively, you can start using interfaces to decouple your code and make it more flexible and testable.
-Explore **[Interfaces in Go](../interface/README.md)** to master the power of implicit implementation.
+Once you can handle errors effectively, you're ready to start building more complex, real-world data structures.
+Explore **[Entities & Structs](../entity/README.md)** to learn how to define and initialize your domain objects.
 
 ---
 

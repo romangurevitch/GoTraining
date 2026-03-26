@@ -82,5 +82,5 @@ go test -v ./...
 ```
 
 ## Your Next Step
-Now that you can safely convert between types, it's essential to understand how these values are passed to functions.
-Explore **[Function Parameters](../parameters/README.md)** to master how Go handles value and pointer arguments.
+Now that you understand how to work with interfaces and dynamic types, you can explore how Go uses composition to share structure and behaviour.
+Explore **[Embedding in Go](../embed/README.md)** to see how to compose types and promote methods.

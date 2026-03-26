@@ -94,5 +94,5 @@ go test -v ./...
 ```
 
 ## Your Next Step
-With all these powerful features at your disposal, it's time to ensure your code works exactly as expected through rigorous testing.
-Explore **[Testing in Go](../testing/README.md)** to learn the fundamentals of unit testing and table-driven tests.
+Now that you've mastered the core features of Go, it's time to explore how to write more reusable, type-agnostic code.
+Explore **[Generics in Go](../generics/README.md)** to see how to use type parameters to reduce code duplication.

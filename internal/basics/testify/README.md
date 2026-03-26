@@ -79,8 +79,8 @@ go test -v ./...
 ```
 
 ## Your Next Step
-After ensuring your code is correct, the next logical step is to measure and optimize its performance.
-Explore **[Benchmarking in Go](../benchmark/README.md)** to learn how to identify and eliminate bottlenecks.
+After making your assertions more readable, you'll often need to isolate your dependencies to keep your tests focused.
+Explore **[Mocking in Go](../mocking/README.md)** to learn how to use Mockery to generate type-safe mocks.
 
 ---
 

@@ -89,7 +89,7 @@ go test -v ./...
 ```
 
 ## Your Next Step
-With your HTTP services built, you need a way to test them efficiently without relying on an actual network.
+With your HTTP services built, it's time to learn how to test them efficiently without relying on an actual network.
 Explore **[HTTP Testing](../httptest/README.md)** to learn how to test handlers and clients in isolation.
 
 ---
