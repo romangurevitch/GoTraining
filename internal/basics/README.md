@@ -5,6 +5,7 @@ This module covers the core building blocks of the Go programming language. Each
 ## Topics
 
 ### The Basics & The Mental Shift
+- **[Toolchain & Docker](toolchain/README.md)** — Go modules, CLI tools, and containerisation
 - **[Basic Types](types/README.md)** — Variables, slices, and maps
 - **[Pointers](pointers/README.md)** — Memory addresses and indirect values
 - **[Parameters](parameters/README.md)** — Passing values vs. pointers

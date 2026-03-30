@@ -11,7 +11,7 @@ Focus: Transitioning from interpretative languages to Go's type system and build
 | :--- | :--- | :--- | :--- |
 | 09:30 | **API Fundamentals & Design** | Core principles of REST vs. RPC, security considerations for modern services, and adopting structured logging with `slog`. | [Module 1](README.md#module-1-modern-api-engineering-principles) |
 | 10:30 | **Lifecycle & The Agentic Future** | API evolution, graceful sunsetting strategies, containerisation for AWS (ECS), and the role of MCP in AI-driven development. | [Module 1](README.md#module-1-modern-api-engineering-principles) |
-| 11:20 | **Toolchain & Docker** | Mastering Go dependency management (`go mod`), and building efficient, multi-stage Docker images. | [Getting Started](README.md#getting-started) |
+| 11:20 | **Toolchain & Docker** | Mastering Go dependency management (`go mod`), and building efficient, multi-stage Docker images. | [Toolchain & Docker](internal/basics/toolchain/README.md) |
 | 12:00 | *Lunch Break* | | |
 | 13:00 | **API Trivia** | *Sequence Breaker:* A fun exploration of the "Bad API Hall of Fame" and design anti-patterns. | |
 | 13:30 | **Go Building Blocks I** | The mental shift: Memory management with pointers, data structures (structs/slices), and Go's unique error-as-value philosophy. | [Module 2](README.md#module-2-go-language-fundamentals) |

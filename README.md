@@ -80,6 +80,7 @@ Explore the foundational concepts for building production-ready APIs and platfor
 Dive into the building blocks of Go by exploring the following topics:
 
 - [The Basics & The Mental Shift](internal/basics/README.md#the-basics--the-mental-shift)
+    - [Toolchain & Docker](internal/basics/toolchain/README.md)
     - [Basic Types](internal/basics/types/README.md)
     - [Pointers](internal/basics/pointers/README.md)
     - [Parameters](internal/basics/parameters/README.md)
