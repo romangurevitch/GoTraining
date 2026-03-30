@@ -69,12 +69,12 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 go build -o /app/server ./cmd/server/main.go
+RUN CGO_ENABLED=0 go build -trimpath -o /app/myapp ./cmd/myapp
 
 # Stage 2: Final Runtime
 FROM scratch
-COPY --from=builder /app/server /server
-ENTRYPOINT ["/server"]
+COPY --from=builder /app/myapp /myapp
+ENTRYPOINT ["/myapp"]
 ```
 
 ---
