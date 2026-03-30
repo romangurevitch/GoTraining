@@ -28,36 +28,35 @@ flowchart TD
 
 ## 3. 💻 Implementation Examples
 
-### Go Module Structure (`go.mod`)
-```go
-module my-cool-project
+### Essential CLI Commands
 
-go 1.26.1
-
-require (
-    github.com/gin-gonic/gin v1.9.1
-    github.com/stretchr/testify v1.8.4
-)
+Initialise a new module:
+```bash
+go mod init my-cool-project
 ```
 
-### Essential CLI Commands
+Add missing dependencies and remove unused ones:
 ```bash
-# Initialise a new module
-go mod init my-cool-project
-
-# Add missing dependencies & remove unused ones
 go mod tidy
+```
 
-# Run your application directly
-go run cmd/myapp/main.go
+Run your application directly:
+```bash
+go run internal/basics/toolchain/toolchain.go
+```
 
-# Compile a binary for the current OS/Arch
-go build -o myapp ./cmd/myapp
+Compile a binary for the current OS/Arch:
+```bash
+go build -o toolchain-demo internal/basics/toolchain/toolchain.go
+```
 
-# Run tests in the current directory
-go test ./...
+Run tests in the current directory:
+```bash
+go test -v ./internal/basics/toolchain/...
+```
 
-# Install a tool to your $GOPATH/bin
+Install a tool to your `$GOPATH/bin`:
+```bash
 go install github.com/swaggo/swag/cmd/swag@latest
 ```
 
@@ -100,15 +99,21 @@ ENTRYPOINT ["/myapp"]
 
 ## 🏃 Running the Examples
 
-Explore how to interact with the Go toolchain:
-- `toolchain.go`: A simple application to test building and running.
+Explore how to interact with the Go toolchain using the local demo file:
 
+1. Build the local example:
 ```bash
-# Build the local example
 go build -o toolchain-demo internal/basics/toolchain/toolchain.go
+```
 
-# Run the compiled binary
+2. Run the compiled binary:
+```bash
 ./toolchain-demo
+```
+
+3. Run the tests:
+```bash
+go test -v ./internal/basics/toolchain/...
 ```
 
 ## Your Next Step
