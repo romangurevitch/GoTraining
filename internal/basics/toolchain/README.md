@@ -68,7 +68,7 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 go build -trimpath -o /app/myapp ./cmd/myapp
+RUN CGO_ENABLED=0 go build -trimpath -o /app/myapp ./internal/basics/toolchain/toolchain.go
 
 # Stage 2: Final Runtime
 FROM scratch
