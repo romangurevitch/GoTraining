@@ -8,7 +8,7 @@ Modern Go development revolves around its powerful, built-in toolchain and conta
 
 | Tool / File | Description / Purpose |
 | :--- | :--- |
-| **`go mod`** | Go's dependency management system. Replaces the legacy `$GOPATH`. |
+| **Go Modules** | Go's dependency management system. Replaces the legacy GOPATH workspace. |
 | **`go.mod`** | The manifest file for your module, defining its name and requirements. |
 | **`go.sum`** | A lockfile containing checksums of specific module versions. |
 | **`Dockerfile`** | A script for building container images. Multi-stage builds are the Go standard. |
@@ -32,7 +32,7 @@ flowchart TD
 
 Initialise a new module:
 ```bash
-go mod init my-cool-project
+go mod init my-cool-project # Run this when starting a new project
 ```
 
 Add missing dependencies and remove unused ones:
@@ -47,7 +47,7 @@ go run internal/basics/toolchain/toolchain.go
 
 Compile a binary for the current OS/Arch:
 ```bash
-go build -o toolchain-demo internal/basics/toolchain/toolchain.go
+go build -o toolchain-demo ./internal/basics/toolchain
 ```
 
 Run tests in the current directory:
@@ -68,7 +68,7 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 go build -trimpath -o /app/myapp ./internal/basics/toolchain/toolchain.go
+RUN CGO_ENABLED=0 go build -trimpath -o /app/myapp ./internal/basics/toolchain
 
 # Stage 2: Final Runtime
 FROM scratch
@@ -103,7 +103,7 @@ Explore how to interact with the Go toolchain using the local demo file:
 
 1. Build the local example:
 ```bash
-go build -o toolchain-demo internal/basics/toolchain/toolchain.go
+go build -o toolchain-demo ./internal/basics/toolchain
 ```
 
 2. Run the compiled binary:
