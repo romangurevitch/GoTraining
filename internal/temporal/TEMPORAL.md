@@ -35,7 +35,7 @@ sequenceDiagram
     T->>T: 📝 Record: ActivityCompleted
 
     Note over W: 💥 Worker crashes
-    Note over W: ↩️Worker restarts  
+    Note over W: ↩️Worker restarts
 
     W->>T: Replay: Polls Temporal
     T-->>W: Replay: 2 steps already completed
@@ -168,18 +168,17 @@ Breaking this rule causes **non-determinism errors** — Temporal detects that t
 Any complex non-deterministic code (e.g., network calls, I/O, database operations) should sit in an activity.
 
 > [!TIP]
-> Temporal will not re-execute activities when replaying workflows. 
+> Temporal will not re-execute activities when replaying workflows.
 > However, if an activity does not return or produce an error (i.e., the worker crashes or some other error prevents the activity from being recorded in Temporal's event history),
 > the activity may be re-executed. Because of this, Temporal recommends activities be ***idempotent***.
 >
 > This means that executing the same activity with the same set of inputs multiple times should be the same as executing the activity once.
 > Be mindful when designing activities that they can be safely executed multiple times without causing unexpected side-effects.
 
-## Your Next Step
-
-Now that you understand the theory of durable orchestration, let's see it in action.
-
-Explore the live demo in: **[Order Processing Demo](order/README.md)**.
-
 ---
-[← Back to Module 4 Overview](README.md)
+
+## Next Steps
+
+Now that you understand the theory of durable orchestration, see how it's implemented in this project:
+
+Explore the **[Order Processing Implementation](README.md)**.
