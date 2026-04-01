@@ -1,146 +1,151 @@
-# ⏱️ Temporal: Durable Workflow Orchestration
+# ⏱️ Order Processing Implementation
 
-Raw goroutines and channels are powerful for short-lived concurrent work, but they break down when tasks need to survive **process crashes**, **network failures**, and **restarts**. Temporal provides **durable execution**: your code runs to completion even if the machine dies halfway through.
+This module contains the implementation of a durable **Order Processing Workflow** using Temporal. It demonstrates how to orchestrate complex, multi-step business processes with reliable state management, signal handling, and child workflows.
+
+For a general overview of Temporal concepts, see **[TEMPORAL.md](TEMPORAL.md)**.
 
 ---
 
-## Order Processing Demo (Order Workflow)
+## 🏗️ Workflow Lifecycle Diagrams
 
-The demo features an **Order Processing Workflow** demonstrating durable execution, signal handling, and child workflows. While the core banking service uses standard database transactions, this module explores how to orchestrate complex, multi-step business processes that require reliable state management across many services.
-
-## Topics
-
-- **[Temporal Overview](temporal-orchestration.md)** — The foundation: Why durable orchestration matters, core concepts (Workflow, Activity, Worker), and the replay model.
-- **[Order Processing Demo](order/README.md)** — A live demonstration of durable execution, signal handling, and child workflows.
-- **[Worker Entrypoint](../../cmd/temporal/worker/main.go)** — Implementation of a Temporal worker in Go.
-
-## 1. The Problem Temporal Solves
-
-Imagine a multi-step order flow: charge the customer → reserve inventory → send a confirmation email. Without Temporal, a crash between any two steps leaves inconsistent state and no automatic recovery.
+### 1. Automated Workflow (`AutoProcessOrder`)
+This workflow demonstrates **Durable Automation**. It drives the entire lifecycle through completion by executing a series of Activities without requiring external intervention.
 
 ```mermaid
 sequenceDiagram
-    participant App
-    participant DB
-    participant Email
-    App->>DB: Charge customer ✅
-    App--xEmail: 💥 Process crash — email never sent
-    Note over App,Email: State is now inconsistent
-```
-
-With Temporal, the Workflow is **durable**: it resumes exactly where it left off.
-
-```mermaid
-sequenceDiagram
-    participant W as Worker
+    autonumber
+    participant C as Client / CLI
     participant T as Temporal Server
-    participant A as Activity
+    participant W as Workflow (Worker)
+    participant A as Activity (Worker)
+    participant CW as Child Workflow
 
-    W->>A: Charge customer
-    A->>T: ✅ Done
-    T->>T: 📝 Record: ActivityCompleted
+    C->>T: StartWorkflow(AutoProcessOrder)
+    T->>W: Task: Execute Workflow
+    
+    W->>A: ExecuteActivity(Validate)
+    A-->>W: Success
+    Note over W: Status: PLACED
 
-    W->>A: Reserve inventory
-    A->>T: ✅ Done
-    T->>T: 📝 Record: ActivityCompleted
+    W->>A: ExecuteActivity(Pick)
+    A-->>W: Success
+    Note over W: Status: PICKED
 
-    Note over W: 💥 Worker crashes
-    Note over W: ↩️Worker restarts
+    W->>W: SideEffect: Generate Payment ID
+    W->>CW: ExecuteChildWorkflow(ProcessPayment)
+    CW-->>W: Success
 
-    W->>T: Replay: Polls Temporal
-    T-->>W: Replay: 2 steps already completed
-    Note over W,T: Skips completed steps,<br>resumes here ↓
+    W->>A: ExecuteActivity(Ship)
+    A-->>W: Success
+    Note over W: Status: SHIPPED
 
-    W->>A: Send confirmation email
-    A->>T: ✅ Done
-    T->>T: 📝 Record: ActivityCompleted
+    W->>A: ExecuteActivity(Deliver)
+    A-->>W: Success
+    Note over W: Status: COMPLETED
+    W-->>T: Workflow Completed
 ```
 
----
-
-## 2. Core Concepts
-
-| Concept | What it is | Analogy |
-|---|---|---|
-| **Workflow** | Deterministic, replayable orchestration logic. Never does I/O directly. | The recipe |
-| **Activity** | A single retriable step: an API call, DB write, email send. | One step in the recipe |
-| **Worker** | A process that polls Temporal and executes Workflows and Activities. | The chef |
-| **Task Queue** | A named queue Workers listen on; routes work to the right Workers. | The order ticket rail |
-| **Signal** | An external event sent into a running Workflow to influence its state. | A customer calling to change their order |
-
----
-
-## 3. How It Fits Together
+### 2. Signal-Driven Workflow (`ProcessOrder`)
+This workflow demonstrates **External Interactivity**. It pauses at key stages and waits for external signals (from a user or another system) to proceed.
 
 ```mermaid
-flowchart LR
-    Client["Your Code\n(Workflow Client)"]
-    TS["Temporal Server\n(Durable State + Task Queue)"]
-    W["Worker\n(your process)"]
-    A1["Activity: Charge"]
-    A2["Activity: Ship"]
+sequenceDiagram
+    autonumber
+    participant C as Client / CLI
+    participant T as Temporal Server
+    participant W as Workflow (Worker)
+    participant A as Activity (Worker)
+    participant CW as Child Workflow
 
-    Client --"StartWorkflow"--> TS
-    W --"Poll"--> TS
-    TS --"Dispatch task"--> W
-    W --> A1
-    W --> A2
-    A1 & A2 --"Result"--> TS
+    C->>T: StartWorkflow(ProcessOrder)
+    T->>W: Task: Execute Workflow
+    
+    W->>A: ExecuteActivity(Validate)
+    A-->>W: Success
+    Note over W: Status: PLACED
+
+    Note over W,T: 🛑 Suspends: Wait for Signal (pickOrder)
+    C->>T: SignalWorkflow(pickOrder)
+    T-->>W: Wake up: Signal Received
+    Note over W: Status: PICKED
+
+    W->>W: SideEffect: Generate Payment ID
+    W->>CW: ExecuteChildWorkflow(ProcessPayment)
+    CW-->>W: Success
+
+    Note over W,T: 🛑 Suspends: Wait for Signal (shipOrder)
+    C->>T: SignalWorkflow(shipOrder)
+    T-->>W: Wake up: Signal Received
+    Note over W: Status: SHIPPED
+
+    Note over W,T: 🛑 Suspends: Wait for Signal (orderDelivered)
+    C->>T: SignalWorkflow(orderDelivered)
+    T-->>W: Wake up: Signal Received
+    Note over W: Status: COMPLETED
+    W-->>T: Workflow Completed
 ```
 
-The **Temporal Server** is just a durable queue and state store — it holds no business logic. All your business logic lives in your Worker process.
+---
+
+## Workflows
+
+### 1. `AutoProcessOrder` (Automated)
+A version that drives the order through each stage automatically via Activities.
+**Lifecycle**: PLACED → PICKED → SHIPPED → COMPLETED
+
+### 2. `ProcessOrder` (Signal-Driven)
+Represents a long-running order lifecycle that waits for external human or system signals to progress.
+- **Status Tracking**: Uses a query handler `GetOrderStatus` to expose current state.
+- **Determinism**: Uses `workflow.SideEffect` for stable UUID generation.
+- **Child Workflow**: Executes `ProcessPayment` to handle financial transactions independently.
 
 ---
 
-## 4. The Golden Rule: Workflows Must Be Deterministic
+## Activities
 
-Temporal reconstructs a Workflow's state by **replaying its event history** after a crash. This means Workflow code must always make the same decisions given the same history.
-For most non-deterministic functions used typically, Temporal's SDK offers deterministic alternatives. e.g.,
-
-| ❌ Instead of this | ✅ Do this instead |
+| Activity | Description |
 |---|---|
-| `time.Now()` | `workflow.Now(ctx)` |
-| `rand.Int()` | `workflow.SideEffect(...)` |
-| `http.Get(url)` | Call an Activity |
-| `os.Getenv(...)` | Pass as Workflow input |
-| `go func() { ... }` | `workflow.Go(ctx, ...)` |
-
-Breaking this rule causes **non-determinism errors** — Temporal detects that the replayed decisions don't match history and panics the Workflow.
-
-Any complex non-deterministic code (e.g., network calls, I/O, database operations) should sit in an activity.
-
-> [!TIP]
-> Temporal will not re-execute activities when replaying workflows.
-> However, if an activity does not return or produce an error (i.e., the worker crashes or some other error prevents the activity from being recorded in Temporal's event history),
-> the activity may be re-executed. Because of this, Temporal recommends activities be ***idempotent***.
->
-> This means that, executing the same activity with the same set of inputs multiple times should be the same as executing the activity once.
-> Be mindful when designing activities that they can be safely executed multiple times without causing unexpected side-effects.
+| `Validate` | Checks order ID and inventory. |
+| `Pick` | Simulates warehouse picking. |
+| `Ship` | Simulates creating a shipment. |
+| `Deliver` | Simulates delivery confirmation. |
 
 ---
 
-## Module Structure
+## Running the Demo
 
-| Directory | Contents |
+For the best experience, use **2 terminals**:
+
+| Terminal | Purpose |
 |---|---|
-| `order/` | Order domain model and status transitions |
-| `workflows/` | Workflow definitions (automated + signal-driven) |
-| `activities/` | Individual retriable steps (inventory, shipping) |
-| `integrations/` | External service clients (WireMock inventory API) |
-| `encryption/` | Data converter for payload encryption |
+| **Terminal 1** | Runs the Temporal server + Worker process |
+| **Terminal 2** | Sends commands — starts workflows, sends signals |
 
-## Your Exploration Journey
+### Step 1: Start Services & Worker (Terminal 1)
+```bash
+make temporal-up
+make worker-start
+```
 
-Ready to discover how to make your code invincible?
+### Step 2: Run the Workflows (Terminal 2)
 
-Start your journey with the fundamentals: **[Temporal Overview & Concepts](temporal-orchestration.md)**.
+#### Automated Workflow (Simple):
+```bash
+make workflow-auto
+```
 
-## Resources
-
-- [Temporal Learning Center](https://learn.temporal.io/) — Official tutorials and self-paced courses.
-- [Temporal Go SDK Guide](https://docs.temporal.io/dev-guide/go/foundations) — Core implementation details.
-- [Temporal Encyclopedia](https://docs.temporal.io/temporal) — Conceptual deep-dives into the platform.
-- [Glossary](https://docs.temporal.io/glossary) — Precise definitions of Temporal terminology.
+#### Signal-Driven Workflow (Interactive):
+1. **Start the workflow**:
+   ```bash
+   export ID=my-order-1
+   make workflow-signal
+   ```
+2. **Drive the workflow**:
+   ```bash
+   make workflow-pick     # PLACED → PICKED
+   make workflow-ship     # PICKED → SHIPPED
+   make workflow-deliver  # SHIPPED → COMPLETED
+   ```
 
 ---
 [← Back to Main README](../../README.md)
