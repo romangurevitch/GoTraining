@@ -122,29 +122,48 @@ For the best experience, use **2 terminals**:
 | **Terminal 2** | Sends commands — starts workflows, sends signals |
 
 ### Step 1: Start Services & Worker (Terminal 1)
+Start the Temporal server and WireMock (Inventory API) in the background:
+
 ```bash
 make temporal-up
+```
+
+Then start the Worker. It stays active and prints logs as work arrives:
+
+```bash
 make worker-start
 ```
+
+| Service | URL |
+|---|---|
+| Temporal Web UI | http://localhost:8233 |
+| WireMock (Inventory API) | http://localhost:8081 |
 
 ### Step 2: Run the Workflows (Terminal 2)
 
 #### Automated Workflow (Simple):
+Drives the order through every stage automatically.
+
 ```bash
 make workflow-auto
 ```
 
 #### Signal-Driven Workflow (Interactive):
-1. **Start the workflow**:
+Pauses at each stage and waits for you to send a signal.
+
+1. **Start the workflow** (set a unique ID first):
    ```bash
    export ID=my-order-1
    make workflow-signal
    ```
-2. **Drive the workflow**:
+2. **Drive the workflow through signals**:
    ```bash
    make workflow-pick     # PLACED → PICKED
    make workflow-ship     # PICKED → SHIPPED
    make workflow-deliver  # SHIPPED → COMPLETED
+
+   # Or cancel before picking:
+   make workflow-cancel   # PLACED → CANCELLED
    ```
 
 ---
