@@ -12,7 +12,7 @@ type PaymentDetails struct {
 
 func ProcessPayment(ctx workflow.Context, in PaymentDetails) error {
 	// TODO: add payment processing logic.
-	workflow.GetLogger(ctx).Info("Did some processing and recieved the payment", "amount", in.Amount)
+	workflow.GetLogger(ctx).Info("Processing payment", "pay_id", in.PayID, "amount_cents", in.Amount)
 
 	return nil
 }

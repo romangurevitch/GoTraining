@@ -48,8 +48,7 @@ func (a *OrderActivities) Validate(ctx context.Context, o order.Order) error {
 }
 
 func (a *OrderActivities) Process(ctx context.Context, o order.Order) (string, error) {
-	// TODO: add order processing logic.
-
+	slog.InfoContext(ctx, "Processing order", "order_id", o.ID, "items", len(o.LineItems))
 	return "Processed", nil
 }
 

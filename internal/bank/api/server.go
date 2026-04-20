@@ -43,6 +43,7 @@ func NewServer(svc service.Service, logger *slog.Logger, cfg Config) *gin.Engine
 
 	// TODO: Register the transfer route group and the POST /v1/transfers endpoint here.
 	// Use the accounts group above as a reference.
+	// WARNING: passing nil — server will panic on /v1/transfers until you wire the route.
 	var _ = transfer.New(nil) // prevent unused import error while TODO is incomplete
 
 	return r
