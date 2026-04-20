@@ -11,8 +11,8 @@ type WatchList struct {
 // BUG 2: even if the receiver were a pointer, append must be assigned back.
 //
 // TODO: fix both bugs so suspects are actually stored.
-func (w WatchList) AddSuspect(id string) {
-	_ = append(w.suspects, id) // nolint:staticcheck // intentional bug for challenge
+func (w *WatchList) AddSuspect(id string) {
+	w.suspects = append(w.suspects, id)
 }
 
 // Count returns the number of suspects on the list.

@@ -1,7 +1,10 @@
 package account
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/romangurevitch/go-training/pkg/client/bank"
 	"github.com/spf13/cobra"
@@ -13,11 +16,17 @@ func getBalanceCmd(bankClient bank.Client) *cobra.Command {
 		Short: "Check the balance of an account",
 		Args:  cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			// TODO: Implement the CLI logic to check an account balance.
-			// 1. Parse arguments (account-id)
-			// 2. Call bankClient.GetAccount
-			// 3. Print the success balance response as json
-			fmt.Println("TODO: implement balance command")
+			accountID := args[0]
+			ctx := context.Background()
+
+			res, err := bankClient.GetAccount(ctx, accountID)
+			if err != nil {
+				fmt.Printf("Error: %v\n", err)
+				os.Exit(1)
+			}
+
+			b, _ := json.MarshalIndent(res, "", "  ")
+			fmt.Println(string(b))
 		},
 	}
 }

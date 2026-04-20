@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
@@ -17,6 +18,7 @@ import (
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
+	"go.temporal.io/sdk/client"
 
 	bankapi "github.com/romangurevitch/go-training/internal/bank/api"
 	"github.com/romangurevitch/go-training/internal/bank/config"
@@ -52,14 +54,25 @@ func Run() error {
 		_ = db.Close()
 	}()
 
-	// 3. Application Logic & API Wiring
-	srv, err := WireServer(db, logger, cfg)
+	// 3. Temporal Client
+	tc, err := client.Dial(client.Options{
+		HostPort: fmt.Sprintf("%s:%s", cfg.TemporalHost, cfg.TemporalPort),
+		Logger:   logger,
+	})
+	if err != nil {
+		slog.ErrorContext(ctx, "failed to create temporal client", slog.Any("error", err))
+		return err
+	}
+	defer tc.Close()
+
+	// 4. Application Logic & API Wiring
+	srv, err := WireServer(db, tc, logger, cfg)
 	if err != nil {
 		slog.ErrorContext(ctx, "failed to wire server", slog.Any("error", err))
 		return err
 	}
 
-	// 4. Lifecycle Management
+	// 5. Lifecycle Management
 	return Serve(ctx, srv)
 }
 
@@ -124,9 +137,9 @@ func InitDB(ctx context.Context, url string) (*sql.DB, error) {
 }
 
 // WireServer assembles the HTTP server with all its dependencies.
-func WireServer(db *sql.DB, logger *slog.Logger, cfg config.Config) (*http.Server, error) {
+func WireServer(db *sql.DB, tc client.Client, logger *slog.Logger, cfg config.Config) (*http.Server, error) {
 	repo := postgres.New(db)
-	svc := service.NewBankService(repo)
+	svc := service.NewBankService(repo, tc)
 
 	apiCfg := bankapi.Config{
 		JWTSecret:   cfg.JWTSecret,

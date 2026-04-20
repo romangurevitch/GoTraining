@@ -15,7 +15,7 @@ type SavingsAccount struct {
 // MonthlyFee returns the monthly fee for a SavingsAccount.
 // TODO: implement — return 500 (representing $5.00)
 func (s SavingsAccount) MonthlyFee() int64 {
-	panic("implement me")
+	return 500
 }
 
 // PremiumAccount charges a flat $25/month fee.
@@ -29,7 +29,7 @@ type PremiumAccount struct {
 // MonthlyFee returns the monthly fee for a PremiumAccount.
 // TODO: implement using a POINTER receiver — return 2500 (representing $25.00)
 func (p *PremiumAccount) MonthlyFee() int64 {
-	panic("implement me")
+	return 2500
 }
 
 // TotalFees sums the monthly fees for all accounts.

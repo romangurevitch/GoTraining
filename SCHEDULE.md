@@ -22,14 +22,14 @@ Focus: Transitioning from interpretative languages to Go's type system and build
 
 Focus: Building scalable services, managing durable state with Temporal, and leveraging AI for engineering efficiency.
 
-| Time | Topic | Description | Module Link |
-| :--- | :--- | :--- | :--- |
+| Time  | Topic | Description | Module Link |
+|:------| :--- | :--- | :--- |
 | 09:30 | **The HTTP & Data Layer** | Building high-performance services with Gin, implementing middleware, and the adapter pattern for clean storage isolation. | [Module 3](README.md#module-3-building-the-data--api-service) |
 | 10:30 | **Codebase Walkthrough** | Investigating the "Go Bank" architecture: a deep dive into idiomatic project layout and cross-package dependencies. | [Module 3](README.md#module-3-building-the-data--api-service) |
 | 11:00 | **Transfer Funds Quest** | **Major Challenge:** Implementing a production-grade fund transfer endpoint end-to-end (OpenAPI -> Handler -> Service). | [Challenges](README.md#challenges) |
-| 12:00 | *Lunch Break* | | |
-| 13:00 | **Building Blocks Trivia** | *Sequence Breaker:* A fast-paced quiz on Go syntax, "gotchas," and runtime behaviour. | |
-| 13:30 | **Temporal Orchestration** | Reliability at scale: Workflow concepts, signal handling, and the replay model for durable execution. | [Module 4](README.md#module-4-temporal-orchestration) |
-| 14:30 | **Testing & Service Isolation** | Robust verification: Unit testing with Mockery, integration testing, and an introduction to Infrastructure as Code. | [Module 2](README.md#module-2-go-language-fundamentals) |
+| 12:30 | *Lunch Break* | | |
+| 13:15 | **Testing & Service Isolation** | Robust verification: Unit testing with Mockery, integration testing, and an introduction to Infrastructure as Code. | [Module 2](README.md#module-2-go-language-fundamentals) |
+| 14:00 | **Building Blocks Trivia** | *Sequence Breaker:* A fast-paced quiz on Go syntax, "gotchas," and runtime behaviour. | |
+| 14:30 | **Temporal Orchestration** | Reliability at scale: Workflow concepts, signal handling, and the replay model for durable execution. | [Module 4](README.md#module-4-temporal-orchestration) |
 | 15:15 | **Agentic Go & Durable Workflows** | **Hands-On Challenge:** Each participant builds a high-value transfer workflow with human-in-the-loop approval using their AI agent. Work through the quests in order — get as far as you can. Full quest guide remains available for self-study after the session. | [Challenges](internal/challenges/temporal/README.md) |
 | 16:00 | **Wrap up & Feedback** | Final open Q&A session and programme evaluation. | |

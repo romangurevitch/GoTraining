@@ -38,6 +38,63 @@ func (_m *Service) EXPECT() *Service_Expecter {
 	return &Service_Expecter{mock: &_m.Mock}
 }
 
+// ApproveTransfer provides a mock function for the type Service
+func (_mock *Service) ApproveTransfer(ctx context.Context, transferID string) error {
+	ret := _mock.Called(ctx, transferID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ApproveTransfer")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) error); ok {
+		r0 = returnFunc(ctx, transferID)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// Service_ApproveTransfer_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ApproveTransfer'
+type Service_ApproveTransfer_Call struct {
+	*mock.Call
+}
+
+// ApproveTransfer is a helper method to define mock.On call
+//   - ctx context.Context
+//   - transferID string
+func (_e *Service_Expecter) ApproveTransfer(ctx interface{}, transferID interface{}) *Service_ApproveTransfer_Call {
+	return &Service_ApproveTransfer_Call{Call: _e.mock.On("ApproveTransfer", ctx, transferID)}
+}
+
+func (_c *Service_ApproveTransfer_Call) Run(run func(ctx context.Context, transferID string)) *Service_ApproveTransfer_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *Service_ApproveTransfer_Call) Return(err error) *Service_ApproveTransfer_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *Service_ApproveTransfer_Call) RunAndReturn(run func(ctx context.Context, transferID string) error) *Service_ApproveTransfer_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // CreateAccount provides a mock function for the type Service
 func (_mock *Service) CreateAccount(ctx context.Context, owner string) (*domain.Account, error) {
 	ret := _mock.Called(ctx, owner)
@@ -233,6 +290,147 @@ func (_c *Service_GetAccount_Call) Return(account *domain.Account, err error) *S
 }
 
 func (_c *Service_GetAccount_Call) RunAndReturn(run func(ctx context.Context, id string) (*domain.Account, error)) *Service_GetAccount_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// RejectTransfer provides a mock function for the type Service
+func (_mock *Service) RejectTransfer(ctx context.Context, transferID string) error {
+	ret := _mock.Called(ctx, transferID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for RejectTransfer")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) error); ok {
+		r0 = returnFunc(ctx, transferID)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// Service_RejectTransfer_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'RejectTransfer'
+type Service_RejectTransfer_Call struct {
+	*mock.Call
+}
+
+// RejectTransfer is a helper method to define mock.On call
+//   - ctx context.Context
+//   - transferID string
+func (_e *Service_Expecter) RejectTransfer(ctx interface{}, transferID interface{}) *Service_RejectTransfer_Call {
+	return &Service_RejectTransfer_Call{Call: _e.mock.On("RejectTransfer", ctx, transferID)}
+}
+
+func (_c *Service_RejectTransfer_Call) Run(run func(ctx context.Context, transferID string)) *Service_RejectTransfer_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *Service_RejectTransfer_Call) Return(err error) *Service_RejectTransfer_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *Service_RejectTransfer_Call) RunAndReturn(run func(ctx context.Context, transferID string) error) *Service_RejectTransfer_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// StartDurableTransfer provides a mock function for the type Service
+func (_mock *Service) StartDurableTransfer(ctx context.Context, fromID string, toID string, amount int64, reference string) (string, error) {
+	ret := _mock.Called(ctx, fromID, toID, amount, reference)
+
+	if len(ret) == 0 {
+		panic("no return value specified for StartDurableTransfer")
+	}
+
+	var r0 string
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, int64, string) (string, error)); ok {
+		return returnFunc(ctx, fromID, toID, amount, reference)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, int64, string) string); ok {
+		r0 = returnFunc(ctx, fromID, toID, amount, reference)
+	} else {
+		r0 = ret.Get(0).(string)
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string, string, int64, string) error); ok {
+		r1 = returnFunc(ctx, fromID, toID, amount, reference)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// Service_StartDurableTransfer_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'StartDurableTransfer'
+type Service_StartDurableTransfer_Call struct {
+	*mock.Call
+}
+
+// StartDurableTransfer is a helper method to define mock.On call
+//   - ctx context.Context
+//   - fromID string
+//   - toID string
+//   - amount int64
+//   - reference string
+func (_e *Service_Expecter) StartDurableTransfer(ctx interface{}, fromID interface{}, toID interface{}, amount interface{}, reference interface{}) *Service_StartDurableTransfer_Call {
+	return &Service_StartDurableTransfer_Call{Call: _e.mock.On("StartDurableTransfer", ctx, fromID, toID, amount, reference)}
+}
+
+func (_c *Service_StartDurableTransfer_Call) Run(run func(ctx context.Context, fromID string, toID string, amount int64, reference string)) *Service_StartDurableTransfer_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		var arg3 int64
+		if args[3] != nil {
+			arg3 = args[3].(int64)
+		}
+		var arg4 string
+		if args[4] != nil {
+			arg4 = args[4].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+			arg4,
+		)
+	})
+	return _c
+}
+
+func (_c *Service_StartDurableTransfer_Call) Return(s string, err error) *Service_StartDurableTransfer_Call {
+	_c.Call.Return(s, err)
+	return _c
+}
+
+func (_c *Service_StartDurableTransfer_Call) RunAndReturn(run func(ctx context.Context, fromID string, toID string, amount int64, reference string) (string, error)) *Service_StartDurableTransfer_Call {
 	_c.Call.Return(run)
 	return _c
 }

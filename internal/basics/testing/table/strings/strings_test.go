@@ -1,60 +1,63 @@
 package strings
 
-import (
-	"testing"
-
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-)
+import "testing"
 
 func TestStrings_AddPrefix(t *testing.T) {
+	type fields struct {
+		prefix string
+	}
+	type args struct {
+		str string
+	}
 	tests := []struct {
 		name    string
-		prefix  string
-		input   string
+		fields  fields
+		args    args
 		want    string
 		wantErr bool
 	}{
 		{
-			name:    "valid prefix",
-			prefix:  "pre_",
-			input:   "hello",
-			want:    "pre_hello",
+			name:    "adds prefix to string",
+			fields:  fields{prefix: "hello_"},
+			args:    args{str: "world"},
+			want:    "hello_world",
 			wantErr: false,
 		},
 		{
-			name:    "empty input returns error",
-			prefix:  "pre_",
-			input:   "",
+			name:    "empty prefix",
+			fields:  fields{prefix: ""},
+			args:    args{str: "world"},
+			want:    "world",
+			wantErr: false,
+		},
+		{
+			name:    "empty string returns error",
+			fields:  fields{prefix: "hello_"},
+			args:    args{str: ""},
 			want:    "",
 			wantErr: true,
 		},
 		{
-			name:    "empty prefix",
-			prefix:  "",
-			input:   "hello",
-			want:    "hello",
-			wantErr: false,
-		},
-		{
-			name:    "multi-word prefix",
-			prefix:  "hello world ",
-			input:   "foo",
-			want:    "hello world foo",
+			name:    "both prefix and string present",
+			fields:  fields{prefix: "pre-"},
+			args:    args{str: "fix"},
+			want:    "pre-fix",
 			wantErr: false,
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &Strings{prefix: tt.prefix}
-			got, err := s.AddPrefix(tt.input)
-			if tt.wantErr {
-				require.Error(t, err)
+			s := &Strings{
+				prefix: tt.fields.prefix,
+			}
+			got, err := s.AddPrefix(tt.args.str)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("AddPrefix() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			require.NoError(t, err)
-			assert.Equal(t, tt.want, got)
+			if got != tt.want {
+				t.Errorf("AddPrefix() got = %v, want %v", got, tt.want)
+			}
 		})
 	}
 }

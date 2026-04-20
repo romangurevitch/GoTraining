@@ -6,8 +6,11 @@ import (
 	"log/slog"
 	"time"
 
+	"github.com/romangurevitch/go-training/internal/bank/config"
 	"github.com/romangurevitch/go-training/internal/bank/domain"
 	"github.com/romangurevitch/go-training/internal/bank/repository"
+	"github.com/romangurevitch/go-training/internal/bank/temporal"
+	"go.temporal.io/sdk/client"
 )
 
 // Service is the business logic interface. Enables mock injection in handler tests.
@@ -17,18 +20,25 @@ type Service interface {
 	Deposit(ctx context.Context, accountID string, amount int64) error
 	Withdraw(ctx context.Context, accountID string, amount int64) error
 	Transfer(ctx context.Context, fromID, toID string, amount int64) error
+	StartDurableTransfer(ctx context.Context, fromID, toID string, amount int64, reference string) (string, error)
+	ApproveTransfer(ctx context.Context, transferID string) error
+	RejectTransfer(ctx context.Context, transferID string) error
 }
 
 // BankService implements Service backed by a Repository.
 type BankService struct {
-	repo repository.Repository
+	repo           repository.Repository
+	temporalClient client.Client
 }
 
 // Ensure BankService implements Service at compile time.
 var _ Service = (*BankService)(nil)
 
-func NewBankService(repo repository.Repository) *BankService {
-	return &BankService{repo: repo}
+func NewBankService(repo repository.Repository, temporalClient client.Client) *BankService {
+	return &BankService{
+		repo:           repo,
+		temporalClient: temporalClient,
+	}
 }
 
 func (s *BankService) CreateAccount(ctx context.Context, owner string) (*domain.Account, error) {
@@ -190,4 +200,65 @@ func (s *BankService) Transfer(ctx context.Context, fromID, toID string, amount 
 	)
 
 	return s.repo.SaveTransaction(ctx, credit)
+}
+
+func (s *BankService) StartDurableTransfer(ctx context.Context, fromID, toID string, amount int64, reference string) (string, error) {
+	// 1. Validation before starting workflow
+	from, err := s.repo.GetAccount(ctx, fromID)
+	if err != nil {
+		return "", err
+	}
+	to, err := s.repo.GetAccount(ctx, toID)
+	if err != nil {
+		return "", err
+	}
+	if err := from.CanPerformTransaction(); err != nil {
+		return "", err
+	}
+	if err := to.CanPerformTransaction(); err != nil {
+		return "", err
+	}
+	if from.Balance < amount {
+		return "", domain.ErrInsufficientFunds
+	}
+
+	// 2. Start Temporal Workflow
+	transferID := fmt.Sprintf("TRX-%d", time.Now().UnixNano())
+	workflowID := "transfer-" + transferID
+
+	options := client.StartWorkflowOptions{
+		ID:        workflowID,
+		TaskQueue: config.Values.TemporalTaskQueue,
+	}
+
+	req := temporal.TransferRequest{
+		TransferID:    transferID,
+		FromAccountID: fromID,
+		ToAccountID:   toID,
+		Amount:        amount,
+		Reference:     reference,
+	}
+
+	we, err := s.temporalClient.ExecuteWorkflow(ctx, options, temporal.DurableTransferWorkflow, req)
+	if err != nil {
+		return "", fmt.Errorf("failed to start durable transfer workflow: %w", err)
+	}
+
+	slog.InfoContext(ctx, "durable transfer workflow started",
+		slog.String("workflow_id", we.GetID()),
+		slog.String("run_id", we.GetRunID()),
+		slog.String("transfer_id", transferID),
+	)
+
+	return transferID, nil
+}
+
+func (s *BankService) ApproveTransfer(ctx context.Context, transferID string) error {
+	workflowID := "transfer-" + transferID
+	return s.temporalClient.SignalWorkflow(ctx, workflowID, "", temporal.ApprovalSignal, nil)
+}
+
+func (s *BankService) RejectTransfer(ctx context.Context, transferID string) error {
+	workflowID := "transfer-" + transferID
+	return s.temporalClient.SignalWorkflow(ctx, workflowID, "", temporal.RejectSignal, nil)
 }

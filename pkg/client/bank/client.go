@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
 	"log/slog"
 	"net/http"
 	"time"
@@ -21,6 +20,9 @@ type Client interface {
 	GetAccount(ctx context.Context, id string) (*api.AccountResponse, error)
 	CreateAccount(ctx context.Context, owner string) (*api.AccountResponse, error)
 	Transfer(ctx context.Context, req *api.CreateTransferRequest) (*api.TransferResponse, error)
+	StartDurableTransfer(ctx context.Context, req *api.DurableTransferRequest) (*api.DurableTransferResponse, error)
+	ApproveTransfer(ctx context.Context, id string) (*api.TransferResponse, error)
+	RejectTransfer(ctx context.Context, id string) (*api.TransferResponse, error)
 }
 
 func New(basePath string, httpClient *http.Client) Client {
@@ -120,8 +122,90 @@ func (c *client) CreateAccount(ctx context.Context, owner string) (*api.AccountR
 }
 
 // Transfer initiates a fund transfer between accounts.
-func (c *client) Transfer(ctx context.Context, req *api.CreateTransferRequest) (*api.TransferResponse, error) {
-	// TODO: Implement the transfer request logic.
-	// Use GetAccount and CreateAccount above as a reference.
-	return nil, fmt.Errorf("Transfer not yet implemented")
+func (c *client) Transfer(ctx context.Context, reqBody *api.CreateTransferRequest) (*api.TransferResponse, error) {
+	urlPath, err := httppkg.GetURL(c.basePath, "v1/transfers", "")
+	if err != nil {
+		return nil, err
+	}
+
+	payload, _ := json.Marshal(reqBody)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlPath, bytes.NewBuffer(payload))
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add(httppkg.HeaderApplicationJSON())
+	req.Header.Set("Authorization", "Bearer "+c.token)
+
+	body, err := httppkg.DoRequest(ctx, c.HTTPClient, req, http.StatusOK)
+	if err != nil {
+		return nil, err
+	}
+
+	var res api.TransferResponse
+	return &res, json.Unmarshal(body, &res)
+}
+
+func (c *client) StartDurableTransfer(ctx context.Context, reqBody *api.DurableTransferRequest) (*api.DurableTransferResponse, error) {
+	urlPath, err := httppkg.GetURL(c.basePath, "v1/durable-transfers", "")
+	if err != nil {
+		return nil, err
+	}
+
+	payload, _ := json.Marshal(reqBody)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlPath, bytes.NewBuffer(payload))
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add(httppkg.HeaderApplicationJSON())
+	req.Header.Set("Authorization", "Bearer "+c.token)
+
+	body, err := httppkg.DoRequest(ctx, c.HTTPClient, req, http.StatusAccepted)
+	if err != nil {
+		return nil, err
+	}
+
+	var res api.DurableTransferResponse
+	return &res, json.Unmarshal(body, &res)
+}
+
+func (c *client) ApproveTransfer(ctx context.Context, id string) (*api.TransferResponse, error) {
+	urlPath, err := httppkg.GetURL(c.basePath, "v1/durable-transfers/"+id+"/approve", "")
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlPath, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.token)
+
+	body, err := httppkg.DoRequest(ctx, c.HTTPClient, req, http.StatusOK)
+	if err != nil {
+		return nil, err
+	}
+
+	var res api.TransferResponse
+	return &res, json.Unmarshal(body, &res)
+}
+
+func (c *client) RejectTransfer(ctx context.Context, id string) (*api.TransferResponse, error) {
+	urlPath, err := httppkg.GetURL(c.basePath, "v1/durable-transfers/"+id+"/reject", "")
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, urlPath, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Authorization", "Bearer "+c.token)
+
+	body, err := httppkg.DoRequest(ctx, c.HTTPClient, req, http.StatusOK)
+	if err != nil {
+		return nil, err
+	}
+
+	var res api.TransferResponse
+	return &res, json.Unmarshal(body, &res)
 }

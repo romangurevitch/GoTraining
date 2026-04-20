@@ -10,6 +10,10 @@ type Config struct {
 	ServiceName  string
 	OTelEndpoint string
 	Port         string
+
+	TemporalHost      string
+	TemporalPort      string
+	TemporalTaskQueue string
 }
 
 var Values Config
@@ -21,6 +25,10 @@ func Init() {
 		ServiceName:  envOrDefault("SERVICE_NAME", "bank-server"),
 		OTelEndpoint: envOrDefault("OTEL_EXPORTER_OTLP_ENDPOINT", "localhost:4318"),
 		Port:         envOrDefault("PORT", "8082"),
+
+		TemporalHost:      envOrDefault("TEMPORAL_HOST", "localhost"),
+		TemporalPort:      envOrDefault("TEMPORAL_PORT", "7233"),
+		TemporalTaskQueue: envOrDefault("TEMPORAL_TASK_QUEUE", "bank-transfer-queue"),
 	}
 }
 

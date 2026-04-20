@@ -41,10 +41,22 @@ func NewServer(svc service.Service, logger *slog.Logger, cfg Config) *gin.Engine
 		accounts.POST("", middleware.RequireScope("accounts:write"), accountHandler.CreateAccount)
 	}
 
-	// TODO: Register the transfer route group and the POST /v1/transfers endpoint here.
-	// Use the accounts group above as a reference.
-	// WARNING: passing nil — server will panic on /v1/transfers until you wire the route.
-	var _ = transfer.New(nil) // prevent unused import error while TODO is incomplete
+	// Transfers
+	transferHandler := transfer.New(svc)
+	transfers := r.Group("/v1/transfers")
+	transfers.Use(middleware.JWTMiddleware(cfg.JWTSecret))
+	{
+		transfers.POST("", middleware.RequireScope("transfers:write"), transferHandler.CreateTransfer)
+	}
+
+	// Durable Transfers
+	durableTransfers := r.Group("/v1/durable-transfers")
+	durableTransfers.Use(middleware.JWTMiddleware(cfg.JWTSecret))
+	{
+		durableTransfers.POST("", middleware.RequireScope("transfers:write"), transferHandler.StartDurableTransfer)
+		durableTransfers.POST("/:id/approve", middleware.RequireScope("transfers:write"), transferHandler.ApproveTransfer)
+		durableTransfers.POST("/:id/reject", middleware.RequireScope("transfers:write"), transferHandler.RejectTransfer)
+	}
 
 	return r
 }

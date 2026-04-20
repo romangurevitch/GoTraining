@@ -22,7 +22,9 @@ func Calculate(principal int64, rate float64, years int) (int64, error) {
 	if years < 0 {
 		return 0, errors.New("years cannot be negative")
 	}
-	// BUG: missing: if rate < 0 { return 0, ErrNegativeRate }
+	if rate < 0 {
+		return 0, ErrNegativeRate
+	}
 	result := float64(principal)
 	for i := 0; i < years; i++ {
 		result *= 1 + rate

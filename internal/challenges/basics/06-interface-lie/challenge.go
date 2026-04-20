@@ -25,11 +25,10 @@ func (c *AMLChecker) check() error {
 //
 // TODO: make runAMLCheck return a genuinely nil error when skip is true.
 func runAMLCheck(skip bool) error {
-	var checker *AMLChecker
 	if skip {
-		return checker // BUG: typed nil — the interface is not nil
+		return nil
 	}
-	checker = &AMLChecker{threshold: 1000000} // $10,000.00
+	checker := &AMLChecker{threshold: 1000000}
 	return checker.check()
 }
 

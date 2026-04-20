@@ -7,8 +7,8 @@ import "fmt"
 // (Lowercase first letter = package-private in Go.)
 //
 // TODO: implement this function.
-func formatName(first, last string) string { // nolint:unused // students implement and use this
-	panic("implement me")
+func formatName(first, last string) string {
+	return first + " " + last
 }
 
 // Greet returns a personalised welcome message.
@@ -19,6 +19,5 @@ func formatName(first, last string) string { // nolint:unused // students implem
 //
 // TODO: implement using formatName and fmt.Sprintf.
 func Greet(accountID, first, last string) string {
-	_ = fmt.Sprintf // hint: use this
-	panic("implement me")
+	return fmt.Sprintf("Hello, %s! Your account %s is ready.", formatName(first, last), accountID)
 }

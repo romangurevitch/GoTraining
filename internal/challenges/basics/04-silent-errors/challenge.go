@@ -14,5 +14,11 @@ var ErrNegativeAmount = errors.New("negative or zero amount")
 // Returns (0, ErrInsufficientFunds) if balance < amount.
 // Returns (balance - amount, nil) on success.
 func Withdraw(balance, amount int64) (int64, error) {
-	panic("implement me")
+	if amount <= 0 {
+		return 0, ErrNegativeAmount
+	}
+	if balance < amount {
+		return 0, ErrInsufficientFunds
+	}
+	return balance - amount, nil
 }

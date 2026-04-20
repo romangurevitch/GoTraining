@@ -10,7 +10,7 @@ type Ledger struct {
 //
 // TODO: initialize the entries map so Record doesn't panic.
 func NewLedger() *Ledger {
-	return &Ledger{} // BUG: entries map is nil
+	return &Ledger{entries: make(map[string]int64)}
 }
 
 // Record stores an amount for the given transaction ID.

@@ -3,12 +3,16 @@
 package main
 
 import (
+	"database/sql"
 	"flag"
 	"fmt"
 	"log/slog"
 	"os"
 
+	_ "github.com/lib/pq"
 	workerconfig "github.com/romangurevitch/go-training/cmd/temporal/worker/config"
+	bankpostgres "github.com/romangurevitch/go-training/internal/bank/repository/postgres"
+	banktemporal "github.com/romangurevitch/go-training/internal/bank/temporal"
 	"github.com/romangurevitch/go-training/internal/temporal/activities"
 	"github.com/romangurevitch/go-training/internal/temporal/encryption"
 	"github.com/romangurevitch/go-training/internal/temporal/integrations/inventory"
@@ -35,6 +39,19 @@ func main() {
 		os.Exit(1)
 	}
 
+	// 1. Database for Bank Activities
+	dbURL := os.Getenv("DATABASE_URL")
+	if dbURL == "" {
+		dbURL = "postgres://gotrainer:verysecret@localhost:5432/gobank?sslmode=disable"
+	}
+	db, err := sql.Open("postgres", dbURL)
+	if err != nil {
+		slog.Error("Unable to connect to database", "error", err)
+		os.Exit(1)
+	}
+	defer db.Close()
+	bankRepo := bankpostgres.New(db)
+
 	// Create the Temporal client,
 	c, err := client.Dial(client.Options{
 		HostPort: fmt.Sprintf("%s:%d", cfg.Temporal.Host, cfg.Temporal.Port),
@@ -58,8 +75,28 @@ func main() {
 	// Create the Temporal worker,
 	w := worker.New(c, cfg.Temporal.TaskQueueName, worker.Options{})
 
+	// Bank transfer worker uses a separate client without encryption
+	// (bank workflows use plain payloads, not the encrypted data converter).
+	bankClient, err := client.Dial(client.Options{
+		HostPort: fmt.Sprintf("%s:%d", cfg.Temporal.Host, cfg.Temporal.Port),
+		Logger:   slog.Default(),
+	})
+	if err != nil {
+		slog.Error("Unable to create Bank Temporal client", "error", err)
+		os.Exit(1)
+	}
+	defer bankClient.Close()
+
+	bankTaskQueue := os.Getenv("TEMPORAL_TASK_QUEUE")
+	if bankTaskQueue == "" {
+		bankTaskQueue = "bank-transfer-queue"
+	}
+
+	bankW := worker.New(bankClient, bankTaskQueue, worker.Options{})
+
 	// inject HTTP client into the Activities Struct,
 	acts := activities.NewOrderActivities(inventory.NewClient(cfg.InventoryAPI.BaseURL))
+	bankActs := banktemporal.NewActivities(bankRepo)
 
 	// Register Workflow and Activities
 	w.RegisterWorkflow(workflows.ProcessOrder)
@@ -67,7 +104,16 @@ func main() {
 	w.RegisterWorkflow(workflows.AutoProcessOrder)
 	w.RegisterActivity(acts)
 
-	// Start the Worker
+	bankW.RegisterWorkflow(banktemporal.DurableTransferWorkflow)
+	bankW.RegisterActivity(bankActs)
+
+	// Start the Workers
+	go func() {
+		if err := bankW.Run(worker.InterruptCh()); err != nil {
+			slog.Error("Unable to start Bank Temporal worker", "error", err)
+		}
+	}()
+
 	if err := w.Run(worker.InterruptCh()); err != nil {
 		slog.Default().Error("Unable to start Temporal worker", "error", err)
 		os.Exit(1)

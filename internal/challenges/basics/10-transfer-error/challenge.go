@@ -16,8 +16,7 @@ type TransferError struct {
 //
 //	"transfer from acc-001 to acc-002 of 10000 cents failed: <reason>"
 func (e *TransferError) Error() string {
-	_ = fmt.Sprintf // hint: use this
-	panic("implement me")
+	return fmt.Sprintf("transfer from %s to %s of %d cents failed: %s", e.FromID, e.ToID, e.Amount, e.Reason)
 }
 
 // Transfer validates and records a fund transfer.
@@ -29,5 +28,11 @@ func (e *TransferError) Error() string {
 //
 // TODO: implement the validation logic.
 func Transfer(fromID, toID string, amount int64) error {
-	panic("implement me")
+	if amount <= 0 {
+		return &TransferError{FromID: fromID, ToID: toID, Amount: amount, Reason: "amount must be positive"}
+	}
+	if fromID == toID {
+		return &TransferError{FromID: fromID, ToID: toID, Amount: amount, Reason: "cannot transfer to same account"}
+	}
+	return nil
 }

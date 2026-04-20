@@ -11,6 +11,6 @@ type Account struct {
 // so the original balance is never updated.
 //
 // TODO: fix the receiver so deposits actually change the balance.
-func (a Account) Deposit(amount int64) {
-	a.Balance += amount // nolint:staticcheck // intentional bug for challenge
+func (a *Account) Deposit(amount int64) {
+	a.Balance += amount
 }
