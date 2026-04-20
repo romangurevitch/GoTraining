@@ -46,7 +46,7 @@ func main() {
 			encryption.DataConverterOptions{Compress: true},
 		),
 		// Use a ContextPropagator so that the KeyID value set in the workflow context is
-		// also availble in the context for activities.
+		// also available in the context for activities.
 		ContextPropagators: []workflow.ContextPropagator{encryption.NewContextPropagator()},
 	})
 	if err != nil {

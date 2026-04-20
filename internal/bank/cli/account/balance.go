@@ -1,6 +1,8 @@
 package account
 
 import (
+	"fmt"
+
 	"github.com/romangurevitch/go-training/pkg/client/bank"
 	"github.com/spf13/cobra"
 )
@@ -15,6 +17,7 @@ func getBalanceCmd(bankClient bank.Client) *cobra.Command {
 			// 1. Parse arguments (account-id)
 			// 2. Call bankClient.GetAccount
 			// 3. Print the success balance response as json
+			fmt.Println("TODO: implement balance command")
 		},
 	}
 }
