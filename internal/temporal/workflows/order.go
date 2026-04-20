@@ -6,6 +6,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/romangurevitch/go-training/internal/temporal/activities"
 	"github.com/romangurevitch/go-training/internal/temporal/order"
+	"github.com/shopspring/decimal"
 	"go.temporal.io/sdk/workflow"
 )
 
@@ -70,7 +71,7 @@ func ProcessOrder(ctx workflow.Context, in Params) (order.OrderStatus, error) {
 
 	if err = workflow.ExecuteChildWorkflow(ctx, ProcessPayment, PaymentDetails{
 		PayID:  payID,
-		Amount: 100.0, // TODO: calculate amount.
+		Amount: calculateOrderTotal(in.Order),
 	}).Get(ctx, nil); err != nil {
 		orderStatus = order.UnableToComplete
 		return orderStatus, err
@@ -147,7 +148,7 @@ func AutoProcessOrder(ctx workflow.Context, in Params) (order.OrderStatus, error
 	// tracked separately. This makes it independently observable and retryable.
 	if err := workflow.ExecuteChildWorkflow(ctx, ProcessPayment, PaymentDetails{
 		PayID:  payID,
-		Amount: 100.0, // TODO: calculate from order line items.
+		Amount: calculateOrderTotal(in.Order),
 	}).Get(ctx, nil); err != nil {
 		status = order.UnableToComplete
 		return status, fmt.Errorf("payment failed: %w", err)
@@ -168,4 +169,12 @@ func AutoProcessOrder(ctx workflow.Context, in Params) (order.OrderStatus, error
 	status = order.Completed
 
 	return status, nil
+}
+
+func calculateOrderTotal(o order.Order) int64 {
+	total := decimal.Zero
+	for _, item := range o.LineItems {
+		total = total.Add(item.PricePerItem.Mul(decimal.NewFromInt32(item.Quantity)))
+	}
+	return total.Mul(decimal.NewFromInt(100)).IntPart()
 }

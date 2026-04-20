@@ -36,8 +36,7 @@ type Codec struct {
 	KeyID string
 }
 
-// TODO: Implement workflow.ContextAware in CodecDataConverter
-// Note that you only need to implement this function if you need to vary the encryption KeyID per workflow.
+// WithWorkflowContext implements workflow.ContextAware, allowing per-workflow encryption key variation.
 func (dc *DataConverter) WithWorkflowContext(ctx workflow.Context) converter.DataConverter {
 	if val, ok := ctx.Value(PropagateKey).(CryptContext); ok {
 		parent := dc.parent
@@ -54,8 +53,7 @@ func (dc *DataConverter) WithWorkflowContext(ctx workflow.Context) converter.Dat
 	return dc
 }
 
-// TODO: Implement workflow.ContextAware in EncodingDataConverter
-// Note that you only need to implement this function if you need to vary the encryption KeyID per workflow.
+// WithContext implements workflow.ContextAware for standard context, allowing per-workflow encryption key variation.
 func (dc *DataConverter) WithContext(ctx context.Context) converter.DataConverter {
 	if val, ok := ctx.Value(PropagateKey).(CryptContext); ok {
 		parent := dc.parent

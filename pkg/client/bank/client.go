@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"time"
@@ -122,5 +123,5 @@ func (c *client) CreateAccount(ctx context.Context, owner string) (*api.AccountR
 func (c *client) Transfer(ctx context.Context, req *api.CreateTransferRequest) (*api.TransferResponse, error) {
 	// TODO: Implement the transfer request logic.
 	// Use GetAccount and CreateAccount above as a reference.
-	return nil, nil
+	return nil, fmt.Errorf("Transfer not yet implemented")
 }
