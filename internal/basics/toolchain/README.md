@@ -88,8 +88,7 @@ ENTRYPOINT ["/myapp"]
 
 ## 5. ⚠️ Critical Pitfalls & Best Practices
 
-> [!WARNING]
-> Never commit your vendor directory or local configuration files to source control. Rely on `go.mod` and environment variables.
+> **Warning:** Never commit your vendor directory or local configuration files to source control. Rely on `go.mod` and environment variables.
 
 1. **Keep go.mod Tidy**: Frequently run `go mod tidy` to prune unused dependencies.
 2. **Checksum Integrity**: Never manually edit `go.sum`. It is managed automatically by the toolchain to ensure supply-chain security.

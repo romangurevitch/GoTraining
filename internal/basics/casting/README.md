@@ -20,8 +20,7 @@ var i int = 42
 var f float64 = float64(i) // Manual conversion required
 ```
 
-> [!WARNING]
-> Go **never** performs implicit type conversion. Even `int` and `int64` are different types and require manual conversion.
+> **Warning:** Go **never** performs implicit type conversion. Even `int` and `int64` are different types and require manual conversion.
 
 ---
 

@@ -167,8 +167,7 @@ Breaking this rule causes **non-determinism errors** — Temporal detects that t
 
 Any complex non-deterministic code (e.g., network calls, I/O, database operations) should sit in an activity.
 
-> [!TIP]
-> Temporal will not re-execute activities when replaying workflows.
+> **Tip:** Temporal will not re-execute activities when replaying workflows.
 > However, if an activity does not return or produce an error (i.e., the worker crashes or some other error prevents the activity from being recorded in Temporal's event history),
 > the activity may be re-executed. Because of this, Temporal recommends activities be ***idempotent***.
 >
