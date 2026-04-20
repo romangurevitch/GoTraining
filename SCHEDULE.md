@@ -1,7 +1,6 @@
 # 📅 Go Training Schedule
 
-> [!IMPORTANT]
-> This schedule is a **flexible guide**. The timing and depth of each session will be adjusted dynamically based on participant experience levels, the pace of challenge completion, and group interests.
+> **Important:** This schedule is a **flexible guide**. The timing and depth of each session will be adjusted dynamically based on participant experience levels, the pace of challenge completion, and group interests.
 
 ## Day 1: API Architecture and the Go Foundation
 

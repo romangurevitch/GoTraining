@@ -73,8 +73,7 @@ func ExampleUsage() {
 
 ## ⚠️ 5. Critical Pitfalls & Best Practices
 
-> [!WARNING]
-> Dereferencing a nil pointer (`*ptr` when `ptr == nil`) causes a runtime panic. Always check for nil before dereferencing if the pointer could be nil.
+> **Warning:** Dereferencing a nil pointer (`*ptr` when `ptr == nil`) causes a runtime panic. Always check for nil before dereferencing if the pointer could be nil.
 
 1. **Safety**: Go's GC handles memory, so returning a pointer to a local variable is perfectly safe (it "escapes" to the heap).
 2. **Value Semantics**: Use value parameters for small types (e.g., `int`, `bool`, `string`) as the overhead of a pointer isn't worth it.

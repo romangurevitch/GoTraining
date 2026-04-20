@@ -103,8 +103,7 @@ func TestMockServerResponse(t *testing.T) {
 
 ## 5. ⚠️ Critical Pitfalls & Best Practices
 
-> [!WARNING]
-> A non-2xx HTTP response (400, 500, etc.) does **not** set `err != nil`. Always check `resp.StatusCode` explicitly after checking `err`.
+> **Warning:** A non-2xx HTTP response (400, 500, etc.) does **not** set `err != nil`. Always check `resp.StatusCode` explicitly after checking `err`.
 
 1. **Always `defer ts.Close()`**: Failing to close a test server leaks the goroutine and port for the duration of the test run.
 2. **Always `defer resp.Body.Close()`**: Even in tests, unclosed bodies hold connections open and can cause subtle failures in parallel test runs.

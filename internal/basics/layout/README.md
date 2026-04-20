@@ -55,8 +55,7 @@ func Open(path string) (*os.File, error) {
 
 ## 5. ⚠️ Critical Pitfalls & Best Practices
 
-> [!WARNING]
-> Avoid "god packages" like `util`, `common`, or `helpers`. They have no clear responsibility and inevitably become a dumping ground for unrelated code.
+> **Warning:** Avoid "god packages" like `util`, `common`, or `helpers`. They have no clear responsibility and inevitably become a dumping ground for unrelated code.
 
 1. **Explicit Boundaries**: Use the `internal/` directory to enforce encapsulation at the Go toolchain level.
 2. **Naming Matters**: Prefer `files.Open` over `fileutil.OpenFile`. Use names that make the call site readable.
