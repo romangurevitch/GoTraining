@@ -122,7 +122,7 @@ Build a persistent storage layer and HTTP service for the "Go Bank" domain. This
 
 Discover reliable, durable execution patterns for long-running workflows:
 
-- [Temporal Module Overview](internal/temporal/README.md) — Exploration journey and topics.
+- [Temporal Module Overview](internal/temporal/README.md) — Order processing demo and implementation guide.
 - [Temporal Fundamentals](internal/temporal/TEMPORAL.md) — Workflow vs. Activity and the Replay model.
 - [Worker Entrypoint](cmd/temporal/worker/main.go) — Temporal worker implementation.
 
