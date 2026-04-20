@@ -64,10 +64,17 @@ sequenceDiagram
     A-->>W: Success
     Note over W: Status: PLACED
 
-    Note over W,T: 🛑 Suspends: Wait for Signal (pickOrder)
-    C->>T: SignalWorkflow(pickOrder)
-    T-->>W: Wake up: Signal Received
-    Note over W: Status: PICKED
+    Note over W,T: 🛑 Suspends: Wait for Signal (pickOrder or cancelOrder)
+    alt cancelOrder signal received
+        C->>T: SignalWorkflow(cancelOrder)
+        T-->>W: Wake up: Signal Received
+        Note over W: Status: CANCELLED
+        W-->>T: Workflow Completed
+    else pickOrder signal received
+        C->>T: SignalWorkflow(pickOrder)
+        T-->>W: Wake up: Signal Received
+        Note over W: Status: PICKED
+    end
 
     W->>W: SideEffect: Generate Payment ID
     W->>CW: ExecuteChildWorkflow(ProcessPayment)
@@ -78,8 +85,8 @@ sequenceDiagram
     T-->>W: Wake up: Signal Received
     Note over W: Status: SHIPPED
 
-    Note over W,T: 🛑 Suspends: Wait for Signal (orderDelivered)
-    C->>T: SignalWorkflow(orderDelivered)
+    Note over W,T: 🛑 Suspends: Wait for Signal (markOrderAsDelivered)
+    C->>T: SignalWorkflow(markOrderAsDelivered)
     T-->>W: Wake up: Signal Received
     Note over W: Status: COMPLETED
     W-->>T: Workflow Completed
@@ -165,6 +172,41 @@ Pauses at each stage and waits for you to send a signal.
    # Or cancel before picking:
    make workflow-cancel   # PLACED → CANCELLED
    ```
+
+---
+
+## What to Look For
+
+| Observation | What it shows |
+|---|---|
+| Worker logs appearing in Terminal 1 | Activities executing inside your Worker process |
+| Workflow pausing between signals | Temporal durably suspending state with zero CPU usage |
+| Restarting the Worker mid-workflow | The Workflow resumes from where it left off — durable execution |
+| Event history in the Web UI | The full audit trail Temporal uses to replay Workflows |
+
+> **Tip**: Open the [Temporal Web UI](http://localhost:8233) while the workflow runs. You can inspect the full event history, see inputs and outputs at each step, and even send signals directly from the UI.
+
+---
+
+## Module Structure
+
+| Directory | Contents |
+|---|---|
+| `order/` | Order domain model and status transitions |
+| `workflows/` | Workflow definitions (automated + signal-driven) |
+| `activities/` | Individual retriable steps (inventory, shipping) |
+| `integrations/` | External service clients (WireMock inventory API) |
+| `encryption/` | Data converter for payload encryption |
+
+**Worker Entrypoint**: [`cmd/temporal/worker/main.go`](../../cmd/temporal/worker/main.go)
+
+---
+
+## Your Next Step
+
+Now that you've seen the power of durable execution, it's time to build your own robust workflow.
+
+Take on the final challenge: **[Durable Transfer Quest](../challenges/temporal/README.md)**.
 
 ---
 [← Back to Main README](../../README.md)

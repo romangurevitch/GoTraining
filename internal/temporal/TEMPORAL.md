@@ -177,8 +177,20 @@ Any complex non-deterministic code (e.g., network calls, I/O, database operation
 
 ---
 
+## Resources
+
+- [Temporal Learning Center](https://learn.temporal.io/) — Official tutorials and self-paced courses.
+- [Temporal Go SDK Guide](https://docs.temporal.io/dev-guide/go/foundations) — Core implementation details.
+- [Temporal Encyclopedia](https://docs.temporal.io/temporal) — Conceptual deep-dives into the platform.
+- [Glossary](https://docs.temporal.io/glossary) — Precise definitions of Temporal terminology.
+
+---
+
 ## Next Steps
 
 Now that you understand the theory of durable orchestration, see how it's implemented in this project:
 
 Explore the **[Order Processing Implementation](README.md)**.
+
+---
+[← Back to Module Overview](README.md)
