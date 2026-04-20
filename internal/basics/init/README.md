@@ -54,8 +54,7 @@ func GetVar() string {
 
 ## 5. ⚠️ Critical Pitfalls & Best Practices
 
-> [!WARNING]
-> `init()` functions cannot be called explicitly and run without context. Avoid complex logic or side effects that make unit testing harder.
+> **Warning:** `init()` functions cannot be called explicitly and run without context. Avoid complex logic or side effects that make unit testing harder.
 
 1. **Avoid DB Connections**: Do not open database connections in `init()` as it hides errors and prevents proper resource management.
 2. **Deterministic Order**: Within a package, `init()` functions run in the order their source files are compiled (typically alphabetical). Relying on this is fragile.

@@ -66,8 +66,7 @@ func loggingMiddleware(next http.Handler) http.Handler {
 
 ## 5. ⚠️ Critical Pitfalls & Best Practices
 
-> [!WARNING]
-> Never use `http.DefaultClient` or `http.ListenAndServe` in production. They lack timeouts and can lead to resource exhaustion or "hanging" processes.
+> **Warning:** Never use `http.DefaultClient` or `http.ListenAndServe` in production. They lack timeouts and can lead to resource exhaustion or "hanging" processes.
 
 1. **Always Close Response Body**: Use `defer resp.Body.Close()` immediately after checking the error to prevent connection leaks.
 2. **Check StatusCode**: A nil error from `client.Do()` only means the request was sent and a response received; you must still check if it was a 4xx or 5xx.

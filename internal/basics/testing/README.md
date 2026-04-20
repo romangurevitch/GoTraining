@@ -63,8 +63,7 @@ func TestAdd(t *testing.T) {
 
 ## ⚠️ 5. Critical Pitfalls & Best Practices
 
-> [!WARNING]
-> Use `t.Helper()` in all reusable test helper functions. This ensures failure reports point to the *caller* of the helper, not the helper function itself.
+> **Warning:** Use `t.Helper()` in all reusable test helper functions. This ensures failure reports point to the *caller* of the helper, not the helper function itself.
 
 1. **Clear Test Names**: Name your subtests clearly to make it easy to identify which case failed.
 2. **Deterministic Tests**: Avoid tests that rely on external state or timing (unless specifically for benchmarking).

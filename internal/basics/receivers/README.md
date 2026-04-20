@@ -57,8 +57,7 @@ func (c *Counter) Increment() {
 
 ## ⚠️ 5. Critical Pitfalls & Best Practices
 
-> [!WARNING]
-> Never copy a struct containing a `sync.Mutex`. Doing so copies the lock's state, leading to deadlocks or undefined behaviour. Use a pointer receiver to prevent accidental copies.
+> **Warning:** Never copy a struct containing a `sync.Mutex`. Doing so copies the lock's state, leading to deadlocks or undefined behaviour. Use a pointer receiver to prevent accidental copies.
 
 1. **Rule of Consistency**: If any method for a type must have a pointer receiver, make **all** methods pointer receivers.
 2. **Small Types**: Use value receivers for small types (e.g., `int`, `string`, small structs like `time.Time`) that are naturally "value-like".

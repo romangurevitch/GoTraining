@@ -62,8 +62,7 @@ func pointerParameter(c *Currency, n int) []*Currency {
 
 ## ⚠️ 5. Critical Pitfalls & Best Practices
 
-> [!WARNING]
-> Pointers introduce the risk of nil-pointer dereferences (panics). Always check for nil when a pointer is passed as an argument.
+> **Warning:** Pointers introduce the risk of nil-pointer dereferences (panics). Always check for nil when a pointer is passed as an argument.
 
 1. **Don't Blindly Use Pointers**: Pointers are not always faster due to garbage collection overhead and potential heap allocation.
 2. **Value Safety**: Use value parameters for small types (ints, bools, strings) and when you want to guarantee that a function won't change your data.

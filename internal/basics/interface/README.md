@@ -75,8 +75,7 @@ func Process(rw ReadWriter) error {
 
 ## 5. ⚠️ Critical Pitfalls & Best Practices
 
-> [!WARNING]
-> Do not over-abstract. "Don't design with interfaces, discover them." — Rob Pike. Start with concrete types and introduce interfaces only when multiple implementations are needed.
+> **Warning:** Do not over-abstract. "Don't design with interfaces, discover them." — Rob Pike. Start with concrete types and introduce interfaces only when multiple implementations are needed.
 
 1. **Small Interfaces**: Keep interfaces small and focused (e.g., `io.Reader` has only one method).
 2. **Interface Pollution**: Avoid defining interfaces for every struct. Use them only when you need to decouple from a specific implementation.

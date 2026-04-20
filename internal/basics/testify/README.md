@@ -55,8 +55,7 @@ func TestMyTestSuite(t *testing.T) { suite.Run(t, new(MyTestSuite)) }
 
 ## ⚠️ 5. Critical Pitfalls & Best Practices
 
-> [!WARNING]
-> Use `require` for setup steps that are prerequisites for the rest of the test. Using `assert` in these cases leads to cascading, unhelpful failures.
+> **Warning:** Use `require` for setup steps that are prerequisites for the rest of the test. Using `assert` in these cases leads to cascading, unhelpful failures.
 
 1. **Clear Failure Messages**: Add custom error messages as arguments to `assert` functions to make failures easier to debug.
 2. **Mock Interaction**: Combine `testify/mock` with generated mocks (e.g., Mockery) for powerful dependency verification.
