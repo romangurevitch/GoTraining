@@ -1,12 +1,9 @@
 # Test targets
 
-.PHONY: test test-hello test-basics test-bank test-challenges bench
+.PHONY: test test-basics test-bank test-challenges bench
 
 test: generate ## Run all tests (excluding student challenges)
 	go test $$(go list ./... | grep -v "/internal/challenges/basics")
-
-test-hello: generate ## Run all hello world tests
-	go test ./cmd/hello/... ./internal/hello/...
 
 test-basics: generate ## Run module 2 (Go basics) tests
 	go test ./internal/basics/...
