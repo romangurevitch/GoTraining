@@ -1,4 +1,4 @@
-# 🛠️ Go Toolchain & Docker
+# Go Toolchain & Docker
 
 Modern Go development revolves around its powerful, built-in toolchain and containerisation for production-grade deployments.
 
@@ -15,7 +15,7 @@ Modern Go development revolves around its powerful, built-in toolchain and conta
 
 ---
 
-## 2. 🗺️ Visual Representation
+## 2. Visual Representation
 
 ```mermaid
 flowchart TD
@@ -26,7 +26,26 @@ flowchart TD
 
 ---
 
-## 3. 💻 Implementation Examples
+## 3. Project Structure
+
+This module is a **standalone Go project** with its own `go.mod`. It demonstrates a simple CLI app with configuration management.
+
+```
+toolchain/
+├── main.go           # Entry point with greeting logic and Viper config (commented out)
+├── main_test.go      # Unit tests for the greeting function
+├── go.mod            # Module definition with Viper dependency
+├── go.sum            # Dependency checksums
+├── Dockerfile        # Multi-stage Docker build
+├── config/
+│   ├── dev.yaml      # Development environment config
+│   └── prod.yaml     # Production environment config
+└── README.md
+```
+
+---
+
+## 4. Implementation Examples
 
 ### Essential CLI Commands
 
@@ -40,25 +59,47 @@ Add missing dependencies and remove unused ones:
 go mod tidy
 ```
 
-Run your application directly:
+Run your application directly (from the toolchain directory):
 ```bash
-go run internal/basics/toolchain/toolchain.go
+go run . Gopher
 ```
 
 Compile a binary for the current OS/Arch:
 ```bash
-go build -o toolchain-demo ./internal/basics/toolchain
+go build -o hello-demo .
 ```
 
-Run tests in the current directory:
+Run tests:
 ```bash
-go test -v ./internal/basics/toolchain/...
+go test -v ./...
 ```
 
 Install a tool to your `$GOPATH/bin`:
 ```bash
 go install github.com/swaggo/swag/cmd/swag@latest
 ```
+
+### Adding a Dependency
+
+The `main.go` file contains commented-out code that uses [Viper](https://github.com/spf13/viper) for configuration management.
+To enable it:
+
+1. Install the dependency:
+```bash
+go get github.com/spf13/viper
+```
+
+2. Uncomment the Viper import and the `loadConfig()` function in `main.go`
+
+3. Run the application to see the config values loaded from `config/dev.yaml`
+
+```bash
+go run .
+# Output: App: hello-dev, Port: 8080, LogLevel: debug
+#         Hello, Go Bank!
+```
+
+This demonstrates how Go manages external dependencies — adding an import triggers `go mod tidy` to fetch and verify the package.
 
 ### Multi-Stage Dockerfile
 ```dockerfile
@@ -68,17 +109,20 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 go build -trimpath -o /app/myapp ./internal/basics/toolchain
+RUN CGO_ENABLED=0 go build -trimpath -o /app/myapp .
 
 # Stage 2: Final Runtime
 FROM scratch
 COPY --from=builder /app/myapp /myapp
+COPY --from=builder /app/config /config
 ENTRYPOINT ["/myapp"]
 ```
 
+The second `COPY` brings the `config/` directory into the runtime image so the application can load its YAML configuration files at runtime. Without it, the `scratch` image would contain only the binary and config loading would fail.
+
 ---
 
-## 4. 📋 Common Patterns & Use Cases
+## 5. Common Patterns & Use Cases
 
 - **Caching Dependencies**: Copying `go.mod` and `go.sum` before the rest of the source in a Dockerfile to cache the `go mod download` layer.
 - **Reproducible Builds**: Using `-trimpath` and pinned Go versions in Docker to ensure the same source always produces the same binary.
@@ -86,7 +130,7 @@ ENTRYPOINT ["/myapp"]
 
 ---
 
-## 5. ⚠️ Critical Pitfalls & Best Practices
+## 6. Critical Pitfalls & Best Practices
 
 > **Warning:** Never commit your vendor directory or local configuration files to source control. Rely on `go.mod` and environment variables.
 
@@ -96,23 +140,38 @@ ENTRYPOINT ["/myapp"]
 
 ---
 
-## 🏃 Running the Examples
+## Running the Examples
 
-Explore how to interact with the Go toolchain using the local demo file:
+Navigate to the toolchain directory and explore the Go toolchain:
 
-1. Build the local example:
 ```bash
-go build -o toolchain-demo ./internal/basics/toolchain
+cd internal/basics/toolchain
+```
+
+1. Build the example:
+```bash
+go build -o hello-demo .
 ```
 
 2. Run the compiled binary:
 ```bash
-./toolchain-demo
+./hello-demo
+./hello-demo Gopher
 ```
 
 3. Run the tests:
 ```bash
-go test -v ./internal/basics/toolchain/...
+go test -v ./...
+```
+
+4. Build the Docker image:
+```bash
+docker build -t hello:latest .
+```
+
+5. Run the container:
+```bash
+docker run --rm hello:latest Gopher
 ```
 
 ## Your Next Step
@@ -121,8 +180,9 @@ Explore **[Basic Types](../types/README.md)** to learn about variables, slices, 
 
 ---
 
-## 📚 Further Reading
+## Further Reading
 
 - [Go Modules Reference](https://go.dev/ref/mod)
+- [Viper Configuration Library](https://github.com/spf13/viper)
 - [Dockerizing a Go Application](https://docs.docker.com/language/golang/build-images/)
 - [Shrinking your Go binaries](https://blog.filippo.io/shrink-your-go-binaries-with-this-one-weird-trick/)

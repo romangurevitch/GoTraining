@@ -18,7 +18,7 @@ COPY . .
 # CGO_ENABLED=0:   disables cgo so the binary is fully static (no libc dependency)
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     go build -trimpath -ldflags="-w -s" \
-    -o /hello ./cmd/hello/main.go
+    -o /hello .
 
 
 # Stage 2: Runtime
@@ -26,8 +26,9 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
 # This keeps the final image as small as possible and reduces the attack surface.
 FROM scratch
 
-# Copy only the compiled binary from the builder stage
+# Copy the compiled binary and config files from the builder stage
 COPY --from=builder /hello /hello
+COPY --from=builder /app/config /config
 
 # Document the default entry point
 ENTRYPOINT ["/hello"]

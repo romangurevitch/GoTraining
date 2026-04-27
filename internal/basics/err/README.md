@@ -85,13 +85,23 @@ Try to handle errors and return early. This keeps the "happy path" of your code 
 
 ## 🛠️ Practical Examples
 
-In this directory, we demonstrate:
-- **Sentinel Errors**: Standard way to check for specific failures.
-- **Custom Error Types**: How to carry extra context.
-- **Error Wrapping**: How to build an informative error chain.
+The [`errors.go`](errors.go) file contains runnable examples you can read and explore:
+
+| Function | Demonstrates |
+|----------|-------------|
+| `LookupUser` | Returning and wrapping a sentinel error with `%w`. |
+| `GreetUser` | Calling a function and checking the error with `if err != nil`. |
+
+The [`errors_test.go`](errors_test.go) file tests every function and shows additional patterns:
+- **Basic Error Checking**: `if err != nil` and reading the error message.
+- **Sentinel Errors**: Direct comparison vs `errors.Is`.
+- **Custom Error Types**: Structured error data with `errors.As`.
+- **`errors.Is`**: Walking the wrap chain for sentinels.
+- **`errors.As`**: Walking the wrap chain for custom types.
+- **`errors.Join`**: Combining multiple errors (Go 1.20+).
 - **Panic & Recover**: Handling catastrophic failures (rarely used).
 
-**Run the tests to see the error chain in action!**
+**Run the tests to see it all in action!**
 ```bash
 cd internal/basics/err
 ```
